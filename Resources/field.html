@@ -22,19 +22,19 @@
 		var INNER_FIELD_WIDTH = TOTAL_WIDTH - ENDZONE_WIDTH * 2;
 		var HASH_HEIGHT = FIELD_HEIGHT / 3;
 		var HASH_WIDTH = FIELD_WIDTH / 4;
-		
+
 		var clicks = [];
 		var clickCount = 0;
-		
+
 		drawField();
-		
+
 		function drawField() {
 			var canvas = document.getElementById("field");
 			drawFieldRects(canvas);
 			drawFieldHorizontalLines(canvas);
 			drawFieldVerticalLines(canvas);
 		}
-		
+
 		function drawFieldRects(canvas) {
 			var context = canvas.getContext("2d");
 			// endzone rectangles
@@ -49,7 +49,7 @@
 			context.fillRect(ENDZONE_WIDTH,0,INNER_FIELD_WIDTH,FIELD_HEIGHT)
 			context.strokeRect(ENDZONE_WIDTH,0,INNER_FIELD_WIDTH,FIELD_HEIGHT)
 		}
-		
+
 		function drawFieldVerticalLines(canvas) {
 			var context = canvas.getContext("2d");
 			context.strokeStyle = "#FFFFFF";
@@ -60,7 +60,7 @@
 			context.lineTo(TOTAL_WIDTH,HASH_HEIGHT*2);
 			context.stroke();
 		}
-		
+
 		function drawFieldHorizontalLines(canvas) {
 			var context = canvas.getContext("2d");
 			context.strokeStyle = "#FFFFFF";
@@ -73,25 +73,44 @@
 			context.lineTo(ENDZONE_WIDTH+HASH_WIDTH*3,FIELD_HEIGHT);
 			context.stroke();
 		}
-		
-		function drawPaths(from,to) {
-			var canvas = document.getElementById("field");
+
+		function drawPass(from,to) {
+			var canvas = $('#field')[0];
 			var context = canvas.getContext("2d");
 			context.strokeStyle = "#FFFF00";	// yellow
+			context.fillStyle = "#FFFF00";	// yellow
 			context.beginPath();
 			context.moveTo(from.x,from.y);
 			context.lineTo(to.x,to.y);
 			context.stroke();
+
+			// Draw a circle at the end point
+			context.beginPath();
+			var radius         = 7;                    // Arc radius
+			var startAngle     = 0;                     // Starting point on circle
+			var endAngle       = Math.PI+(Math.PI*2)/2; // End point on circle
+
+			context.arc(to.x,to.y,radius,startAngle,endAngle, false);
+			context.fill();
+			context.stroke();
 		}
-		
+
+		function drawPasses(){
+			for(i = 1; i <4; i++){
+				if(clickCount - i >= 0){
+					var prevClick = clicks[clickCount-i];
+					var curClick = clicks[clickCount-i+1];
+					drawPass(prevClick, curClick);
+				}
+			}
+		}
+
 		var field = $("#field");
 		field.click(function(event) {
+			drawField();
 			var newClick = {"x":event.clientX,"y":event.clientY};
 			clicks[clickCount] = newClick;
-			if(clickCount >0){
-				var prevClick = clicks[clickCount-1];
-				drawPaths(prevClick, newClick);
-			}
+			drawPasses();
 			clickCount++;
 			console.log(clicks);
 		});
