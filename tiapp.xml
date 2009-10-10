@@ -9,20 +9,13 @@
 	<statusbar-style>opaque</statusbar-style>
     <windows>
         <window>
-            <id>initial</id>
-            <url>index.html</url>
-            <backgroundColor>#111</backgroundColor>
+            <id>field</id>
+            <url>field.html</url>
+            <backgroundColor>#3300CC</backgroundColor>
 			<icon>ti://featured</icon>
 			<barColor>#000</barColor>
-			<fullscreen>false</fullscreen>
-        </window>
-        <window>
-            <id>about</id>
-            <url>about.html</url>
-            <backgroundColor>#111</backgroundColor>
-			<icon>ti://top rated</icon>
-            <barColor>#000</barColor>
-			<fullscreen>false</fullscreen>
+			<fullscreen>true</fullscreen>
+			<orientation>landscape</orientation>
         </window>
     </windows>
 </ti:app>
