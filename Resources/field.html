@@ -25,6 +25,7 @@
 
 		var clicks = [];
 		var clickCount = 0;
+		var score = 0;
 
 		drawField();
 
@@ -109,11 +110,37 @@
 		field.click(function(event) {
 			drawField();
 			var newClick = {"x":event.clientX,"y":event.clientY};
+			if(passIsScore(newClick, true)){
+				return handleScore();
+			}
 			clicks[clickCount] = newClick;
 			drawPasses();
 			clickCount++;
-			console.log(clicks);
 		});
+
+		/**
+		 * Determine if a pass click is a score.
+		 */
+		function passIsScore(click, ltr){
+			if(ltr){
+				if(click.x >= ENDZONE_WIDTH + INNER_FIELD_WIDTH){
+					return true;
+				}
+			}else{
+				if(click.x <= ENDZONE_WIDTH){
+					return true;
+				}
+			}
+
+			return false;
+		}
+
+		function handleScore(){
+			score++;
+			alert("omg. You scored!. You've got "+score+" points!");
+			clicks = [];
+			clickCount = 0;
+		}
 	</script>
 </body>
 </html>
