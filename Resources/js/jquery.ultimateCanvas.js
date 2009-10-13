@@ -13,6 +13,7 @@ $.fn.ultimateCanvas = function(options) {
 
 	var clicks = [];
 	var clickCount = 0;
+
 	var score = 0;
 
 	drawField();
