@@ -1,5 +1,9 @@
-$(document).ready(function(){
-    var TOTAL_WIDTH = 480;
+;(function($) {
+
+$.fn.ultimateCanvas = function(options) {
+	var canvas = this[0];
+
+	var TOTAL_WIDTH = 480;
 	var FIELD_HEIGHT = 276;
 	var ENDZONE_WIDTH = 80;
 	var FIELD_WIDTH = TOTAL_WIDTH - ENDZONE_WIDTH*2;
@@ -14,7 +18,6 @@ $(document).ready(function(){
 	drawField();
 
 	function drawField() {
-		var canvas = document.getElementById("field");
 		drawFieldRects(canvas);
 		drawFieldHorizontalLines(canvas);
 		drawFieldVerticalLines(canvas);
@@ -60,7 +63,6 @@ $(document).ready(function(){
 	}
 
 	function drawPass(from,to) {
-		var canvas = $('#field')[0];
 		var context = canvas.getContext("2d");
 		context.strokeStyle = "#FFFF00";	// yellow
 		context.fillStyle = "#FFFF00";	// yellow
@@ -125,4 +127,7 @@ $(document).ready(function(){
 		clicks = [];
 		clickCount = 0;
 	}
-});
+};
+
+})(jQuery);
+
