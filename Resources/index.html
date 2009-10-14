@@ -3,23 +3,25 @@
 <script type="text/javascript" src="js/jquery-1.3.2.js"></script>
 
 
-	<title>Hello Mobile</title>
+	<title>Team Spirit</title>
 	<script type="text/javascript" src="index.js"></script>
+	<script type="text/javascript">
+		$('#field_link').click(function(){
+			var fieldView = Titanium.UI.createWebView({url:'field.html', name:'field'});
+			Titanium.UI.currentWindow.addView(fieldView);
+			Titanium.UI.currentWindow.showView(fieldView);
+		});
+	</script>
 	<link href="index.css" rel="stylesheet" type="text/css">
 </head>
 <body>
-	<h2>Welcome to Titanium Mobile</h2>
+	<h2>Welcome to Team Spirit</h2>
 	<p>
-		Titanium Mobile is a next generation application platform
-		for building native mobile applications using web technologies
-		such as HTML and JavaScript.
+		For now, you can try out tracking catches <a id="field_link">here</a>
 	</p>
 	<p>
 		You are using Titanium version <span id="version">...</span>
 		on <span id="phone"></span>.
-	</p>
-	<p>
-		Why not have some good <button id="b">vibrations</button> on us?
 	</p>
 </body>
 </html>
