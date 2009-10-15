@@ -11,10 +11,15 @@ $.fn.ultimateCanvas = function(options) {
 	var HASH_HEIGHT = FIELD_HEIGHT / 3;
 	var HASH_WIDTH = FIELD_WIDTH / 4;
 
+	var HOME_TEAM = 0;
+	var AWAY_TEAM = 1;
+
 	var clicks = [];
 	var clickCount = 0;
+	var possession = HOME_TEAM;
 
-	var score = 0;
+	var home_score = 0;
+	var away_score = 0;
 
 	drawField();
 
@@ -97,8 +102,8 @@ $.fn.ultimateCanvas = function(options) {
 	field.click(function(event) {
 		drawField();
 		var newClick = {"x":event.clientX,"y":event.clientY};
-		if(passIsScore(newClick, true)){
-			return handleScore();
+		if(passIsScore(newClick, possession)){
+			return handleScore(possession);
 		}
 		clicks[clickCount] = newClick;
 		drawPasses();
@@ -108,8 +113,8 @@ $.fn.ultimateCanvas = function(options) {
 	/**
 	 * Determine if a pass click is a score.
 	 */
-	function passIsScore(click, ltr){
-		if(ltr){
+	function passIsScore(click, possession){
+		if(possession == HOME_TEAM){
 			if(click.x >= ENDZONE_WIDTH + INNER_FIELD_WIDTH){
 				return true;
 			}
@@ -122,8 +127,16 @@ $.fn.ultimateCanvas = function(options) {
 		return false;
 	}
 
-	function handleScore(){
-		score++;
+	function handleScore(posession){
+		if(possession == HOME_TEAM){
+			home_score++;
+			possession = AWAY_TEAM;
+			var score = home_score;
+		}else{
+			away_score++;
+			possession = HOME_TEAM;
+			var score = away_score;
+		}
 		alert("omg. You scored!. You've got "+score+" points!");
 		clicks = [];
 		clickCount = 0;
