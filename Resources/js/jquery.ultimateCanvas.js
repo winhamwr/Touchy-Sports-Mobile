@@ -68,7 +68,7 @@ $.fn.ultimateCanvas = function(options) {
 		context.stroke();
 	}
 
-	function drawPass(from,to) {
+	function drawPass(from, to) {
 		var context = canvas.getContext("2d");
 		context.strokeStyle = "#FFFF00";	// yellow
 		context.fillStyle = "#FFFF00";	// yellow
@@ -77,37 +77,53 @@ $.fn.ultimateCanvas = function(options) {
 		context.lineTo(to.x,to.y);
 		context.stroke();
 
-		// Draw a circle at the end point
+		drawPoint(to);
+	}
+
+	function drawPoint(point){
+		var context = canvas.getContext("2d");
+		context.strokeStyle = "#FFFF00";	// yellow
+		context.fillStyle = "#FFFF00";	// yellow
+
+		// Draw a circle at the point
 		context.beginPath();
 		var radius         = 7;                    // Arc radius
 		var startAngle     = 0;                     // Starting point on circle
 		var endAngle       = Math.PI+(Math.PI*2)/2; // End point on circle
 
-		context.arc(to.x,to.y,radius,startAngle,endAngle, false);
+		context.arc(point.x, point.y, radius, startAngle, endAngle, false);
 		context.fill();
 		context.stroke();
 	}
 
 	function drawPasses(){
-		for(i = 1; i <4; i++){
+		// Loop through the last 3 clicks and draw them
+		for(i = 3; i >= 0; i--){ // Start 3 clicks ago
 			if(clickCount - i >= 0){
-				var prevClick = clicks[clickCount-i];
-				var curClick = clicks[clickCount-i+1];
-				drawPass(prevClick, curClick);
+				// We have a click
+				var curClick = clicks[clickCount-i];
+				if(clickCount - i - 1 >= 0){
+					// There's a click before the curClick
+					var prevClick = clicks[clickCount-i-1];
+					drawPass(prevClick, curClick);
+				}else{
+					// This is the last/only click
+					drawPoint(curClick);
+				}
 			}
 		}
 	}
 
 	var field = $("#field");
 	field.click(function(event) {
+		clickCount++;
 		drawField();
 		var newClick = {"x":event.clientX,"y":event.clientY};
 		if(passIsScore(newClick, possession)){
 			return handleScore(possession);
 		}
-		clicks[clickCount] = newClick;
+		clicks[clickCount-1] = newClick;
 		drawPasses();
-		clickCount++;
 	});
 
 	/**
