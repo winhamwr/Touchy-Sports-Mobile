@@ -14,6 +14,8 @@ $.fn.ultimateCanvas = function(options) {
 	var HOME_TEAM = 0;
 	var AWAY_TEAM = 1;
 
+	var SCORE_LIMIT = 7;
+
 	var clicks = [];
 	var clickCount = 0;
 	var possession = HOME_TEAM;
@@ -21,12 +23,47 @@ $.fn.ultimateCanvas = function(options) {
 	var home_score = 0;
 	var away_score = 0;
 
-	drawField();
+	init_game();
+
+	function init_game() {
+		clicks = [];
+		clickCount = 0;
+		possession = HOME_TEAM;
+
+		home_score = 0;
+		away_score = 0;
+
+		drawField();
+	}
+
+	function setDirArrow(canvas) {
+		var context = canvas.getContext("2d");
+
+		context.strokeStyle = "#FF00FF";
+		context.beginPath();
+		// Draw the cross-field line
+		context.moveTo(2*ENDZONE_WIDTH, FIELD_HEIGHT/2);
+		context.lineTo(4*ENDZONE_WIDTH, FIELD_HEIGHT/2);
+
+		if(possession == HOME_TEAM) {
+			context.lineTo(4*ENDZONE_WIDTH - 30, FIELD_HEIGHT/2 - 30);
+			context.moveTo(4*ENDZONE_WIDTH, FIELD_HEIGHT/2);
+			context.lineTo(4*ENDZONE_WIDTH - 30, FIELD_HEIGHT/2 + 30);
+		} else {
+			context.moveTo(2*ENDZONE_WIDTH, FIELD_HEIGHT/2);
+			context.lineTo(2*ENDZONE_WIDTH + 30, FIELD_HEIGHT/2 - 30);
+			context.moveTo(2*ENDZONE_WIDTH, FIELD_HEIGHT/2);
+			context.lineTo(2*ENDZONE_WIDTH + 30, FIELD_HEIGHT/2 + 30);
+		}
+
+		context.stroke();
+	}
 
 	function drawField() {
 		drawFieldRects(canvas);
 		drawFieldHorizontalLines(canvas);
 		drawFieldVerticalLines(canvas);
+		setDirArrow(canvas);
 	}
 
 	function drawFieldRects(canvas) {
@@ -154,6 +191,10 @@ $.fn.ultimateCanvas = function(options) {
 			var score = away_score;
 		}
 		alert("omg. You scored!. You've got "+score+" points!");
+		if(score >= SCORE_LIMIT){
+			alert("Whoa. You totally scored enough points to make you the winner!");
+			return init_game();
+		}
 		clicks = [];
 		clickCount = 0;
 	}
