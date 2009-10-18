@@ -33,7 +33,26 @@ $.fn.ultimateCanvas = function(options) {
 		home_score = 0;
 		away_score = 0;
 
+		draw();
+	}
+
+	function draw(){
 		drawField();
+		drawScore();
+		drawPasses();
+	}
+
+	function drawScore(){
+		var context = canvas.getContext("2d");
+		context.font = "bold 12px sans-serif";
+
+		context.strokeStyle = "#FFFF00";	// yellow
+
+		// Home score
+		context.fillText(home_score, ENDZONE_WIDTH/2, FIELD_HEIGHT/2);
+
+		// Away score
+		context.fillText(away_score, TOTAL_WIDTH - ENDZONE_WIDTH/2, FIELD_HEIGHT/2);
 	}
 
 	function setDirArrow(canvas) {
@@ -58,6 +77,8 @@ $.fn.ultimateCanvas = function(options) {
 
 		context.stroke();
 	}
+
+
 
 	function drawField() {
 		drawFieldRects(canvas);
@@ -106,6 +127,10 @@ $.fn.ultimateCanvas = function(options) {
 	}
 
 	function drawPass(from, to) {
+		if(to == null){
+			return null;
+		}
+
 		var context = canvas.getContext("2d");
 		context.strokeStyle = "#FFFF00";	// yellow
 		context.fillStyle = "#FFFF00";	// yellow
@@ -134,6 +159,9 @@ $.fn.ultimateCanvas = function(options) {
 	}
 
 	function drawPasses(){
+		if(clickCount == 0){
+			return null;
+		}
 		// Loop through the last 3 clicks and draw them
 		for(i = 3; i >= 0; i--){ // Start 3 clicks ago
 			if(clickCount - i >= 0){
@@ -154,13 +182,12 @@ $.fn.ultimateCanvas = function(options) {
 	var field = $("#field");
 	field.click(function(event) {
 		clickCount++;
-		drawField();
 		var newClick = {"x":event.clientX,"y":event.clientY};
 		if(passIsScore(newClick, possession)){
 			return handleScore(possession);
 		}
 		clicks[clickCount-1] = newClick;
-		drawPasses();
+		draw();
 	});
 
 	/**
@@ -197,6 +224,7 @@ $.fn.ultimateCanvas = function(options) {
 		}
 		clicks = [];
 		clickCount = 0;
+		draw();
 	}
 };
 
