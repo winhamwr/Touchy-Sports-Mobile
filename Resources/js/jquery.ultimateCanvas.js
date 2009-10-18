@@ -188,7 +188,21 @@ $.fn.ultimateCanvas = function(options) {
 		}
 		clicks[clickCount-1] = newClick;
 		draw();
+		getPlayer();
 	});
+
+	function getPlayer() {
+		$('#player-bar > div > div').removeClass('inactive');
+		$('#player-bar > div > div').addClass('active');
+	}
+
+	function handlePlayerClick(event) {
+		$('#player-bar > div > div').removeClass('active');
+		$('#player-bar > div > div').addClass('inactive');
+	}
+
+	var player_bar = $('#player-bar');
+	player_bar.click(handlePlayerClick);
 
 	/**
 	 * Determine if a pass click is a score.

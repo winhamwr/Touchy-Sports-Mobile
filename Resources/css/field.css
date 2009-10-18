@@ -32,7 +32,6 @@ h1,h2
 	}
 
 	#player-bar > div > div > button {
-		background: #222 url(/images/alert-overlay.png) repeat-x;
 		display: inline-block;
 		padding: 5px 10px 6px;
 		color: #fff;
@@ -51,4 +50,12 @@ h1,h2
 		width: 64px;
 		height: 44px;
 		font-size: x-small;
+	}
+
+	#player-bar > div > div.inactive > button {
+		background: #BBBBBB url(/images/alert-overlay.png) repeat-x;
+	}
+
+	#player-bar > div > div.active > button {
+		background: #222 url(/images/alert-overlay.png) repeat-x;
 	}
