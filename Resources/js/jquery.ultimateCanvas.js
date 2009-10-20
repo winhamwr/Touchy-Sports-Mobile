@@ -49,10 +49,10 @@ $.fn.ultimateCanvas = function(options) {
 };
 
 UltimateCanvas.canvas.prototype.init = function() {
+	this.ui_controller = new this._options.ui_controller(this._canvas, {});
+
 	this.initGame();
 	this.bindEvents();
-
-	this.ui_controller = new this._options.ui_controller();
 };
 
 UltimateCanvas.canvas.prototype.bindEvents = function() {
@@ -96,31 +96,11 @@ UltimateCanvas.canvas.prototype.initPoint = function() {
 
 UltimateCanvas.canvas.prototype.draw = function(){
 	this.drawField();
-	//this.drawScore();
 	this.drawPasses();
+	this.ui_controller.displayScore(UltimateCanvas.HOME_TEAM, this.home_score);
+	this.ui_controller.displayScore(UltimateCanvas.AWAY_TEAM, this.away_score);
 };
 
-UltimateCanvas.canvas.prototype.drawScore =	function(){
-	var context = this._canvas.getContext("2d");
-	context.font = "bold 12px sans-serif";
-
-	context.strokeStyle = "#FFFF00";	// yellow
-
-	var ez_w = this._options.endzone_width;
-	var field_h = this._options.field_height;
-
-	// Home score
-	context.fillText(
-		this.home_score,
-		ez_w/2,
-		field_h/2);
-
-	// Away score
-	context.fillText(
-		this.away_score,
-		this._options.total_width - ez_w/2,
-		field_h/2);
-};
 
 UltimateCanvas.canvas.prototype.setDirArrow = function() {
 	var context = this._canvas.getContext("2d");
