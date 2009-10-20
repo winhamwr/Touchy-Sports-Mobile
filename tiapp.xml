@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<ti:app xmlns:ti="http://ti.appcelerator.org">
+<?xml version="1.0" encoding="UTF-8"?><ti:app xmlns:ti="http://ti.appcelerator.org">
     <id>com.gts.gts</id>
     <name>gts</name>
     <version>1.0</version>
@@ -18,4 +17,5 @@
 			<orientation>landscape</orientation>
         </window>
     </windows>
+<guid>72639e18b40941ad99afbe1cb8529ecf</guid>
 </ti:app>
