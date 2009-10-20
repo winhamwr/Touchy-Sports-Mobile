@@ -1,245 +1,323 @@
 ;(function($) {
 
+if(!UltimateCanvas) var UltimateCanvas = {};
+
+$.extend(UltimateCanvas, {
+	/*
+	 * Constant values
+	 */
+	HOME_TEAM		: 0,
+	AWAY_TEAM		: 1,
+
+	/*
+	 * Canvas object constructor
+	 */
+	canvas	: function(elem, options) {
+		this._elem = elem;
+		this._canvas = elem[0];
+		this._options = options;
+
+		this.init();
+	}
+});
+
+/*
+ * Registers the jquery plugin function
+ */
 $.fn.ultimateCanvas = function(options) {
-	var canvas = this[0];
 
-	var TOTAL_WIDTH = 480;
-	var FIELD_HEIGHT = 276;
-	var ENDZONE_WIDTH = 80;
-	var FIELD_WIDTH = TOTAL_WIDTH - ENDZONE_WIDTH*2;
-	var INNER_FIELD_WIDTH = TOTAL_WIDTH - ENDZONE_WIDTH * 2;
-	var HASH_HEIGHT = FIELD_HEIGHT / 3;
-	var HASH_WIDTH = FIELD_WIDTH / 4;
+	defaults = {
+		total_width			: 480,
+		field_height		: 276,
+		endzone_width		: 80,
+		score_limit			: 7
+	};
 
-	var HOME_TEAM = 0;
-	var AWAY_TEAM = 1;
+	options = $.extend(defaults, options);
 
-	var SCORE_LIMIT = 7;
+	options = $.extend(options,
+		{
+			field_width			: options.total_width - options.endzone_width * 2,
+			inner_field_width	: options.total_width - options.endzone_width * 2,
+			hash_height			: options.field_height / 3,
+			hash_width			: options.field_height / 4
+		}, options);
 
-	var clicks = [];
-	var clickCount = 0;
-	var possession = HOME_TEAM;
+	return this.each(function() {
+		new UltimateCanvas.canvas($(this), options);
+	});
+};
 
-	var home_score = 0;
-	var away_score = 0;
+UltimateCanvas.canvas.prototype.init = function() {
+	this.initGame();
+	this.bindEvents()
+};
 
-	init_game();
+UltimateCanvas.canvas.prototype.bindEvents = function() {
+	var c = this;
 
-	function init_game() {
-		clicks = [];
-		clickCount = 0;
-		possession = HOME_TEAM;
-
-		home_score = 0;
-		away_score = 0;
-
-		draw();
-	}
-
-	function draw(){
-		drawField();
-		drawScore();
-		drawPasses();
-	}
-
-	function drawScore(){
-		var context = canvas.getContext("2d");
-		context.font = "bold 12px sans-serif";
-
-		context.strokeStyle = "#FFFF00";	// yellow
-
-		// Home score
-		context.fillText(home_score, ENDZONE_WIDTH/2, FIELD_HEIGHT/2);
-
-		// Away score
-		context.fillText(away_score, TOTAL_WIDTH - ENDZONE_WIDTH/2, FIELD_HEIGHT/2);
-	}
-
-	function setDirArrow(canvas) {
-		var context = canvas.getContext("2d");
-
-		context.strokeStyle = "#FF00FF";
-		context.beginPath();
-		// Draw the cross-field line
-		context.moveTo(2*ENDZONE_WIDTH, FIELD_HEIGHT/2);
-		context.lineTo(4*ENDZONE_WIDTH, FIELD_HEIGHT/2);
-
-		if(possession == HOME_TEAM) {
-			context.lineTo(4*ENDZONE_WIDTH - 30, FIELD_HEIGHT/2 - 30);
-			context.moveTo(4*ENDZONE_WIDTH, FIELD_HEIGHT/2);
-			context.lineTo(4*ENDZONE_WIDTH - 30, FIELD_HEIGHT/2 + 30);
-		} else {
-			context.moveTo(2*ENDZONE_WIDTH, FIELD_HEIGHT/2);
-			context.lineTo(2*ENDZONE_WIDTH + 30, FIELD_HEIGHT/2 - 30);
-			context.moveTo(2*ENDZONE_WIDTH, FIELD_HEIGHT/2);
-			context.lineTo(2*ENDZONE_WIDTH + 30, FIELD_HEIGHT/2 + 30);
+	this._elem.click(function(event) {
+		c.clickCount++;
+		var newClick = {
+			"x":event.clientX,
+			"y":event.clientY
+		};
+		if(c.passIsScore(newClick, c.possession)){
+			return c.handleScore(c.possession);
 		}
-
-		context.stroke();
-	}
-
-
-
-	function drawField() {
-		drawFieldRects(canvas);
-		drawFieldHorizontalLines(canvas);
-		drawFieldVerticalLines(canvas);
-		setDirArrow(canvas);
-	}
-
-	function drawFieldRects(canvas) {
-		var context = canvas.getContext("2d");
-		// endzone rectangles
-		context.fillStyle = "#3300FF";	// blue 25,70,25
-		context.strokeStyle = "#000000";
-		context.fillRect(0,0,ENDZONE_WIDTH,FIELD_HEIGHT);
-		context.strokeRect(0,0,ENDZONE_WIDTH,FIELD_HEIGHT);
-		context.fillRect(ENDZONE_WIDTH + INNER_FIELD_WIDTH,0,ENDZONE_WIDTH,FIELD_HEIGHT);
-		context.strokeRect(ENDZONE_WIDTH + INNER_FIELD_WIDTH,0,ENDZONE_WIDTH,FIELD_HEIGHT);
-		// field rectangle
-		context.fillStyle = "#33FF00"; // green
-		context.fillRect(ENDZONE_WIDTH,0,INNER_FIELD_WIDTH,FIELD_HEIGHT)
-		context.strokeRect(ENDZONE_WIDTH,0,INNER_FIELD_WIDTH,FIELD_HEIGHT)
-	}
-
-	function drawFieldVerticalLines(canvas) {
-		var context = canvas.getContext("2d");
-		context.strokeStyle = "#FFFFFF";
-		context.beginPath();
-		context.moveTo(0,HASH_HEIGHT);
-		context.lineTo(TOTAL_WIDTH,HASH_HEIGHT);
-		context.moveTo(0,HASH_HEIGHT*2);
-		context.lineTo(TOTAL_WIDTH,HASH_HEIGHT*2);
-		context.stroke();
-	}
-
-	function drawFieldHorizontalLines(canvas) {
-		var context = canvas.getContext("2d");
-		context.strokeStyle = "#FFFFFF";
-		context.beginPath();
-		context.moveTo(ENDZONE_WIDTH+HASH_WIDTH,0);
-		context.lineTo(ENDZONE_WIDTH+HASH_WIDTH,FIELD_HEIGHT);
-		context.moveTo(ENDZONE_WIDTH+HASH_WIDTH*2,0);
-		context.lineTo(ENDZONE_WIDTH+HASH_WIDTH*2,FIELD_HEIGHT);
-		context.moveTo(ENDZONE_WIDTH+HASH_WIDTH*3,0);
-		context.lineTo(ENDZONE_WIDTH+HASH_WIDTH*3,FIELD_HEIGHT);
-		context.stroke();
-	}
-
-	function drawPass(from, to) {
-		if(to == null){
-			return null;
-		}
-
-		var context = canvas.getContext("2d");
-		context.strokeStyle = "#FFFF00";	// yellow
-		context.fillStyle = "#FFFF00";	// yellow
-		context.beginPath();
-		context.moveTo(from.x,from.y);
-		context.lineTo(to.x,to.y);
-		context.stroke();
-
-		drawPoint(to);
-	}
-
-	function drawPoint(point){
-		var context = canvas.getContext("2d");
-		context.strokeStyle = "#FFFF00";	// yellow
-		context.fillStyle = "#FFFF00";	// yellow
-
-		// Draw a circle at the point
-		context.beginPath();
-		var radius         = 7;                    // Arc radius
-		var startAngle     = 0;                     // Starting point on circle
-		var endAngle       = Math.PI+(Math.PI*2)/2; // End point on circle
-
-		context.arc(point.x, point.y, radius, startAngle, endAngle, false);
-		context.fill();
-		context.stroke();
-	}
-
-	function drawPasses(){
-		if(clickCount == 0){
-			return null;
-		}
-		// Loop through the last 3 clicks and draw them
-		for(i = 3; i >= 0; i--){ // Start 3 clicks ago
-			if(clickCount - i >= 0){
-				// We have a click
-				var curClick = clicks[clickCount-i];
-				if(clickCount - i - 1 >= 0){
-					// There's a click before the curClick
-					var prevClick = clicks[clickCount-i-1];
-					drawPass(prevClick, curClick);
-				}else{
-					// This is the last/only click
-					drawPoint(curClick);
-				}
-			}
-		}
-	}
-
-	var field = $("#field");
-	field.click(function(event) {
-		clickCount++;
-		var newClick = {"x":event.clientX,"y":event.clientY};
-		if(passIsScore(newClick, possession)){
-			return handleScore(possession);
-		}
-		clicks[clickCount-1] = newClick;
-		draw();
-		getPlayer();
+		c.clicks[c.clickCount-1] = newClick;
+		c.draw();
+		c.getPlayer();
 	});
 
-	function getPlayer() {
-		$('#player-bar > div > div').removeClass('inactive');
-		$('#player-bar > div > div').addClass('active');
-	}
-
-	function handlePlayerClick(event) {
-		$('#player-bar > div > div').removeClass('active');
-		$('#player-bar > div > div').addClass('inactive');
-	}
-
 	var player_bar = $('#player-bar');
-	player_bar.click(handlePlayerClick);
+	player_bar.click(c.handlePlayerClick);
 
-	/**
-	 * Determine if a pass click is a score.
-	 */
-	function passIsScore(click, possession){
-		if(possession == HOME_TEAM){
-			if(click.x >= ENDZONE_WIDTH + INNER_FIELD_WIDTH){
-				return true;
-			}
-		}else{
-			if(click.x <= ENDZONE_WIDTH){
-				return true;
-			}
-		}
+};
 
-		return false;
+UltimateCanvas.canvas.prototype.initGame =	function() {
+	this.clicks = [];
+	this.clickCount = 0;
+	this.possession = UltimateCanvas.HOME_TEAM;
+
+	this.home_score = 0;
+	this.away_score = 0;
+
+	this.draw();
+};
+
+UltimateCanvas.canvas.prototype.initPoint = function() {
+	this.clicks = [];
+	this.clickCount = 0;
+	this.draw();
+}
+
+UltimateCanvas.canvas.prototype.draw = function(){
+	this.drawField();
+	//this.drawScore();
+	this.drawPasses();
+};
+
+UltimateCanvas.canvas.prototype.drawScore =	function(){
+	var context = this._canvas.getContext("2d");
+	context.font = "bold 12px sans-serif";
+
+	context.strokeStyle = "#FFFF00";	// yellow
+
+	var ez_w = this._options.endzone_width;
+	var field_h = this._options.field_height;
+
+	// Home score
+	context.fillText(
+		this.home_score,
+		ez_w/2,
+		field_h/2);
+
+	// Away score
+	context.fillText(
+		this.away_score,
+		this._options.total_width - ez_w/2,
+		field_h/2);
+};
+
+UltimateCanvas.canvas.prototype.setDirArrow = function() {
+	var context = this._canvas.getContext("2d");
+
+	context.strokeStyle = "#FF00FF";
+	context.beginPath();
+	// Draw the cross-field line
+	var ez_w = this._options.endzone_width;
+	var field_h = this._options.field_height;
+
+	context.moveTo(2*ez_w, field_h/2);
+	context.lineTo(4*ez_w, field_h/2);
+
+	if(this.possession == UltimateCanvas.HOME_TEAM) {
+		context.lineTo(4*ez_w - 30, field_h/2 - 30);
+		context.moveTo(4*ez_w, field_h/2);
+		context.lineTo(4*ez_w - 30, field_h/2 + 30);
+	} else {
+		context.moveTo(2*ez_w, field_h/2);
+		context.lineTo(2*ez_w + 30, field_h/2 - 30);
+		context.moveTo(2*ez_w, field_h/2);
+		context.lineTo(2*ez_w + 30, field_h/2 + 30);
 	}
 
-	function handleScore(posession){
-		if(possession == HOME_TEAM){
-			home_score++;
-			possession = AWAY_TEAM;
-			var score = home_score;
-		}else{
-			away_score++;
-			possession = HOME_TEAM;
-			var score = away_score;
-		}
-		alert("omg. You scored!. You've got "+score+" points!");
-		if(score >= SCORE_LIMIT){
-			alert("Whoa. You totally scored enough points to make you the winner!");
-			return init_game();
-		}
-		clicks = [];
-		clickCount = 0;
-		draw();
+	context.stroke();
+};
+
+
+
+UltimateCanvas.canvas.prototype.drawField = function() {
+	this.drawFieldRects();
+	this.drawFieldHorizontalLines();
+	this.drawFieldVerticalLines();
+	this.setDirArrow();
+};
+
+UltimateCanvas.canvas.prototype.drawFieldRects = function() {
+	var context = this._canvas.getContext("2d");
+
+	var ez_w = this._options.endzone_width;
+	var field_h = this._options.field_height;
+	var inner_f_w = this._options.inner_field_width;
+
+	// endzone rectangles
+	context.fillStyle = "#3300FF";	// blue 25,70,25
+	context.strokeStyle = "#000000";
+	context.fillRect(0, 0, ez_w, field_h);
+	context.strokeRect(0, 0, ez_w, field_h);
+	context.fillRect(
+		ez_w + inner_f_w,
+		0,
+		ez_w,
+		field_h);
+	context.strokeRect(
+		ez_w + inner_f_w,
+		0,
+		ez_w,
+		field_h);
+
+	// field rectangle
+	context.fillStyle = "#33FF00"; // green
+	context.fillRect(ez_w, 0, inner_f_w, field_h)
+	context.strokeRect(ez_w, 0, inner_f_w, field_h)
+};
+
+UltimateCanvas.canvas.prototype.drawFieldVerticalLines = function() {
+	var context = this._canvas.getContext("2d");
+
+	var hash_h = this._options.hash_height;
+	var total_w = this._options.total_width;
+
+	context.strokeStyle = "#FFFFFF";
+	context.beginPath();
+	context.moveTo(0, hash_h);
+	context.lineTo(total_w, hash_h);
+	context.moveTo(0, hash_h*2);
+	context.lineTo(total_w, hash_h*2);
+	context.stroke();
+};
+
+UltimateCanvas.canvas.prototype.drawFieldHorizontalLines = function() {
+	var context = this._canvas.getContext("2d");
+
+	var ez_w = this._options.endzone_width;
+	var field_h = this._options.field_height;
+	var hash_w = this._options.hash_width;
+
+	context.strokeStyle = "#FFFFFF";
+	context.beginPath();
+	context.moveTo(ez_w+hash_w,0);
+	context.lineTo(ez_w+hash_w,field_h);
+	context.moveTo(ez_w+hash_w*2,0);
+	context.lineTo(ez_w+hash_w*2,field_h);
+	context.moveTo(ez_w+hash_w*3,0);
+	context.lineTo(ez_w+hash_w*3,field_h);
+	context.stroke();
+};
+
+UltimateCanvas.canvas.prototype.drawPass = function(from, to) {
+	if(to == null){
+		return null;
 	}
+
+	var context = this._canvas.getContext("2d");
+
+	context.strokeStyle = "#FFFF00";	// yellow
+	context.fillStyle = "#FFFF00";	// yellow
+	context.beginPath();
+	context.moveTo(from.x,from.y);
+	context.lineTo(to.x,to.y);
+	context.stroke();
+
+	this.drawPoint(to);
+};
+
+UltimateCanvas.canvas.prototype.drawPoint = function(point){
+	var context = this._canvas.getContext("2d");
+
+	context.strokeStyle = "#FFFF00";	// yellow
+	context.fillStyle = "#FFFF00";	// yellow
+
+	// Draw a circle at the point
+	context.beginPath();
+	var radius         = 7;                    // Arc radius
+	var startAngle     = 0;                     // Starting point on circle
+	var endAngle       = Math.PI+(Math.PI*2)/2; // End point on circle
+
+	context.arc(point.x, point.y, radius, startAngle, endAngle, false);
+	context.fill();
+	context.stroke();
+};
+
+UltimateCanvas.canvas.prototype.drawPasses = function(){
+	if(this.clickCount == 0){
+		return null;
+	}
+	// Loop through the last 3 clicks and draw them
+	for(i = 3; i >= 0; i--){ // Start 3 clicks ago
+		if(this.clickCount - i >= 0){
+			// We have a click
+			var curClick = this.clicks[this.clickCount-i];
+			if(this.clickCount - i - 1 >= 0){
+				// There's a click before the curClick
+				var prevClick = this.clicks[this.clickCount-i-1];
+				this.drawPass(prevClick, curClick);
+			}else{
+				// This is the last/only click
+				this.drawPoint(curClick);
+			}
+		}
+	}
+};
+
+UltimateCanvas.canvas.prototype.getPlayer = function() {
+	$('#player-bar > div > div').removeClass('inactive');
+	$('#player-bar > div > div').addClass('active');
+};
+
+UltimateCanvas.canvas.prototype.handlePlayerClick = function(event) {
+	$('#player-bar > div > div').removeClass('active');
+	$('#player-bar > div > div').addClass('inactive');
+};
+
+
+/**
+ * Determine if a pass click is a score.
+ */
+UltimateCanvas.canvas.prototype.passIsScore = function(click, possession){
+	if(possession == UltimateCanvas.HOME_TEAM){
+		if(click.x >= this._options.endzone_width + this._options.inner_field_width){
+			return true;
+		}
+	}else{
+		if(click.x <= this._options.endzone_width){
+			return true;
+		}
+	}
+
+	return false;
+};
+
+UltimateCanvas.canvas.prototype.handleScore = function(possession){
+	if(possession == UltimateCanvas.HOME_TEAM){
+		this.home_score++;
+		this.possession = UltimateCanvas.AWAY_TEAM;
+		var score = this.home_score;
+	}else{
+		this.away_score++;
+		this.possession = UltimateCanvas.HOME_TEAM;
+		var score = this.away_score;
+	}
+	// UiController
+	alert("omg. You scored!. You've got "+score+" points!");
+	if(score >= self._options.score_limit){
+		alert("Whoa. You totally scored enough points to make you the winner!");
+		return this.initGame();
+	}
+
+	this.initPoint()
 };
 
 })(jQuery);
