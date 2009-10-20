@@ -50,7 +50,9 @@ $.fn.ultimateCanvas = function(options) {
 
 UltimateCanvas.canvas.prototype.init = function() {
 	this.initGame();
-	this.bindEvents()
+	this.bindEvents();
+
+	this.ui_controller = new this._options.ui_controller();
 };
 
 UltimateCanvas.canvas.prototype.bindEvents = function() {
@@ -311,9 +313,9 @@ UltimateCanvas.canvas.prototype.handleScore = function(possession){
 		var score = this.away_score;
 	}
 	// UiController
-	alert("omg. You scored!. You've got "+score+" points!");
+	this.ui_controller.alert("omg. You scored!. You've got "+score+" points!");
 	if(score >= self._options.score_limit){
-		alert("Whoa. You totally scored enough points to make you the winner!");
+		this.ui_controller.alert("Whoa. You totally scored enough points to make you the winner!");
 		return this.initGame();
 	}
 

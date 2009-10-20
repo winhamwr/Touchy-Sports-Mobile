@@ -3,6 +3,7 @@
 <script type="text/javascript" src="js/jquery-1.3.2.js"></script>
 <script type="text/javascript" src="js/jquery.ultimateCanvas.js"></script>
 <script type="text/javascript" src="js/field.widgets.js"></script>
+<script type="text/javascript" src="js/uiController.js"></script>
 
 	<title>TeamSpirit</title>
 	<link href="css/field.css" rel="stylesheet" type="text/css">
@@ -34,7 +35,7 @@
 	</div>
 	<script type="text/javascript">
 		$(document).ready(function(){
-			$('#field').ultimateCanvas();
+			$('#field').ultimateCanvas({ui_controller:ui_controller});
 		});
 	</script>
 </body>
