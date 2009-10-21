@@ -59,22 +59,30 @@ UltimateCanvas.canvas.prototype.bindEvents = function() {
 	var c = this;
 
 	this._elem.click(function(event) {
-		c.clickCount++;
-		var newClick = {
-			"x":event.clientX,
-			"y":event.clientY
-		};
-		if(c.passIsScore(newClick, c.possession)){
-			return c.handleScore(c.possession);
-		}
-		c.clicks[c.clickCount-1] = newClick;
-		c.draw();
-		c.getPlayer();
+		c.handleClick(event);
 	});
 
 	var player_bar = $('#player-bar');
 	player_bar.click(c.handlePlayerClick);
 
+};
+
+UltimateCanvas.canvas.prototype.handleClick = function(event) {
+	var c = this;
+
+	c.clickCount++;
+	var newClick = {
+		"x":event.clientX,
+		"y":event.clientY
+	};
+	c.clicks[c.clickCount-1] = newClick;
+
+	if(c.passIsScore(newClick, c.possession)){
+		return c.handleScore(c.possession);
+	} else{
+		c.draw();
+		c.getPlayer();
+	}
 };
 
 UltimateCanvas.canvas.prototype.initGame =	function() {
@@ -91,8 +99,9 @@ UltimateCanvas.canvas.prototype.initGame =	function() {
 UltimateCanvas.canvas.prototype.initPoint = function() {
 	this.clicks = [];
 	this.clickCount = 0;
+
 	this.draw();
-}
+};
 
 UltimateCanvas.canvas.prototype.draw = function(){
 	this.drawField();

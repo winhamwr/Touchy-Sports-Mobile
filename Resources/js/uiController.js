@@ -44,7 +44,9 @@ WebUiController.ui.prototype.displayScore = function(team, score) {
 				135);
 		}
 	} else {
-		this.alert("Your device does not support text on canvas");
+		if(DEBUG == true){
+			this.alert("Your device does not support text on canvas");
+		}
 	}
 };
 
