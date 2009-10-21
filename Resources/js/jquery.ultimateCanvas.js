@@ -104,11 +104,12 @@ UltimateCanvas.canvas.prototype.handleTurnover = function(event) {
 	var c = this;
 
 	function switchPos(possession){
-		if(possession == c.AWAY_TEAM){
-			possession = c.HOME_TEAM;
+		if(possession == UltimateCanvas.AWAY_TEAM){
+			possession = UltimateCanvas.HOME_TEAM;
 		} else {
-			possession = c.AWAY_TEAM;
+			possession = UltimateCanvas.AWAY_TEAM;
 		}
+		return possession
 	}
 	c.possession = switchPos(c.possession);
 
