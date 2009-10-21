@@ -69,7 +69,9 @@ UltimateCanvas.canvas.prototype.bindEvents = function() {
 	});
 
 	var player_bar = $('#player-bar');
-	player_bar.click(c.handlePlayerClick);
+	player_bar.click(function(event) {
+		c.handlePlayerClick(event);
+	});
 
 };
 
@@ -84,7 +86,7 @@ UltimateCanvas.canvas.prototype.handleClick = function(event) {
 	c.clicks[c.clickCount-1] = newClick;
 
 	if(c.passIsScore(newClick, c.possession)){
-		return c.handleScore(c.possession);
+		c.handleScore(c.possession);
 	} else{
 		c.draw();
 		c.getPlayer();
@@ -313,12 +315,12 @@ UltimateCanvas.canvas.prototype.handleScore = function(possession){
 	}
 	// UiController
 	this.ui_controller.alert("omg. You scored!. You've got "+score+" points!");
-	if(score >= self._options.score_limit){
+	if(score >= this._options.score_limit){
 		this.ui_controller.alert("Whoa. You totally scored enough points to make you the winner!");
-		return this.initGame();
+		this.initGame();
+	} else {
+		this.initPoint();
 	}
-
-	this.initPoint()
 };
 
 })(jQuery);
