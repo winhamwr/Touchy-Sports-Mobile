@@ -64,6 +64,9 @@ UltimateCanvas.canvas.prototype.init = function() {
 	this.initGame();
 };
 
+/**
+ * Bind the event listeners on the UI controls
+ */
 UltimateCanvas.canvas.prototype.bindEvents = function() {
 	var c = this;
 
@@ -83,6 +86,36 @@ UltimateCanvas.canvas.prototype.bindEvents = function() {
 
 };
 
+UltimateCanvas.canvas.prototype.initGame =	function() {
+	this.possession = UltimateCanvas.HOME_TEAM;
+	this.home_endzone = UltimateCanvas.LEFT_EZ;
+	this.away_endzone = UltimateCanvas.RIGHT_EZ;
+
+	this.home_score = 0;
+	this.away_score = 0;
+
+	this.initPoint();
+};
+
+UltimateCanvas.canvas.prototype.initPoint = function() {
+	this.clicks = [];
+	this.clickCount = 0;
+	this.can_click = true;
+	this.scoring_pass = false;
+
+	this.ui.hideTurnoverButton();
+	this.ui.hidePlayerButtons();
+
+	this.draw();
+};
+
+//
+// EVENT HANDLERS
+//
+
+/**
+ * Handle a field click to indicate a pass.
+ */
 UltimateCanvas.canvas.prototype.handleClick = function(event) {
 	var c = this;
 
@@ -134,28 +167,24 @@ UltimateCanvas.canvas.prototype.handleTurnover = function(event) {
 	this.draw();
 };
 
-UltimateCanvas.canvas.prototype.initGame =	function() {
-	this.possession = UltimateCanvas.HOME_TEAM;
-	this.home_endzone = UltimateCanvas.LEFT_EZ;
-	this.away_endzone = UltimateCanvas.RIGHT_EZ;
-
-	this.home_score = 0;
-	this.away_score = 0;
-
-	this.initPoint();
-};
-
-UltimateCanvas.canvas.prototype.initPoint = function() {
-	this.clicks = [];
-	this.clickCount = 0;
-	this.can_click = true;
-	this.scoring_pass = false;
+UltimateCanvas.canvas.prototype.handlePlayerClick = function(event) {
+	$('#player-bar > div > div').removeClass('active');
+	$('#player-bar > div > div').addClass('inactive');
 
 	this.ui.hideTurnoverButton();
 	this.ui.hidePlayerButtons();
 
-	this.draw();
+	if(this.scoring_pass){
+		this.endPoint(this.possession);
+	} else{
+		// Now that we've selected a player, we can handle field clicks again
+		this.can_click = true;
+	}
 };
+
+//
+// DRAWING FUNCTION TO BE MOVED TO UI
+//
 
 UltimateCanvas.canvas.prototype.draw = function(){
 	this.drawField();
@@ -329,20 +358,6 @@ UltimateCanvas.canvas.prototype.getPlayer = function() {
 	this.ui.showPlayerButtons();
 };
 
-UltimateCanvas.canvas.prototype.handlePlayerClick = function(event) {
-	$('#player-bar > div > div').removeClass('active');
-	$('#player-bar > div > div').addClass('inactive');
-
-	this.ui.hideTurnoverButton();
-	this.ui.hidePlayerButtons();
-
-	if(this.scoring_pass){
-		this.endPoint(this.possession);
-	} else{
-		// Now that we've selected a player, we can handle field clicks again
-		this.can_click = true;
-	}
-};
 
 
 /**
