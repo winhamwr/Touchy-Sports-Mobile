@@ -27,20 +27,26 @@ $.extend(UltimateCanvas, {
 $.fn.ultimateCanvas = function(options) {
 
 	defaults = {
-		total_width			: 480,
+		total_width			: 474,
 		field_height		: 276,
-		endzone_width		: 80,
+		endzone_width		: 79,
 		score_limit			: 7
 	};
 
 	options = $.extend(defaults, options);
 
+	// Stuff that depends on options
+	var field_width			= options.total_width - options.endzone_width * 2;
+	var inner_field_width	= options.total_width - options.endzone_width * 2;
+	var hash_height			= options.field_height / 3;
+	var hash_width			= field_width / 4;
+
 	options = $.extend(options,
 		{
-			field_width			: options.total_width - options.endzone_width * 2,
-			inner_field_width	: options.total_width - options.endzone_width * 2,
-			hash_height			: options.field_height / 3,
-			hash_width			: options.field_height / 4
+			field_width			: field_width,
+			inner_field_width	: inner_field_width,
+			hash_height			: hash_height,
+			hash_width			: hash_width
 		}, options);
 
 	return this.each(function() {
@@ -175,7 +181,7 @@ UltimateCanvas.canvas.prototype.drawFieldRects = function() {
 	context.strokeRect(ez_w, 0, inner_f_w, field_h)
 };
 
-UltimateCanvas.canvas.prototype.drawFieldVerticalLines = function() {
+UltimateCanvas.canvas.prototype.drawFieldHorizontalLines = function() {
 	var context = this._canvas.getContext("2d");
 
 	var hash_h = this._options.hash_height;
@@ -190,7 +196,7 @@ UltimateCanvas.canvas.prototype.drawFieldVerticalLines = function() {
 	context.stroke();
 };
 
-UltimateCanvas.canvas.prototype.drawFieldHorizontalLines = function() {
+UltimateCanvas.canvas.prototype.drawFieldVerticalLines = function() {
 	var context = this._canvas.getContext("2d");
 
 	var ez_w = this._options.endzone_width;
@@ -199,12 +205,16 @@ UltimateCanvas.canvas.prototype.drawFieldHorizontalLines = function() {
 
 	context.strokeStyle = "#FFFFFF";
 	context.beginPath();
-	context.moveTo(ez_w+hash_w,0);
-	context.lineTo(ez_w+hash_w,field_h);
-	context.moveTo(ez_w+hash_w*2,0);
-	context.lineTo(ez_w+hash_w*2,field_h);
-	context.moveTo(ez_w+hash_w*3,0);
-	context.lineTo(ez_w+hash_w*3,field_h);
+
+	context.moveTo(ez_w+hash_w, 0);
+	context.lineTo(ez_w+hash_w, field_h);
+
+	context.moveTo(ez_w+hash_w*2, 0);
+	context.lineTo(ez_w+hash_w*2, field_h);
+
+	context.moveTo(ez_w+hash_w*3, 0);
+	context.lineTo(ez_w+hash_w*3, field_h);
+
 	context.stroke();
 };
 
