@@ -59,8 +59,9 @@ $.fn.ultimateCanvas = function(options) {
 UltimateCanvas.canvas.prototype.init = function() {
 	this.ui_controller = new this._options.ui_controller(this._canvas, {});
 
-	this.initGame();
 	this.bindEvents();
+
+	this.initGame();
 };
 
 UltimateCanvas.canvas.prototype.bindEvents = function() {
@@ -85,6 +86,14 @@ UltimateCanvas.canvas.prototype.bindEvents = function() {
 UltimateCanvas.canvas.prototype.handleClick = function(event) {
 	var c = this;
 
+	// If clicking is disabled, don't do anything
+	if(this.can_click == false){
+		this.ui_controller.alert("Whoa! Hold your horses. Who caught that last pass?");
+		return
+	}
+
+	c.can_click = false; // No more clicks until we select the player
+
 	c.clickCount++;
 	var newClick = {
 		"x":event.clientX,
@@ -98,6 +107,7 @@ UltimateCanvas.canvas.prototype.handleClick = function(event) {
 		c.draw();
 		c.getPlayer();
 	}
+
 };
 
 UltimateCanvas.canvas.prototype.handleTurnover = function(event) {
@@ -119,13 +129,12 @@ UltimateCanvas.canvas.prototype.handleTurnover = function(event) {
 	var last_point = this.clicks.pop()
 	this.clicks = [last_point]
 	this.clickCount = 1;
+	this.can_click = true;
 
 	this.draw();
 };
 
 UltimateCanvas.canvas.prototype.initGame =	function() {
-	this.clicks = [];
-	this.clickCount = 0;
 	this.possession = UltimateCanvas.HOME_TEAM;
 	this.home_endzone = UltimateCanvas.LEFT_EZ;
 	this.away_endzone = UltimateCanvas.RIGHT_EZ;
@@ -133,13 +142,13 @@ UltimateCanvas.canvas.prototype.initGame =	function() {
 	this.home_score = 0;
 	this.away_score = 0;
 
-	this.ui_controller.hidePlayerButtons();
-	this.draw();
+	this.initPoint();
 };
 
 UltimateCanvas.canvas.prototype.initPoint = function() {
 	this.clicks = [];
 	this.clickCount = 0;
+	this.can_click = true;
 
 	this.ui_controller.hideTurnoverButton();
 	this.ui_controller.hidePlayerButtons();
@@ -325,6 +334,9 @@ UltimateCanvas.canvas.prototype.handlePlayerClick = function(event) {
 
 	this.ui_controller.hideTurnoverButton();
 	this.ui_controller.hidePlayerButtons();
+
+	// Now that we've selected a player, we can handle field clicks again
+	this.can_click = true;
 };
 
 
