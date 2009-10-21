@@ -101,12 +101,12 @@ UltimateCanvas.canvas.prototype.handleClick = function(event) {
 	};
 	c.clicks[c.clickCount-1] = newClick;
 
-	if(c.passIsScore(newClick, c.possession)){
-		c.handleScore(c.possession);
-	} else{
-		c.draw();
-		c.getPlayer();
+	if(c.passIsInEz(newClick, c.possession)){
+		c.handleEzCatch();
 	}
+
+	c.getPlayer();
+	c.draw();
 
 };
 
@@ -149,6 +149,7 @@ UltimateCanvas.canvas.prototype.initPoint = function() {
 	this.clicks = [];
 	this.clickCount = 0;
 	this.can_click = true;
+	this.scoring_pass = false;
 
 	this.ui_controller.hideTurnoverButton();
 	this.ui_controller.hidePlayerButtons();
@@ -335,15 +336,19 @@ UltimateCanvas.canvas.prototype.handlePlayerClick = function(event) {
 	this.ui_controller.hideTurnoverButton();
 	this.ui_controller.hidePlayerButtons();
 
-	// Now that we've selected a player, we can handle field clicks again
-	this.can_click = true;
+	if(this.scoring_pass){
+		this.endPoint(this.possession);
+	} else{
+		// Now that we've selected a player, we can handle field clicks again
+		this.can_click = true;
+	}
 };
 
 
 /**
- * Determine if a pass click is a score.
+ * Determine if a pass click is in the endzone.
  */
-UltimateCanvas.canvas.prototype.passIsScore = function(click, possession){
+UltimateCanvas.canvas.prototype.passIsInEz = function(click, possession){
 	if(possession == UltimateCanvas.HOME_TEAM){
 		if(click.x >= this._options.endzone_width + this._options.inner_field_width){
 			return true;
@@ -357,7 +362,20 @@ UltimateCanvas.canvas.prototype.passIsScore = function(click, possession){
 	return false;
 };
 
-UltimateCanvas.canvas.prototype.handleScore = function(possession){
+/**
+ * Called when a catch was in the endzone.
+ */
+UltimateCanvas.canvas.prototype.handleEzCatch = function(){
+	// This was a scoring pass.
+	// We want to end the point after the user picks the catcher
+	this.scoring_pass = true;
+};
+
+/**
+ * Called after the person who caught the point is selected. Wraps up the point
+ * and either starts another or ends the game.
+ */
+UltimateCanvas.canvas.prototype.endPoint = function(possession){
 	if(possession == UltimateCanvas.HOME_TEAM){
 		this.home_score++;
 		this.possession = UltimateCanvas.AWAY_TEAM;
