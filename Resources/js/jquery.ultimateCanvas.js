@@ -105,7 +105,7 @@ UltimateCanvas.canvas.prototype.draw = function(){
 UltimateCanvas.canvas.prototype.setDirArrow = function() {
 	var context = this._canvas.getContext("2d");
 
-	context.strokeStyle = "#FF00FF";
+	context.strokeStyle = "#000000";
 	context.beginPath();
 	// Draw the cross-field line
 	var ez_w = this._options.endzone_width;
@@ -145,8 +145,8 @@ UltimateCanvas.canvas.prototype.drawFieldRects = function() {
 	var inner_f_w = this._options.inner_field_width;
 
 	// endzone rectangles
-	context.fillStyle = "#3300FF";	// blue 25,70,25
-	context.strokeStyle = "#000000";
+	context.fillStyle = "#003300";	// Dark Green
+	context.strokeStyle = "#000000"; // Black Goal Lines
 	context.fillRect(0, 0, ez_w, field_h);
 	context.strokeRect(0, 0, ez_w, field_h);
 	context.fillRect(
@@ -161,7 +161,7 @@ UltimateCanvas.canvas.prototype.drawFieldRects = function() {
 		field_h);
 
 	// field rectangle
-	context.fillStyle = "#33FF00"; // green
+	context.fillStyle = "#336633"; // Green
 	context.fillRect(ez_w, 0, inner_f_w, field_h)
 	context.strokeRect(ez_w, 0, inner_f_w, field_h)
 };
@@ -206,8 +206,8 @@ UltimateCanvas.canvas.prototype.drawPass = function(from, to) {
 
 	var context = this._canvas.getContext("2d");
 
-	context.strokeStyle = "#FFFF00";	// yellow
-	context.fillStyle = "#FFFF00";	// yellow
+	context.strokeStyle = "#ffffff";	// White
+	context.fillStyle = "#ffffff";	// White
 	context.beginPath();
 	context.moveTo(from.x,from.y);
 	context.lineTo(to.x,to.y);
@@ -219,8 +219,8 @@ UltimateCanvas.canvas.prototype.drawPass = function(from, to) {
 UltimateCanvas.canvas.prototype.drawPoint = function(point){
 	var context = this._canvas.getContext("2d");
 
-	context.strokeStyle = "#FFFF00";	// yellow
-	context.fillStyle = "#FFFF00";	// yellow
+	context.strokeStyle = "#ffffff";	// White
+	context.fillStyle = "#ffffff";	// White
 
 	// Draw a circle at the point
 	context.beginPath();
