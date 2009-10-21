@@ -9,42 +9,66 @@ h1,h2
 }
 
 #field {
+	margin: 0;
 	background: #BBBBBB url(/images/star.gif) repeat-x;
-	}
-	#player-bar {
-		width: 480px;
-		/**height: 44px;**/
-	}
-	#player-bar > div {
-		width: 12%;
-		height: 44px;
-		display: inline;
-		padding: 0;
-		margin: 0;
-	}
-	#player-bar > div > div {
-		display: inline;
-	}
+}
+#player-bar {
+	width: 480px;
+	position: absolute;
+	left: 0px;
+	top: 0px;
+	z-index: 1000;
+	/**height: 44px;**/
+}
+#player-bar > div {
+	width: 12%;
+	height: 44px;
+	display: inline;
+	padding: 0;
+	margin: 0;
+}
+#player-bar > div > div {
+	display: inline;
+}
 
-	#player-bar > div > div > button {
-		display: inline-block;
-		padding: 5px 10px 6px;
-		color: #fff;
-		text-decoration: none;
-		font-weight: bold;
-		line-height: 1;
-		position: relative;
-		cursor: pointer;
-		white-space: normal;
-		width: 64px;
-		height: 44px;
-		font-size: x-small;
-	}
+#player-bar > div > div > button {
+	display: inline-block;
+	padding: 5px 10px 6px;
+	color: #fff;
+	text-decoration: none;
+	font-weight: bold;
+	line-height: 1;
+	cursor: pointer;
+	white-space: normal;
+	width: 64px;
+	height: 44px;
+	font-size: x-small;
+}
 
-	#player-bar > div > div.inactive > button {
-		background: #BBBBBB url(/images/alert-overlay.png) repeat-x;
-	}
+#player-bar > div > div.inactive > button {
+	background: #BBBBBB url(/images/alert-overlay.png) repeat-x;
+}
 
-	#player-bar > div > div.active > button {
-		background: #222 url(/images/alert-overlay.png) repeat-x;
-	}
+#player-bar > div > div.active > button {
+	background: #222 url(/images/alert-overlay.png) repeat-x;
+}
+
+#menu-bar {
+	position: relative;
+	left: 0px;
+	bottom: 25px;
+
+}
+
+#menu-bar > div {
+	display: inline;
+}
+
+#undo_b {
+	position: relative;
+	left: 0px;
+}
+#turnover_b {
+	position: relative;
+	left: 322px;
+}

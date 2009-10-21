@@ -8,6 +8,8 @@ $.extend(UltimateCanvas, {
 	 */
 	HOME_TEAM		: 0,
 	AWAY_TEAM		: 1,
+	LEFT_EZ			: 0,
+	RIGHT_EZ		: 1,
 
 	/*
 	 * Canvas object constructor
@@ -73,6 +75,11 @@ UltimateCanvas.canvas.prototype.bindEvents = function() {
 		c.handlePlayerClick(event);
 	});
 
+	var turnover_b = $('#turnover_b')
+	turnover_b.click(function(event) {
+		c.handleTurnover();
+	});
+
 };
 
 UltimateCanvas.canvas.prototype.handleClick = function(event) {
@@ -93,14 +100,39 @@ UltimateCanvas.canvas.prototype.handleClick = function(event) {
 	}
 };
 
+UltimateCanvas.canvas.prototype.handleTurnover = function(event) {
+	var c = this;
+
+	function switchPos(possession){
+		if(possession == c.AWAY_TEAM){
+			possession = c.HOME_TEAM;
+		} else {
+			possession = c.AWAY_TEAM;
+		}
+	}
+	c.possession = switchPos(c.possession);
+
+	c.ui_controller.hideTurnoverButton();
+	c.ui_controller.hidePlayerButtons();
+
+	var last_point = this.clicks.pop()
+	this.clicks = [last_point]
+	this.clickCount = 1;
+
+	this.draw();
+};
+
 UltimateCanvas.canvas.prototype.initGame =	function() {
 	this.clicks = [];
 	this.clickCount = 0;
 	this.possession = UltimateCanvas.HOME_TEAM;
+	this.home_endzone = UltimateCanvas.LEFT_EZ;
+	this.away_endzone = UltimateCanvas.RIGHT_EZ;
 
 	this.home_score = 0;
 	this.away_score = 0;
 
+	this.ui_controller.hidePlayerButtons();
 	this.draw();
 };
 
@@ -108,14 +140,17 @@ UltimateCanvas.canvas.prototype.initPoint = function() {
 	this.clicks = [];
 	this.clickCount = 0;
 
+	this.ui_controller.hideTurnoverButton();
+	this.ui_controller.hidePlayerButtons();
+
 	this.draw();
 };
 
 UltimateCanvas.canvas.prototype.draw = function(){
 	this.drawField();
 	this.drawPasses();
-	this.ui_controller.displayScore(UltimateCanvas.HOME_TEAM, this.home_score);
-	this.ui_controller.displayScore(UltimateCanvas.AWAY_TEAM, this.away_score);
+	this.ui_controller.displayScore(UltimateCanvas.HOME_TEAM, this.home_endzone, this.home_score);
+	this.ui_controller.displayScore(UltimateCanvas.AWAY_TEAM, this.away_endzone, this.away_score);
 };
 
 
@@ -278,11 +313,17 @@ UltimateCanvas.canvas.prototype.drawPasses = function(){
 UltimateCanvas.canvas.prototype.getPlayer = function() {
 	$('#player-bar > div > div').removeClass('inactive');
 	$('#player-bar > div > div').addClass('active');
+
+	this.ui_controller.showTurnoverButton();
+	this.ui_controller.showPlayerButtons();
 };
 
 UltimateCanvas.canvas.prototype.handlePlayerClick = function(event) {
 	$('#player-bar > div > div').removeClass('active');
 	$('#player-bar > div > div').addClass('inactive');
+
+	this.ui_controller.hideTurnoverButton();
+	this.ui_controller.hidePlayerButtons();
 };
 
 
@@ -313,6 +354,11 @@ UltimateCanvas.canvas.prototype.handleScore = function(possession){
 		this.possession = UltimateCanvas.HOME_TEAM;
 		var score = this.away_score;
 	}
+	//Switch endzones
+	var a_ez = this.away_endzone;
+	this.away_endzone = this.home_endzone;
+	this.home_endzone = a_ez;
+
 	// UiController
 	this.ui_controller.alert("omg. You scored!. You've got "+score+" points!");
 	if(score >= this._options.score_limit){
