@@ -57,7 +57,7 @@ $.fn.ultimateCanvas = function(options) {
 };
 
 UltimateCanvas.canvas.prototype.init = function() {
-	this.ui_controller = new this._options.ui_controller(this._canvas, {});
+	this.ui = new this._options.ui_controller(this._canvas, {});
 
 	this.bindEvents();
 
@@ -123,8 +123,8 @@ UltimateCanvas.canvas.prototype.handleTurnover = function(event) {
 	}
 	c.possession = switchPos(c.possession);
 
-	c.ui_controller.hideTurnoverButton();
-	c.ui_controller.hidePlayerButtons();
+	c.ui.hideTurnoverButton();
+	c.ui.hidePlayerButtons();
 
 	var last_point = this.clicks.pop()
 	this.clicks = [last_point]
@@ -151,8 +151,8 @@ UltimateCanvas.canvas.prototype.initPoint = function() {
 	this.can_click = true;
 	this.scoring_pass = false;
 
-	this.ui_controller.hideTurnoverButton();
-	this.ui_controller.hidePlayerButtons();
+	this.ui.hideTurnoverButton();
+	this.ui.hidePlayerButtons();
 
 	this.draw();
 };
@@ -160,8 +160,8 @@ UltimateCanvas.canvas.prototype.initPoint = function() {
 UltimateCanvas.canvas.prototype.draw = function(){
 	this.drawField();
 	this.drawPasses();
-	this.ui_controller.displayScore(UltimateCanvas.HOME_TEAM, this.home_endzone, this.home_score);
-	this.ui_controller.displayScore(UltimateCanvas.AWAY_TEAM, this.away_endzone, this.away_score);
+	this.ui.displayScore(UltimateCanvas.HOME_TEAM, this.home_endzone, this.home_score);
+	this.ui.displayScore(UltimateCanvas.AWAY_TEAM, this.away_endzone, this.away_score);
 };
 
 
@@ -325,16 +325,16 @@ UltimateCanvas.canvas.prototype.getPlayer = function() {
 	$('#player-bar > div > div').removeClass('inactive');
 	$('#player-bar > div > div').addClass('active');
 
-	this.ui_controller.showTurnoverButton();
-	this.ui_controller.showPlayerButtons();
+	this.ui.showTurnoverButton();
+	this.ui.showPlayerButtons();
 };
 
 UltimateCanvas.canvas.prototype.handlePlayerClick = function(event) {
 	$('#player-bar > div > div').removeClass('active');
 	$('#player-bar > div > div').addClass('inactive');
 
-	this.ui_controller.hideTurnoverButton();
-	this.ui_controller.hidePlayerButtons();
+	this.ui.hideTurnoverButton();
+	this.ui.hidePlayerButtons();
 
 	if(this.scoring_pass){
 		this.endPoint(this.possession);
@@ -391,9 +391,9 @@ UltimateCanvas.canvas.prototype.endPoint = function(possession){
 	this.home_endzone = a_ez;
 
 	// UiController
-	this.ui_controller.alert("omg. You scored!. You've got "+score+" points!");
+	this.ui.alert("omg. You scored!. You've got "+score+" points!");
 	if(score >= this._options.score_limit){
-		this.ui_controller.alert("Whoa. You totally scored enough points to make you the winner!");
+		this.ui.alert("Whoa. You totally scored enough points to make you the winner!");
 		this.initGame();
 	} else {
 		this.initPoint();
