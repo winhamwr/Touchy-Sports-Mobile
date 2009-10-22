@@ -215,14 +215,7 @@ UltimateCanvas.canvas.prototype.setDirArrow = function() {
 	context.moveTo(2*ez_w, field_h/2);
 	context.lineTo(4*ez_w, field_h/2);
 	
-	if(this.possession == UltimateCanvas.HOME_TEAM){
-		//Home team has possession
-		var attackersEndzone = this.home_endzone;
-	} else{
-		//Away team has possession
-		var attackersEndzone = this.away_endzone;
-	}
-
+	var attackersEndzone = this.getAttackersEndzone();
 	
 	if(attackersEndzone == UltimateCanvas.LEFT_EZ){	
 		// Point Right
@@ -303,13 +296,28 @@ UltimateCanvas.canvas.prototype.getPlayer = function() {
 	this.ui.showPlayerButtons();
 };
 
+/**
+ * Determine the attackers endzone
+ */
+UltimateCanvas.canvas.prototype.getAttackersEndzone = function(){
+	if(this.possession == UltimateCanvas.HOME_TEAM){
+		//Home team has possession
+		var attackersEndzone = this.home_endzone;
+	} else{
+		//Away team has possession
+		var attackersEndzone = this.away_endzone;
+	}
+	return attackersEndzone;
+};
 
 
 /**
  * Determine if a pass click is in the endzone.
  */
 UltimateCanvas.canvas.prototype.passIsInEz = function(click, possession){
-	if(possession == UltimateCanvas.HOME_TEAM){
+	var attackersEndzone = this.getAttackersEndzone();
+	
+	if(attackersEndzone == UltimateCanvas.LEFT_EZ){
 		if(click.x >= this._options.endzone_width + this._options.inner_field_width){
 			return true;
 		}
