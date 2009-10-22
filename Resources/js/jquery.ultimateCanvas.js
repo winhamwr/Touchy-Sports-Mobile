@@ -57,7 +57,15 @@ $.fn.ultimateCanvas = function(options) {
 };
 
 UltimateCanvas.canvas.prototype.init = function() {
-	this.ui = new this._options.ui_controller(this._canvas, {});
+	field = {
+		w		: this._options.total_width, //Total field width
+		h		: this._options.field_height, //Total field height
+		inner_w	: this._options.inner_field_width, //Field width not counting endzones
+		ez_w	: this._options.endzone_width, // Width of an endzone
+		hash_w	: this._options.hash_width, // Spacing of vertical hashes on the inner field
+		hash_h	: this._options.hash_height // Spacing of horizontal hashes on the field
+	};
+	this.ui = new this._options.ui_controller(this._canvas, field, {});
 
 	this.bindEvents();
 
@@ -120,8 +128,8 @@ UltimateCanvas.canvas.prototype.handleClick = function(event) {
 	var c = this;
 
 	// If clicking is disabled, don't do anything
-	if(this.can_click == false){
-		this.ui_controller.alert("Whoa! Hold your horses. Who caught that last pass?");
+	if(c.can_click == false){
+		this.ui.alert("Whoa! Hold your horses. Who caught that last pass?");
 		return
 	}
 
@@ -183,11 +191,12 @@ UltimateCanvas.canvas.prototype.handlePlayerClick = function(event) {
 };
 
 //
-// DRAWING FUNCTION TO BE MOVED TO UI
+// DRAWING FUNCTIONS TO BE MOVED TO UI
 //
 
 UltimateCanvas.canvas.prototype.draw = function(){
-	this.drawField();
+	this.ui.draw();
+	this.setDirArrow();
 	this.drawPasses();
 	this.ui.displayScore(UltimateCanvas.HOME_TEAM, this.home_endzone, this.home_score);
 	this.ui.displayScore(UltimateCanvas.AWAY_TEAM, this.away_endzone, this.away_score);
@@ -216,81 +225,6 @@ UltimateCanvas.canvas.prototype.setDirArrow = function() {
 		context.moveTo(2*ez_w, field_h/2);
 		context.lineTo(2*ez_w + 30, field_h/2 + 30);
 	}
-
-	context.stroke();
-};
-
-
-
-UltimateCanvas.canvas.prototype.drawField = function() {
-	this.drawFieldRects();
-	this.drawFieldHorizontalLines();
-	this.drawFieldVerticalLines();
-	this.setDirArrow();
-};
-
-UltimateCanvas.canvas.prototype.drawFieldRects = function() {
-	var context = this._canvas.getContext("2d");
-
-	var ez_w = this._options.endzone_width;
-	var field_h = this._options.field_height;
-	var inner_f_w = this._options.inner_field_width;
-
-	// endzone rectangles
-	context.fillStyle = "#003300";	// Dark Green
-	context.strokeStyle = "#000000"; // Black Goal Lines
-	context.fillRect(0, 0, ez_w, field_h);
-	context.strokeRect(0, 0, ez_w, field_h);
-	context.fillRect(
-		ez_w + inner_f_w,
-		0,
-		ez_w,
-		field_h);
-	context.strokeRect(
-		ez_w + inner_f_w,
-		0,
-		ez_w,
-		field_h);
-
-	// field rectangle
-	context.fillStyle = "#336633"; // Green
-	context.fillRect(ez_w, 0, inner_f_w, field_h)
-	context.strokeRect(ez_w, 0, inner_f_w, field_h)
-};
-
-UltimateCanvas.canvas.prototype.drawFieldHorizontalLines = function() {
-	var context = this._canvas.getContext("2d");
-
-	var hash_h = this._options.hash_height;
-	var total_w = this._options.total_width;
-
-	context.strokeStyle = "#FFFFFF";
-	context.beginPath();
-	context.moveTo(0, hash_h);
-	context.lineTo(total_w, hash_h);
-	context.moveTo(0, hash_h*2);
-	context.lineTo(total_w, hash_h*2);
-	context.stroke();
-};
-
-UltimateCanvas.canvas.prototype.drawFieldVerticalLines = function() {
-	var context = this._canvas.getContext("2d");
-
-	var ez_w = this._options.endzone_width;
-	var field_h = this._options.field_height;
-	var hash_w = this._options.hash_width;
-
-	context.strokeStyle = "#FFFFFF";
-	context.beginPath();
-
-	context.moveTo(ez_w+hash_w, 0);
-	context.lineTo(ez_w+hash_w, field_h);
-
-	context.moveTo(ez_w+hash_w*2, 0);
-	context.lineTo(ez_w+hash_w*2, field_h);
-
-	context.moveTo(ez_w+hash_w*3, 0);
-	context.lineTo(ez_w+hash_w*3, field_h);
 
 	context.stroke();
 };

@@ -2,15 +2,92 @@ if(!WebUiController) var WebUiController = {};
 
 $.extend(WebUiController, {
 
-	ui	: function(canvas, options) {
+	ui	: function(canvas, field, options) {
 		this._options = options;
 		this._canvas = canvas;
+		this._f = field; // The field dimensions
 
 		this.init();
 	}
 });
 
 WebUiController.ui.prototype.init = function() {
+};
+
+WebUiController.ui.prototype.draw = function(){
+	this.drawField();
+};
+
+WebUiController.ui.prototype.drawField = function() {
+	this.drawFieldRects();
+	this.drawFieldHorizontalLines();
+	this.drawFieldVerticalLines();
+};
+
+WebUiController.ui.prototype.drawFieldRects = function() {
+	var context = this._canvas.getContext("2d");
+
+	var ez_w = this._f.ez_w;
+	var h = this._f.h;
+	var inner_w = this._f.inner_w;
+
+	// endzone rectangles
+	context.fillStyle = "#003300";	// Dark Green
+	context.strokeStyle = "#000000"; // Black Goal Lines
+	context.fillRect(0, 0, ez_w, h);
+	context.strokeRect(0, 0, ez_w, h);
+	context.fillRect(
+		ez_w + inner_w,
+		0,
+		ez_w,
+		h);
+	context.strokeRect(
+		ez_w + inner_w,
+		0,
+		ez_w,
+		h);
+
+	// field rectangle
+	context.fillStyle = "#336633"; // Green
+	context.fillRect(ez_w, 0, inner_w, h)
+	context.strokeRect(ez_w, 0, inner_w, h)
+};
+
+WebUiController.ui.prototype.drawFieldHorizontalLines = function() {
+	var context = this._canvas.getContext("2d");
+
+	var hash_h = this._f.hash_h;
+	var w = this._f.w;
+
+	context.strokeStyle = "#FFFFFF";
+	context.beginPath();
+	context.moveTo(0, hash_h);
+	context.lineTo(w, hash_h);
+	context.moveTo(0, hash_h*2);
+	context.lineTo(w, hash_h*2);
+	context.stroke();
+};
+
+WebUiController.ui.prototype.drawFieldVerticalLines = function() {
+	var context = this._canvas.getContext("2d");
+
+	var ez_w = this._f.ez_w;
+	var h = this._f.h;
+	var hash_w = this._f.hash_w;
+
+	context.strokeStyle = "#FFFFFF";
+	context.beginPath();
+
+	context.moveTo(ez_w+hash_w, 0);
+	context.lineTo(ez_w+hash_w, h);
+
+	context.moveTo(ez_w+hash_w*2, 0);
+	context.lineTo(ez_w+hash_w*2, h);
+
+	context.moveTo(ez_w+hash_w*3, 0);
+	context.lineTo(ez_w+hash_w*3, h);
+
+	context.stroke();
 };
 
 /*
@@ -58,6 +135,7 @@ WebUiController.ui.prototype.displayScore = function(team, ez, score) {
 		}
 	}
 };
+
 
 /*
  * Display the undo button.
