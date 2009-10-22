@@ -214,12 +214,23 @@ UltimateCanvas.canvas.prototype.setDirArrow = function() {
 
 	context.moveTo(2*ez_w, field_h/2);
 	context.lineTo(4*ez_w, field_h/2);
+	
+	if(this.possession == UltimateCanvas.HOME_TEAM){
+		//Home team has possession
+		var attackersEndzone = this.home_endzone;
+	} else{
+		//Away team has possession
+		var attackersEndzone = this.away_endzone;
+	}
 
-	if(this.possession == UltimateCanvas.HOME_TEAM) {
+	
+	if(attackersEndzone == UltimateCanvas.LEFT_EZ){	
+		// Point Right
 		context.lineTo(4*ez_w - 30, field_h/2 - 30);
 		context.moveTo(4*ez_w, field_h/2);
 		context.lineTo(4*ez_w - 30, field_h/2 + 30);
 	} else {
+		// Point Left
 		context.moveTo(2*ez_w, field_h/2);
 		context.lineTo(2*ez_w + 30, field_h/2 - 30);
 		context.moveTo(2*ez_w, field_h/2);
