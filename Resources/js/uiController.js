@@ -174,12 +174,12 @@ WebUiController.ui.prototype.displayScore = function(team, ez, score) {
 
 	if(team == 0){
 		// home score
-		context.strokeStyle = "#ffffff";	// WHITE
-		context.fillStyle = "#ffffff";	// WHITE
+		context.strokeStyle = "#9F4848";	// WHITE
+		context.fillStyle = "#9F4848";	// WHITE
 	} else {
 		// away score
-		context.strokeStyle = "#ffffff";	// WHITE
-		context.fillStyle = "#ffffff";	// WHITE
+		context.strokeStyle = "#269926";	// WHITE
+		context.fillStyle = "#269926";	// WHITE
 	}
 
 	if(context.fillText != null){
