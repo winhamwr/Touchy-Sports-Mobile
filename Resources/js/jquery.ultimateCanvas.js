@@ -230,28 +230,37 @@ UltimateCanvas.canvas.prototype.setDirArrow = function() {
 	context.stroke();
 };
 
-UltimateCanvas.canvas.prototype.drawPass = function(from, to) {
-	if(to == null){
-		return null;
+UltimateCanvas.canvas.prototype.drawPass = function(from, to, last_pass) {
+	if(from){
+		// We have a source point, draw a line between the points
+		var context = this._canvas.getContext("2d");
+
+		context.strokeStyle = "#ffffff";	// White
+		context.fillStyle = "#ffffff";	// White
+		context.beginPath();
+		context.moveTo(from.x,from.y);
+		context.lineTo(to.x,to.y);
+		context.stroke();
 	}
 
-	var context = this._canvas.getContext("2d");
-
-	context.strokeStyle = "#ffffff";	// White
-	context.fillStyle = "#ffffff";	// White
-	context.beginPath();
-	context.moveTo(from.x,from.y);
-	context.lineTo(to.x,to.y);
-	context.stroke();
-
-	this.drawPoint(to);
+	var point_color = "#ffffff"; //White
+	if(last_pass){
+		var point_color = '#ff0000'; //Red
+	}
+	this.drawPoint(to, point_color);
 };
 
-UltimateCanvas.canvas.prototype.drawPoint = function(point){
+UltimateCanvas.canvas.prototype.drawPoint = function(point, color){
 	var context = this._canvas.getContext("2d");
 
-	context.strokeStyle = "#ffffff";	// White
-	context.fillStyle = "#ffffff";	// White
+	if(color){
+		context.strokeStyle = color;
+		context.fillStyle = color;
+	} else {
+		context.strokeStyle = "#ffffff";	// White
+		context.fillStyle = "#ffffff";	// White
+	}
+
 
 	// Draw a circle at the point
 	context.beginPath();
@@ -265,25 +274,42 @@ UltimateCanvas.canvas.prototype.drawPoint = function(point){
 };
 
 UltimateCanvas.canvas.prototype.drawPasses = function(){
-	if(this.passes.length == 0){
+	var c = this;
+
+	if(c.passes.length == 0){
 		return null;
 	}
+	var DRAW_COUNT = 3 // The number of passes to draw
+
+	var index = -1 * DRAW_COUNT;
+	var passes_to_draw = c.passes.slice(index);
+	var from = null;
+	$.each(passes_to_draw, function(i, to){
+		var last_pass = false;
+		if(i + 1 == passes_to_draw.length){
+			last_pass = true;
+		}
+		c.drawPass(from, to, last_pass);
+		from = to;
+	})
+
+
 	// TODO: This whole loop is retarded. Write it non-retarded
 	// Loop through the last 3 passes and draw them
-	for(i = 3; i >= 0; i--){ // Start 3 clicks ago
-		if(this.passes.length - i >= 0){
-			// We have a pass
-			var curPass = this.passes.slice(this.passes.length-i-1, this.passes.length-i)[0];
-			if(this.passes.length - i - 1 >= 0){
-				// There's a pass before the curPass
-				var prevPass = this.passes.slice(this.passes.length-i-2, this.passes.length-i-2)[0];
-				this.drawPass(prevPass, curPass);
-			}else{
-				// This is the last/only pass
-				this.drawPoint(curPass);
-			}
-		}
-	}
+	//for(i = 3; i >= 0; i--){ // Start 3 clicks ago
+		//if(this.passes.length - i >= 0){
+			//// We have a pass
+			//var curPass = this.passes.slice(this.passes.length-i-1, this.passes.length-i)[0];
+			//if(this.passes.length - i - 1 >= 0){
+				//// There's a pass before the curPass
+				//var prevPass = this.passes.slice(this.passes.length-i-2, this.passes.length-i-2)[0];
+				//this.drawPass(prevPass, curPass);
+			//}else{
+				//// This is the last/only pass
+				//this.drawPoint(curPass);
+			//}
+		//}
+	//}
 };
 
 UltimateCanvas.canvas.prototype.getPlayer = function() {
