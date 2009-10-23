@@ -103,9 +103,9 @@ WebUiController.ui.prototype.drawPass = function(from, to, last_pass) {
 		context.stroke();
 	}
 
-	var point_color = "#ffffff"; //White
+	var point_color = "#003300"; // DARK GREEN
 	if(last_pass){
-		var point_color = '#ff0000'; //Red
+		var point_color = '#ffffff'; //WHITE
 	}
 	this.drawPoint(to, point_color);
 };
@@ -174,12 +174,12 @@ WebUiController.ui.prototype.displayScore = function(team, ez, score) {
 
 	if(team == 0){
 		// home score
-		context.strokeStyle = "#FFFF00";	// yellow
-		context.fillStyle = "#FFFF00";	// yellow
+		context.strokeStyle = "#ffffff";	// WHITE
+		context.fillStyle = "#ffffff";	// WHITE
 	} else {
 		// away score
-		context.strokeStyle = "#00FF00";	// blue
-		context.fillStyle = "#00FF00";	// blue
+		context.strokeStyle = "#ffffff";	// WHITE
+		context.fillStyle = "#ffffff";	// WHITE
 	}
 
 	if(context.fillText != null){
