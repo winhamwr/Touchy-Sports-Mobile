@@ -79,7 +79,7 @@ UltimateCanvas.canvas.prototype.bindEvents = function() {
 	var c = this;
 
 	this._elem.click(function(event) {
-		c.handleClick(event);
+		c.handlePass(event);
 	});
 
 	var player_bar = $('#player-bar');
@@ -106,8 +106,7 @@ UltimateCanvas.canvas.prototype.initGame =	function() {
 };
 
 UltimateCanvas.canvas.prototype.initPoint = function() {
-	this.clicks = [];
-	this.clickCount = 0;
+	this.passes = [];
 	this.can_click = true;
 	this.scoring_pass = false;
 
@@ -124,7 +123,7 @@ UltimateCanvas.canvas.prototype.initPoint = function() {
 /**
  * Handle a field click to indicate a pass.
  */
-UltimateCanvas.canvas.prototype.handleClick = function(event) {
+UltimateCanvas.canvas.prototype.handlePass = function(event) {
 	var c = this;
 
 	// If clicking is disabled, don't do anything
@@ -135,14 +134,13 @@ UltimateCanvas.canvas.prototype.handleClick = function(event) {
 
 	c.can_click = false; // No more clicks until we select the player
 
-	c.clickCount++;
-	var newClick = {
+	var new_pass = {
 		"x":event.clientX,
 		"y":event.clientY
 	};
-	c.clicks[c.clickCount-1] = newClick;
+	c.passes.push(new_pass);
 
-	if(c.passIsInEz(newClick, c.possession)){
+	if(c.passIsInEz(new_pass, c.possession)){
 		c.handleEzCatch();
 	}
 
@@ -167,9 +165,8 @@ UltimateCanvas.canvas.prototype.handleTurnover = function(event) {
 	c.ui.hideTurnoverButton();
 	c.ui.hidePlayerButtons();
 
-	var last_point = this.clicks.pop()
-	this.clicks = [last_point]
-	this.clickCount = 1;
+	var last_point = this.passes.pop()
+	this.passes = [last_point]
 	this.can_click = true;
 
 	this.draw();
@@ -214,10 +211,10 @@ UltimateCanvas.canvas.prototype.setDirArrow = function() {
 
 	context.moveTo(2*ez_w, field_h/2);
 	context.lineTo(4*ez_w, field_h/2);
-	
+
 	var attackersEndzone = this.getAttackersEndzone();
-	
-	if(attackersEndzone == UltimateCanvas.LEFT_EZ){	
+
+	if(attackersEndzone == UltimateCanvas.LEFT_EZ){
 		// Point Right
 		context.lineTo(4*ez_w - 30, field_h/2 - 30);
 		context.moveTo(4*ez_w, field_h/2);
@@ -268,21 +265,22 @@ UltimateCanvas.canvas.prototype.drawPoint = function(point){
 };
 
 UltimateCanvas.canvas.prototype.drawPasses = function(){
-	if(this.clickCount == 0){
+	if(this.passes.length == 0){
 		return null;
 	}
-	// Loop through the last 3 clicks and draw them
+	// TODO: This whole loop is retarded. Write it non-retarded
+	// Loop through the last 3 passes and draw them
 	for(i = 3; i >= 0; i--){ // Start 3 clicks ago
-		if(this.clickCount - i >= 0){
-			// We have a click
-			var curClick = this.clicks[this.clickCount-i];
-			if(this.clickCount - i - 1 >= 0){
-				// There's a click before the curClick
-				var prevClick = this.clicks[this.clickCount-i-1];
-				this.drawPass(prevClick, curClick);
+		if(this.passes.length - i >= 0){
+			// We have a pass
+			var curPass = this.passes.slice(this.passes.length-i-1, this.passes.length-i)[0];
+			if(this.passes.length - i - 1 >= 0){
+				// There's a pass before the curPass
+				var prevPass = this.passes.slice(this.passes.length-i-2, this.passes.length-i-2)[0];
+				this.drawPass(prevPass, curPass);
 			}else{
-				// This is the last/only click
-				this.drawPoint(curClick);
+				// This is the last/only pass
+				this.drawPoint(curPass);
 			}
 		}
 	}
@@ -314,15 +312,15 @@ UltimateCanvas.canvas.prototype.getAttackersEndzone = function(){
 /**
  * Determine if a pass click is in the endzone.
  */
-UltimateCanvas.canvas.prototype.passIsInEz = function(click, possession){
+UltimateCanvas.canvas.prototype.passIsInEz = function(pass, possession){
 	var attackersEndzone = this.getAttackersEndzone();
-	
+
 	if(attackersEndzone == UltimateCanvas.LEFT_EZ){
-		if(click.x >= this._options.endzone_width + this._options.inner_field_width){
+		if(pass.x >= this._options.endzone_width + this._options.inner_field_width){
 			return true;
 		}
 	}else{
-		if(click.x <= this._options.endzone_width){
+		if(pass.x <= this._options.endzone_width){
 			return true;
 		}
 	}
