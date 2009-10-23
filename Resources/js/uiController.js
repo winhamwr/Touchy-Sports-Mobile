@@ -95,7 +95,7 @@ WebUiController.ui.prototype.drawPass = function(from, to, last_pass) {
 		// We have a source point, draw a line between the points
 		var context = this._canvas.getContext("2d");
 
-		context.strokeStyle = "#ffffff";	// White
+		context.strokeStyle = "#003300";	// DARK GREEN
 		context.fillStyle = "#ffffff";	// White
 		context.beginPath();
 		context.moveTo(from.x,from.y);
