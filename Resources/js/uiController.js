@@ -90,6 +90,73 @@ WebUiController.ui.prototype.drawFieldVerticalLines = function() {
 	context.stroke();
 };
 
+WebUiController.ui.prototype.drawPass = function(from, to, last_pass) {
+	if(from){
+		// We have a source point, draw a line between the points
+		var context = this._canvas.getContext("2d");
+
+		context.strokeStyle = "#ffffff";	// White
+		context.fillStyle = "#ffffff";	// White
+		context.beginPath();
+		context.moveTo(from.x,from.y);
+		context.lineTo(to.x,to.y);
+		context.stroke();
+	}
+
+	var point_color = "#ffffff"; //White
+	if(last_pass){
+		var point_color = '#ff0000'; //Red
+	}
+	this.drawPoint(to, point_color);
+};
+
+/**
+ * Draws a single point on the field representing a pass.
+ */
+WebUiController.ui.prototype.drawPoint = function(point, color){
+	var context = this._canvas.getContext("2d");
+
+	if(color){
+		context.strokeStyle = color;
+		context.fillStyle = color;
+	} else {
+		context.strokeStyle = "#ffffff";	// White
+		context.fillStyle = "#ffffff";	// White
+	}
+
+
+	// Draw a circle at the point
+	context.beginPath();
+	var radius         = 7;                    // Arc radius
+	var startAngle     = 0;                     // Starting point on circle
+	var endAngle       = Math.PI+(Math.PI*2)/2; // End point on circle
+
+	context.arc(point.x, point.y, radius, startAngle, endAngle, false);
+	context.fill();
+	context.stroke();
+};
+
+WebUiController.ui.prototype.drawPasses = function(passes){
+	var ui = this;
+
+	if(passes.length == 0){
+		return null;
+	}
+	var DRAW_COUNT = 3 // The number of passes to draw
+
+	var index = -1 * DRAW_COUNT;
+	var passes_to_draw = passes.slice(index);
+	var from = null;
+	$.each(passes_to_draw, function(i, to){
+		var last_pass = false;
+		if(i + 1 == passes_to_draw.length){
+			last_pass = true;
+		}
+		ui.drawPass(from, to, last_pass);
+		from = to;
+	})
+};
+
 /*
  * Pops up an alert/message box displaying the given message.
  */
