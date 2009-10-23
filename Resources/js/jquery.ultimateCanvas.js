@@ -92,6 +92,10 @@ UltimateCanvas.canvas.prototype.bindEvents = function() {
 		c.handleTurnover();
 	});
 
+	var undo_b = $('#undo_b')
+	undo_b.click(function(event) {
+		c.handleUndo();
+	});
 };
 
 UltimateCanvas.canvas.prototype.initGame =	function() {
@@ -187,8 +191,23 @@ UltimateCanvas.canvas.prototype.handlePlayerClick = function(event) {
 	}
 };
 
+UltimateCanvas.canvas.prototype.handleUndo = function(event) {
+	if(this.can_click){
+		this.ui.alert("Nyerk. Can't do that yet. Quit messing up maybe?");
+		//Undo a player choice
+		//Don't have anything to do right now, cause we don't actually record players
+
+		//Need to undo the last score
+	} else{
+		//Undo a pass
+		this.passes.pop();
+		this.handlePlayerClick(); //Works just like they selected a player
+		this.draw();
+	}
+};
+
 //
-// DRAWING FUNCTIONS TO BE MOVED TO UI
+// DRAWING
 //
 
 UltimateCanvas.canvas.prototype.draw = function(){
@@ -200,6 +219,7 @@ UltimateCanvas.canvas.prototype.draw = function(){
 };
 
 
+//TODO: Move this to uiController.js
 UltimateCanvas.canvas.prototype.setDirArrow = function() {
 	var context = this._canvas.getContext("2d");
 
