@@ -1,0 +1,79 @@
+body
+{
+	font-family:sans-serif;
+	font-weight:bold;
+	text-align:left;
+}
+
+#benchedPlayers {
+	border-spacing:0;
+	position:absolute;
+	left: 0px;
+	top: 0px;
+	z-index:1000;
+	cursor:pointer;
+}
+#benchedPlayers td {
+	font-size:12px;
+	font-family:sans-serif;
+	cursor:pointer;
+	color:#000;
+	font-weight:bold;
+	height:31px;
+}
+#benchedPlayers th {
+	padding:0px;
+	font-size:12px;
+	font-family:sans-serif;
+	text-align:center;
+	cursor:default;
+	color:#fff;
+	background-color:#336699;
+	font-weight:bold;
+	width:280px;
+	height:39px;
+}
+.normal {
+	background-color:#fff;
+}
+.highlighted {
+	background-color:#00cc33;
+}
+.playerNumber {
+	padding-left:7px;
+	width:36px;
+	text-align:left;
+}
+.playerName {
+	padding:0px;
+	width:244px;
+	text-align:left;
+}
+.btn {
+	display:inline-block;
+	padding:5px 10px 6px;
+	color:#000;
+	background-color:#fff;
+	text-decoration:none;
+	font-weight:bold;
+	line-height:1;
+	cursor:pointer;
+	white-space:normal;
+	width:64px;
+	height:44px;
+	font-size:x-small;
+}
+.cntr {
+	padding-top:7px;
+	position:absolute;
+	margin-left:72px;
+	background-color:#336699;
+}
+.btnBar {
+	position:absolute;
+	width:300px;
+	height:58px;
+	top:200px;
+	left:0px;
+	background-color:#336699;
+}
