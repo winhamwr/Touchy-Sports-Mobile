@@ -7,7 +7,7 @@ $(document).ready(function() {
 	// data for tableview
 	var data = [
 		{title:'Test Field View', hasChild:true},
-		{title:'Test Players View', hasChild:true},
+		{title:'Test Substitution View', hasChild:true},
 		{title:'About', hasChild:true}
 	];
 
@@ -36,8 +36,11 @@ $(document).ready(function() {
 			case 1:
 			{
 				var win = Titanium.UI.createWindow({
-					url:'players.html',
-					title:'Players View Test'
+					url:'substitution.html',
+					name:'substitution',
+					backgroundColor:'#ffffff',
+					fullscreen:false,
+					orientation:'landscape'
 				});
 				win.open({animated:true});
 				break;
@@ -46,7 +49,10 @@ $(document).ready(function() {
 			{
 				var win = Titanium.UI.createWindow({
 					url:'about.html',
-					title:'About'
+					title:'About',
+					name:'about',
+					fullscreen:false,
+					orientation:'landscape'
 				});
 				win.setBarColor('#000000');
 				win.open({animated:true});

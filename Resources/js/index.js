@@ -1,4 +1,6 @@
 $(document).ready(function() {
-	$('body').append('<a href="field.html">Test Field View</a></br><a href="players.html">'+
-	'Test Players View</a></br><a href="substitute.html">Test Sub</a></br><a href="about.html">About</a>');
+	$('div').append('<h1>TouchySports Mobile</br></h1>'+
+					'<a href="field.html">Test Field View</a></br>'+
+					'<a href="substitution.html">Test Substitution</a></br>'+
+					'<a href="about.html">About</a>');
 });
