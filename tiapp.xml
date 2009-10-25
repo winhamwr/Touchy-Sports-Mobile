@@ -8,8 +8,8 @@
 	<statusbar-style>opaque</statusbar-style>
     <windows>
         <window>
-            <id>field</id>
-            <url>field.html</url>
+            <id>initial</id>
+            <url>index.html</url>
             <backgroundColor>#3300CC</backgroundColor>
 			<icon>ti://featured</icon>
 			<barColor>#000</barColor>
