@@ -77,9 +77,17 @@ UltimateCanvas.canvas.prototype.init = function() {
  */
 UltimateCanvas.canvas.prototype.bindEvents = function() {
 	var c = this;
-
+        
 	this._elem.click(function(event) {
-		c.handlePass(event);
+            if(c.chooseAwayPlayer==0){
+                if(c.possession==UltimateCanvas.HOME_TEAM){
+                    c.handlePass(event);
+                } else{
+                    c.handleAwayPass(event);
+                }
+            } else{
+                c.handlePass(event);
+            }
 	});
 
 	var player_bar = $('#player-bar');
@@ -105,6 +113,9 @@ UltimateCanvas.canvas.prototype.initGame =	function() {
 
 	this.home_score = 0;
 	this.away_score = 0;
+
+        // Setting used to determine whether or not to choose players for away team, 0=don't choose player, 1=choose player
+        this.chooseAwayPlayer = 0;
 
 	this.initPoint();
 };
@@ -149,6 +160,35 @@ UltimateCanvas.canvas.prototype.handlePass = function(event) {
 	}
 
 	c.getPlayer();
+	c.draw();
+
+};
+
+/**
+ * Handle a field click for the away team if user doesn't want to choose a player to indicate a pass.
+ */
+UltimateCanvas.canvas.prototype.handleAwayPass = function(event) {
+	var c = this;
+
+//        // If clicking is disabled, don't do anything
+//        if(c.can_click == false){
+//            this.ui.alert("Whoa! Hold your horses. Who caught that last pass?");
+//            return
+//        }
+
+//	c.can_click = false; // No more clicks until we select the player
+
+	var new_pass = {
+		"x":event.clientX,
+		"y":event.clientY
+	};
+	c.passes.push(new_pass);
+
+	if(c.passIsInEz(new_pass, c.possession)){
+		c.handleEzCatch();
+	}
+
+//	c.getPlayer();
 	c.draw();
 
 };
