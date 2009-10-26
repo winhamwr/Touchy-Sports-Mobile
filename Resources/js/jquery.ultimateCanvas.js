@@ -77,7 +77,7 @@ UltimateCanvas.canvas.prototype.init = function() {
  */
 UltimateCanvas.canvas.prototype.bindEvents = function() {
 	var c = this;
-        
+
 	this._elem.click(function(event) {
                 c.handlePass(event);
 	});
@@ -105,14 +105,37 @@ UltimateCanvas.canvas.prototype.initGame =	function() {
 
 	this.home_score = 0;
 	this.away_score = 0;
+	this.points = [];
 
         // Setting used to determine whether or not to choose players for away team, 0=don't choose player, 1=choose player
-        this.choose_away_player = 0;
+        this.choose_away_player = false;
 
 	this.initPoint();
 };
 
+/**
+ * Store info about the current point if there is one, and prepare a new one.
+ */
 UltimateCanvas.canvas.prototype.initPoint = function() {
+	//Handle the last point
+  	if(this.passes && this.passes.length >= 0){
+		var point = {}
+		point.passes = this.passes;
+		point.home_score = this.home_score;
+		point.away_score = this.away_score;
+		// Determine who just scored and subtract that point. Score is the score at the start of the point
+		if(this.possession == UltimateCanvas.HOME_TEAM){
+			//away scored
+			point.away_score -= 1;
+		} else{
+			//home scored
+			point.home_score -= 1;
+		}
+
+		this.points.push(point);
+	}
+
+	//Init the new point
 	this.passes = [];
 	this.can_click = true;
 	this.scoring_pass = false;
@@ -133,7 +156,7 @@ UltimateCanvas.canvas.prototype.initPoint = function() {
 UltimateCanvas.canvas.prototype.handlePass = function(event) {
 	var c = this;
 
-        if(c.choose_away_player==0){
+        if(!c.choose_away_player){
                 if(c.possession==UltimateCanvas.HOME_TEAM){
                         c.handleHomePass(event);
                 } else{
@@ -237,17 +260,58 @@ UltimateCanvas.canvas.prototype.handlePlayerClick = function(event) {
 
 UltimateCanvas.canvas.prototype.handleUndo = function(event) {
 	if(this.can_click){
-		this.ui.alert("Nyerk. Can't do that yet. Quit messing up maybe?");
 		//Undo a player choice
-		//Don't have anything to do right now, cause we don't actually record players
+		if(this.passes.length == 0){
+			//Need to undo the last score
+			if(this.home_score + this.away_score == 0){
+				//Trying to undo the first pass. Weird?
+				this.ui.alert("Undoing nothing is kind of a metaphysical thing to try. Whoaaaa. Dude.");
+				return null;
+			}
 
-		//Need to undo the last score
-	} else{
-		//Undo a pass
-		this.passes.pop();
-		this.handlePlayerClick(); //Works just like they selected a player
-		this.draw();
+			var point = this.points.pop();
+
+			// Switch the endzones
+			var a_ez = this.away_endzone;
+			this.away_endzone = this.home_endzone;
+			this.home_endzone = a_ez;
+
+			// Switch posession
+			if(this.possession == UltimateCanvas.HOME_TEAM){
+				this.possession = UltimateCanvas.AWAY_TEAM;
+			} else{
+				this.possession = UltimateCanvas.HOME_TEAM;
+			}
+
+			this.passes = point.passes;
+			this.home_score = point.home_score;
+			this.away_score = point.away_score;
+			this.scoring_pass = true;
+
+		}
+
+		if(this.possession == UltimateCanvas.AWAY_TEAM && !this.choose_away_player){
+			this.can_click = true;
+			// Now this is just like undoing a normal pass, because we don't care about players
+		} else{
+			this.can_click = false;
+			this.getPlayer();
+			this.draw();
+			return null;
+		}
+
+		//Undo the player selection for the last pass
+		//Don't have much to do right now, cause we don't actually record players
 	}
+
+	//Undo a pass
+	this.passes.pop();
+
+	//If we're undoing from a score, it's not a score pass anyore
+	this.scoring_pass = false;
+
+	this.handlePlayerClick(); //Works just like they selected a player
+	this.draw();
 };
 
 //
@@ -297,7 +361,6 @@ UltimateCanvas.canvas.prototype.setDirArrow = function() {
 UltimateCanvas.canvas.prototype.drawPasses = function(){
 	this.ui.drawPasses(this.passes);
 }
-
 
 UltimateCanvas.canvas.prototype.getPlayer = function() {
 	$('#player-bar > div > div').removeClass('inactive');
