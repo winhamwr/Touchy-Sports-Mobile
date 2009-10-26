@@ -369,6 +369,8 @@ UltimateCanvas.canvas.prototype.endPoint = function(possession){
 	this.away_endzone = this.home_endzone;
 	this.home_endzone = a_ez;
 
+        this.ui.hideTurnoverButton();
+
 	// UiController
 	this.ui.alert("omg. You scored!. You've got "+score+" points!");
 	if(score >= this._options.score_limit){
