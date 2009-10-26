@@ -170,14 +170,6 @@ UltimateCanvas.canvas.prototype.handlePass = function(event) {
 UltimateCanvas.canvas.prototype.handleAwayPass = function(event) {
 	var c = this;
 
-//        // If clicking is disabled, don't do anything
-//        if(c.can_click == false){
-//            this.ui.alert("Whoa! Hold your horses. Who caught that last pass?");
-//            return
-//        }
-
-//	c.can_click = false; // No more clicks until we select the player
-
 	var new_pass = {
 		"x":event.clientX,
 		"y":event.clientY
@@ -188,9 +180,13 @@ UltimateCanvas.canvas.prototype.handleAwayPass = function(event) {
 		c.handleEzCatch();
 	}
 
-//	c.getPlayer();
-	c.draw();
+        c.draw();
 
+	if(this.scoring_pass){
+		this.endPoint(this.possession);
+	}
+ 
+        c.ui.showTurnoverButton();
 };
 
 UltimateCanvas.canvas.prototype.handleTurnover = function(event) {
