@@ -244,9 +244,6 @@ UltimateCanvas.canvas.prototype.handleTurnover = function(event) {
 };
 
 UltimateCanvas.canvas.prototype.handlePlayerClick = function(event) {
-	$('#player-bar > div > div').removeClass('active');
-	$('#player-bar > div > div').addClass('inactive');
-
 	this.ui.hideTurnoverButton();
 	this.ui.hidePlayerButtons();
 
@@ -320,54 +317,32 @@ UltimateCanvas.canvas.prototype.handleUndo = function(event) {
 
 UltimateCanvas.canvas.prototype.draw = function(){
 	this.ui.draw();
-	this.setDirArrow();
+	this.displayPossessionIndicator();
 	this.drawPasses();
 	this.ui.displayScore(UltimateCanvas.HOME_TEAM, this.home_endzone, this.home_score);
 	this.ui.displayScore(UltimateCanvas.AWAY_TEAM, this.away_endzone, this.away_score);
 };
 
 
-//TODO: Move this to uiController.js
-UltimateCanvas.canvas.prototype.setDirArrow = function() {
-	var context = this._canvas.getContext("2d");
 
-	context.strokeStyle = "#000000";
-	context.beginPath();
-	// Draw the cross-field line
-	var ez_w = this._options.endzone_width;
-	var field_h = this._options.field_height;
-
-	context.moveTo(2*ez_w, field_h/2);
-	context.lineTo(4*ez_w, field_h/2);
-
-	var attackersEndzone = this.getAttackersEndzone();
-
-	if(attackersEndzone == UltimateCanvas.LEFT_EZ){
-		// Point Right
-		context.lineTo(4*ez_w - 30, field_h/2 - 30);
-		context.moveTo(4*ez_w, field_h/2);
-		context.lineTo(4*ez_w - 30, field_h/2 + 30);
-	} else {
-		// Point Left
-		context.moveTo(2*ez_w, field_h/2);
-		context.lineTo(2*ez_w + 30, field_h/2 - 30);
-		context.moveTo(2*ez_w, field_h/2);
-		context.lineTo(2*ez_w + 30, field_h/2 + 30);
-	}
-
-	context.stroke();
-};
 
 UltimateCanvas.canvas.prototype.drawPasses = function(){
 	this.ui.drawPasses(this.passes);
 }
 
 UltimateCanvas.canvas.prototype.getPlayer = function() {
-	$('#player-bar > div > div').removeClass('inactive');
-	$('#player-bar > div > div').addClass('active');
-
 	this.ui.showTurnoverButton();
 	this.ui.showPlayerButtons();
+};
+
+UltimateCanvas.canvas.prototype.displayPossessionIndicator = function() {
+	var attackersEndzone = this.getAttackersEndzone();
+
+	if(attackersEndzone == UltimateCanvas.LEFT_EZ){
+		this.ui.displayPossessionIndicator('right');
+	} else {
+		this.ui.displayPossessionIndicator('left');
+	}
 };
 
 /**

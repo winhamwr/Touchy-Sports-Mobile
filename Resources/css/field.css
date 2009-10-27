@@ -97,11 +97,11 @@ h1,h2
 	font-size: x-small;
 }
 
-#player-bar > div > div.inactive > button {
+/**#player-bar > div.inactive > div > button {
 	background: #BBBBBB url(/images/alert-overlay.png) repeat-x;
-}
+}*/
 
-#player-bar > div > div.active > button {
+#player-bar > div > div > button {
 	background: #222 url(/images/alert-overlay.png) repeat-x;
 }
 

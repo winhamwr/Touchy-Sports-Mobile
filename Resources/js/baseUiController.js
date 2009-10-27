@@ -203,6 +203,37 @@ BaseUiController.ui.prototype.displayScore = function(team, ez, score) {
 	}
 };
 
+/**
+ * Display the possession indicator on the field, which lets the user know which
+ * team has the ball and in what direction they're going.
+ */
+BaseUiController.ui.prototype.displayPossessionIndicator = function(direction) {
+	var context = this._canvas.getContext("2d");
+
+	context.strokeStyle = "#000000";
+	context.beginPath();
+	// Draw the cross-field line
+	var ez_w = this._f.ez_w;
+	var field_h = this._f.h;
+
+	context.moveTo(2*ez_w, field_h/2);
+	context.lineTo(4*ez_w, field_h/2);
+
+	if(direction == 'right'){
+		// Point Right
+		context.lineTo(4*ez_w - 30, field_h/2 - 30);
+		context.moveTo(4*ez_w, field_h/2);
+		context.lineTo(4*ez_w - 30, field_h/2 + 30);
+	} else {
+		// Point Left
+		context.moveTo(2*ez_w, field_h/2);
+		context.lineTo(2*ez_w + 30, field_h/2 - 30);
+		context.moveTo(2*ez_w, field_h/2);
+		context.lineTo(2*ez_w + 30, field_h/2 + 30);
+	}
+
+	context.stroke();
+};
 
 /*
  * Display the undo button.
@@ -245,5 +276,3 @@ BaseUiController.ui.prototype.showPlayerButtons = function() {
 BaseUiController.ui.prototype.hidePlayerButtons = function() {
 	$('#player-bar').hide();
 };
-
-ui_controller = BaseUiController.ui;
