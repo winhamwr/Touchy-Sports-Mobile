@@ -1,2 +1,5 @@
 build/android/*
 build/iphone/*
+build/android/lib/*
+build/android/res/drawable/*
+build/android/src/com/gts/gts/*
