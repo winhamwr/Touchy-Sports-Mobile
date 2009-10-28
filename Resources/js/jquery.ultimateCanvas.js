@@ -65,11 +65,19 @@ UltimateCanvas.canvas.prototype.init = function() {
 		hash_w	: this._options.hash_width, // Spacing of vertical hashes on the inner field
 		hash_h	: this._options.hash_height // Spacing of horizontal hashes on the field
 	};
+	this.unique_id = 1;
+
 	this.ui = new this._options.ui_controller(this._canvas, field, {});
+	this.db = new this._options.db_controller(this.unique_id);
 
 	this.bindEvents();
 
-	this.initGame();
+	if(this.db.gameExists()){
+		this.db.loadGame(this);
+		this.draw();
+	}else{
+		this.initGame();
+	}
 };
 
 /**
@@ -107,8 +115,8 @@ UltimateCanvas.canvas.prototype.initGame =	function() {
 	this.away_score = 0;
 	this.points = [];
 
-        // Setting used to determine whether or not to choose players for away team, 0=don't choose player, 1=choose player
-        this.choose_away_player = false;
+	// Setting used to determine whether or not to choose players for away team, 0=don't choose player, 1=choose player
+	this.choose_away_player = false;
 
 	this.initPoint();
 };
@@ -144,6 +152,7 @@ UltimateCanvas.canvas.prototype.initPoint = function() {
 	this.ui.hidePlayerButtons();
 
 	this.draw();
+	this.db.saveGame(this);
 };
 
 //
@@ -321,6 +330,7 @@ UltimateCanvas.canvas.prototype.draw = function(){
 	this.drawPasses();
 	this.ui.displayScore(UltimateCanvas.HOME_TEAM, this.home_endzone, this.home_score);
 	this.ui.displayScore(UltimateCanvas.AWAY_TEAM, this.away_endzone, this.away_score);
+
 };
 
 
