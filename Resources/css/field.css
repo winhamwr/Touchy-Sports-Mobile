@@ -109,7 +109,6 @@ h1,h2
 	position: relative;
 	left: 0px;
 	bottom: 25px;
-
 }
 
 #menu-bar > div {
@@ -123,4 +122,10 @@ h1,h2
 #turnover_b {
 	position: relative;
 	left: 322px;
+}
+#sub_b {
+	position:relative;
+	display:inline;
+	left:0px;
+	bottom:70px;
 }

@@ -10,13 +10,13 @@
 	height:31px;
 }
 #benchedPlayers th {
-	padding:9px 0px 0px 0px;
-	font-size:16px;
+	padding:0px;
+	font-size:12px;
 	font-family:sans-serif;
 	text-align:center;
 	cursor:default;
-	color:#1D5987;				/* was #FFFFFF */
-	background-color:#DDECF7;	/* was #336699 */
+	color:#FFFFFF;				/* was #FFFFFF */
+	background-color:#70B42E;	/* was #336699 */
 	font-weight:bold;
 	width:300px;
 	height:39px;
@@ -27,7 +27,7 @@
 	height:161px;
 }
 .normal {
-	background-color:#fff;
+	background-color:#F5F3E5;	/* was #FFFFFF */
 }
 .highlighted {
 	background-color:#FBEC88;	/* was #00cc33 */
