@@ -11,6 +11,12 @@ BaseDbController.prototype.init = function(unique_id) {
 	this.unique_id = unique_id;
 };
 
+if(typeof(localStorage) == 'undefined'){
+	localStorage = {};
+	localStorage.setItem = function(foo, bar){};
+	localStorage.getItem = function(foo, bar){};
+}
+
 BaseDbController.prototype.saveGame = function(ultimate_canvas) {
 	var savable_keys = ['possession', 'home_endzone', 'away_endzone', 'home_score', 'away_score', 'points', 'passes']
 
