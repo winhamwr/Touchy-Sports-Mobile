@@ -18,7 +18,7 @@ WebUiController.ui.prototype.contructor = new WebUiController.ui();
  * Pops up an alert/message box displaying the given message.
  */
 WebUiController.ui.prototype.alert = function(msg) {
-	alert(msg);
+//	alert(msg);
 };
 
 /*
