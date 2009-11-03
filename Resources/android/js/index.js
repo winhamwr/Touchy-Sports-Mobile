@@ -26,7 +26,7 @@ $(document).ready(function() {
 				var win = Titanium.UI.createWindow({
 					url:'field.html',
 					name:'field',
-					backgroundColor:'#3300CC',
+					backgroundColor:'#000000',
 					fullscreen:true,
 					orientation:'landscape'
 				});

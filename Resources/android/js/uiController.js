@@ -19,6 +19,10 @@ WebUiController.ui.prototype.contructor = new WebUiController.ui();
  */
 WebUiController.ui.prototype.alert = function(msg) {
 //	alert(msg);
+        var myalert = Titanium.UI.createAlertDialog();
+        myalert.setMessage(msg);
+        myalert.setButtonNames(['OK']);
+        myalert.show();
 };
 
 /*
