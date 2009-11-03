@@ -1,0 +1,199 @@
+<mockup version="1.0" skin="sketch" measuredW="1715" measuredH="952" mockupW="1670" mockupH="931">
+  <controls>
+    <control controlID="131" controlTypeID="com.balsamiq.mockups::Accordion" x="1280" y="700" w="330" h="113" measuredW="159" measuredH="218" zOrder="17" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Ruckus%20%7C%207%20Players%0ARodenbeck%20Rockets%20%7C%204%20Players%0ACalamity%20Jane%20%7C%200%20Players%0ACreate%20New%20Team</text>
+      </controlProperties>
+    </control>
+    <control controlID="132" controlTypeID="com.balsamiq.mockups::VerticalScrollBar" x="1604" y="700" w="-1" h="166" measuredW="16" measuredH="100" zOrder="18" locked="false" isInGroup="-1"/>
+    <control controlID="133" controlTypeID="com.balsamiq.mockups::iPhone" x="649" y="660" w="-1" h="-1" measuredW="510" measuredH="282" zOrder="19" locked="false" isInGroup="-1">
+      <controlProperties>
+        <orientation>landscape</orientation>
+      </controlProperties>
+    </control>
+    <control controlID="134" controlTypeID="com.balsamiq.mockups::Button" x="793" y="880" w="-1" h="-1" measuredW="106" measuredH="28" zOrder="20" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Manage%20Team</text>
+      </controlProperties>
+    </control>
+    <control controlID="135" controlTypeID="com.balsamiq.mockups::Button" x="907" y="880" w="-1" h="-1" measuredW="95" measuredH="28" zOrder="21" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Start%20Game</text>
+      </controlProperties>
+    </control>
+    <control controlID="136" controlTypeID="com.balsamiq.mockups::Accordion" x="734" y="705" w="330" h="166" measuredW="218" measuredH="288" zOrder="22" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Ruckus%20vs%20Rodenbeck%20Rockets%20in%20progress%0ARuckus%20vs%20Calamity%20Jane%20today%0ARuckus%20vs%20Baltimore%20Buckets%202%20weeks%20ago%0ARuckus%20vs%20Rodenbeck%20Rockets%204%20weeks%20ago%0ARuckus%20vs%20Calamity%20Jane%201%20year%20ago%0ARuckus%20vs%20Baltimore%20Buckets%202%20years%20ago</text>
+      </controlProperties>
+    </control>
+    <control controlID="137" controlTypeID="com.balsamiq.mockups::VerticalScrollBar" x="1058" y="705" w="-1" h="166" measuredW="16" measuredH="100" zOrder="23" locked="false" isInGroup="-1"/>
+    <control controlID="138" controlTypeID="com.balsamiq.mockups::Arrow" x="259" y="433" w="377" h="292" measuredW="150" measuredH="100" zOrder="24" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text/>
+        <curvature>-1</curvature>
+        <direction>top</direction>
+        <leftArrow>false</leftArrow>
+      </controlProperties>
+    </control>
+    <control controlID="140" controlTypeID="com.balsamiq.mockups::StickyNote" x="58" y="433" w="163" h="77" measuredW="109" measuredH="123" zOrder="25" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>welcome.html</text>
+      </controlProperties>
+    </control>
+    <control controlID="141" controlTypeID="com.balsamiq.mockups::StickyNote" x="879" y="11" w="146" h="77" measuredW="109" measuredH="123" zOrder="26" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>signup.html</text>
+      </controlProperties>
+    </control>
+    <control controlID="142" controlTypeID="com.balsamiq.mockups::StickyNote" x="560" y="532" w="147" h="94" measuredW="109" measuredH="123" zOrder="27" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>homepage.html%0A%28new%20user%29</text>
+      </controlProperties>
+    </control>
+    <control controlID="143" controlTypeID="com.balsamiq.mockups::StickyNote" x="575" y="843" w="146" h="77" measuredW="109" measuredH="123" zOrder="28" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>homepage.html</text>
+      </controlProperties>
+    </control>
+    <control controlID="146" controlTypeID="com.balsamiq.mockups::MultilineButton" x="907" y="529" w="132" h="46" measuredW="123" measuredH="58" zOrder="29" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Create%20Team</text>
+      </controlProperties>
+    </control>
+    <control controlID="148" controlTypeID="com.balsamiq.mockups::Tooltip" x="755" y="409" w="187" h="120" measuredW="645" measuredH="33.9" zOrder="30" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Welcome%20to%20TouchySports%21%20Before%20you%20can%20get%20started%20recording%20stats%20you%20need%20to%20create%20your%20team%21</text>
+        <tooltipDirection>SE</tooltipDirection>
+      </controlProperties>
+    </control>
+    <control controlID="149" controlTypeID="com.balsamiq.mockups::Button" x="1552" y="875" w="-1" h="-1" measuredW="55" measuredH="28" zOrder="31" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Home</text>
+      </controlProperties>
+    </control>
+    <control controlID="150" controlTypeID="com.balsamiq.mockups::HRule" x="1277" y="850" w="341" h="-1" measuredW="100" measuredH="5" zOrder="32" locked="false" isInGroup="-1"/>
+    <control controlID="87" controlTypeID="com.balsamiq.mockups::iPhone" x="35" y="202" w="-1" h="-1" measuredW="510" measuredH="282" zOrder="0" locked="false" isInGroup="-1">
+      <controlProperties>
+        <orientation>landscape</orientation>
+      </controlProperties>
+    </control>
+    <control controlID="88" controlTypeID="com.balsamiq.mockups::iPhone" x="560" y="35" w="-1" h="-1" measuredW="510" measuredH="282" zOrder="1" locked="false" isInGroup="-1">
+      <controlProperties>
+        <orientation>landscape</orientation>
+      </controlProperties>
+    </control>
+    <control controlID="89" controlTypeID="com.balsamiq.mockups::iPhone" x="1193" y="353" w="-1" h="-1" measuredW="510" measuredH="282" zOrder="2" locked="false" isInGroup="-1">
+      <controlProperties>
+        <orientation>landscape</orientation>
+      </controlProperties>
+    </control>
+    <control controlID="154" controlTypeID="com.balsamiq.mockups::Arrow" x="1449" y="639" w="25" h="27" measuredW="150" measuredH="100" zOrder="34" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text/>
+        <curvature>-1</curvature>
+        <direction>bottom</direction>
+        <leftArrow>false</leftArrow>
+      </controlProperties>
+    </control>
+    <control controlID="91" controlTypeID="com.balsamiq.mockups::iPhone" x="647" y="353" w="-1" h="-1" measuredW="510" measuredH="282" zOrder="3" locked="false" isInGroup="-1">
+      <controlProperties>
+        <orientation>landscape</orientation>
+      </controlProperties>
+    </control>
+    <control controlID="156" controlTypeID="com.balsamiq.mockups::StickyNote" x="1537" y="635" w="146" h="77" measuredW="109" measuredH="123" zOrder="36" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>team-list.html</text>
+      </controlProperties>
+    </control>
+    <control controlID="152" controlTypeID="com.balsamiq.mockups::Arrow" x="893" y="737" w="289" h="149" measuredW="150" measuredH="100" zOrder="33" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text/>
+        <curvature>1</curvature>
+        <direction>bottom</direction>
+        <leftArrow>false</leftArrow>
+      </controlProperties>
+    </control>
+    <control controlID="155" controlTypeID="com.balsamiq.mockups::StickyNote" x="1506" y="321" w="146" h="77" measuredW="109" measuredH="123" zOrder="35" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>team.html</text>
+      </controlProperties>
+    </control>
+    <control controlID="100" controlTypeID="com.balsamiq.mockups::Image" x="131" y="261" w="318" h="77" measuredW="141" measuredH="144" zOrder="4" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text/>
+      </controlProperties>
+    </control>
+    <control controlID="102" controlTypeID="com.balsamiq.mockups::Button" x="215" y="411" w="-1" h="-1" measuredW="62" measuredH="28" zOrder="5" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Log%20In</text>
+      </controlProperties>
+    </control>
+    <control controlID="103" controlTypeID="com.balsamiq.mockups::TextInput" x="191" y="347" w="195" h="-1" measuredW="44" measuredH="27" zOrder="6" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>email</text>
+        <italic>true</italic>
+      </controlProperties>
+    </control>
+    <control controlID="105" controlTypeID="com.balsamiq.mockups::Button" x="281" y="411" w="-1" h="-1" measuredW="70" measuredH="28" zOrder="7" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Sign%20Up</text>
+      </controlProperties>
+    </control>
+    <control controlID="106" controlTypeID="com.balsamiq.mockups::TextInput" x="191" y="376" w="195" h="-1" measuredW="67" measuredH="27" zOrder="8" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>password</text>
+        <italic>true</italic>
+      </controlProperties>
+    </control>
+    <control controlID="107" controlTypeID="com.balsamiq.mockups::TextInput" x="719" y="160" w="195" h="-1" measuredW="44" measuredH="27" zOrder="9" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>email</text>
+        <italic>true</italic>
+      </controlProperties>
+    </control>
+    <control controlID="108" controlTypeID="com.balsamiq.mockups::TextInput" x="719" y="189" w="195" h="-1" measuredW="67" measuredH="27" zOrder="10" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>password</text>
+        <italic>true</italic>
+      </controlProperties>
+    </control>
+    <control controlID="109" controlTypeID="com.balsamiq.mockups::Title" x="744" y="94" w="-1" h="-1" measuredW="143" measuredH="56" zOrder="11" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Sign%20Up</text>
+      </controlProperties>
+    </control>
+    <control controlID="110" controlTypeID="com.balsamiq.mockups::Button" x="781" y="231" w="-1" h="-1" measuredW="70" measuredH="28" zOrder="12" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Sign%20Up</text>
+      </controlProperties>
+    </control>
+    <control controlID="124" controlTypeID="com.balsamiq.mockups::Arrow" x="345" y="324" w="270" h="108" measuredW="150" measuredH="100" zOrder="13" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text/>
+        <curvature>-1</curvature>
+        <direction>bottom</direction>
+        <leftArrow>false</leftArrow>
+      </controlProperties>
+    </control>
+    <control controlID="125" controlTypeID="com.balsamiq.mockups::Arrow" x="845" y="246" w="137" h="101" measuredW="150" measuredH="100" zOrder="14" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text/>
+        <direction>top</direction>
+        <leftArrow>false</leftArrow>
+      </controlProperties>
+    </control>
+    <control controlID="126" controlTypeID="com.balsamiq.mockups::Arrow" x="1025" y="532" w="159" h="19" measuredW="150" measuredH="100" zOrder="15" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text/>
+        <curvature>-1</curvature>
+        <direction>bottom</direction>
+        <leftArrow>false</leftArrow>
+      </controlProperties>
+    </control>
+    <control controlID="127" controlTypeID="com.balsamiq.mockups::iPhone" x="1195" y="657" w="-1" h="-1" measuredW="510" measuredH="282" zOrder="16" locked="false" isInGroup="-1">
+      <controlProperties>
+        <orientation>landscape</orientation>
+      </controlProperties>
+    </control>
+  </controls>
+</mockup>
