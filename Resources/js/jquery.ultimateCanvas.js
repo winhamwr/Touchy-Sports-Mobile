@@ -29,9 +29,9 @@ $.extend(UltimateCanvas, {
 $.fn.ultimateCanvas = function(options) {
 
 	defaults = {
-		total_width			: 474,
-		field_height		: 276,
-		endzone_width		: 79,
+		total_width			: 480,
+		field_height		: 320,
+		endzone_width		: 80,
 		score_limit			: 7
 	};
 
