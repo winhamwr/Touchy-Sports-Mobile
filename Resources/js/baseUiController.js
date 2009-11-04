@@ -14,6 +14,10 @@ $.extend(BaseUiController, {
 BaseUiController.ui.prototype.init = function() {
 };
 
+BaseUiController.ui.prototype.bindEvents = function() {
+	alert("BaseUiController.ui.prototype.bindEvents NOT IMPLEMENTED");
+}
+
 BaseUiController.ui.prototype.draw = function(){
 	this.drawField();
 };
@@ -161,7 +165,7 @@ BaseUiController.ui.prototype.drawPasses = function(passes){
  * Pops up an alert/message box displaying the given message.
  */
 BaseUiController.ui.prototype.alert = function(msg) {
-	alert("NOT IMPLEMENTED");
+	alert("BaseUiController.ui.prototype.alert NOT IMPLEMENTED");
 };
 
 /*

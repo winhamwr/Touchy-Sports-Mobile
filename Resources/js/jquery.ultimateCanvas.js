@@ -70,6 +70,8 @@ UltimateCanvas.canvas.prototype.init = function() {
 	this.ui = new this._options.ui_controller(this._canvas, field, {});
 	this.db = new this._options.db_controller(this.unique_id);
 
+	this.ui.bindEvents(this);
+
 	if(this.db.gameExists()){
 		this.db.loadGame(this);
 		this.draw();

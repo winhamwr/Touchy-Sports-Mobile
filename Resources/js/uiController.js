@@ -8,12 +8,40 @@ $.extend(WebUiController, {
 		this._f = field; // The field dimensions
 
 		this.init();
-                this.bindEvents();
 	}
 });
 
 WebUiController.ui.prototype = new BaseUiController.ui();
 WebUiController.ui.prototype.contructor = new WebUiController.ui();
+
+WebUiController.ui.prototype.init = function() {
+    $('#player-bar > div > div').append('<button>Fred Sanford</button>');
+
+    $('#undo_b').append('<button>Undo</button>');
+    $('#turnover_b').append('<button>Turnover</button>');
+	$('#sub_b').append('<button onClick="showSub()">Sub</button>');
+};
+
+WebUiController.ui.prototype.bindEvents = function(ultimate_canvas) {
+	ultimate_canvas._elem.click(function(event) {
+		ultimate_canvas.handlePass(event);
+	});
+
+	var player_bar = $('#player-bar');
+	player_bar.click(function(event) {
+		ultimate_canvas.handlePlayerClick(event);
+	});
+
+	var turnover_b = $('#turnover_b')
+	turnover_b.click(function(event) {
+		ultimate_canvas.handleTurnover();
+	});
+
+	var undo_b = $('#undo_b')
+	undo_b.click(function(event) {
+		ultimate_canvas.handleUndo();
+	});
+}
 
 /*
  * Pops up an alert/message box displaying the given message.
@@ -61,39 +89,7 @@ WebUiController.ui.prototype.displayScore = function(team, ez, score) {
 	}
 };
 
-WebUiController.ui.prototype.init = function() {
-    $('#player-bar > div > div').append('<button>Fred Sanford</button>');
 
-    $('#undo_b').append('<button>Undo</button>');
-    $('#turnover_b').append('<button>Turnover</button>');
-	$('#sub_b').append('<button onClick="showSub()">Sub</button>');
-};
-
-/**
- * Bind the event listeners on the UI controls
- */
-WebUiController.ui.prototype.bindEvents = function() {
-	var c = this;
-
-	this._elem.click(function(event) {
-                c.handlePass(event);
-	});
-
-	var player_bar = $('#player-bar');
-	player_bar.click(function(event) {
-		c.handlePlayerClick(event);
-	});
-
-	var turnover_b = $('#turnover_b')
-	turnover_b.click(function(event) {
-		c.handleTurnover();
-	});
-
-	var undo_b = $('#undo_b')
-	undo_b.click(function(event) {
-		c.handleUndo();
-	});
-};
 
 
 ui_controller = WebUiController.ui;

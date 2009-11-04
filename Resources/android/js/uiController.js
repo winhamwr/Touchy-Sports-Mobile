@@ -8,7 +8,7 @@ $.extend(AndroidUiController, {
 		this._f = field; // The field dimensions
 
 		this.init();
-                this.bindEvents();
+		this.bindEvents();
 	}
 });
 
@@ -64,31 +64,6 @@ AndroidUiController.ui.prototype.displayScore = function(team, ez, score) {
 	}
 };
 
-/**
- * Bind the event listeners on the UI controls
- */
-AndroidUiController.ui.prototype.bindEvents = function() {
-	var c = this;
-
-	this._elem.click(function(event) {
-                c.handlePass(event);
-	});
-
-	var player_bar = $('#player-bar');
-	player_bar.click(function(event) {
-		c.handlePlayerClick(event);
-	});
-
-	var turnover_b = $('#turnover_b')
-	turnover_b.click(function(event) {
-		c.handleTurnover();
-	});
-
-	var undo_b = $('#undo_b')
-	undo_b.click(function(event) {
-		c.handleUndo();
-	});
-};
 
 AndroidUiController.ui.prototype.init = function() {
     $('#player-bar > div > div').append('<button>Fred Sanford</button>');
