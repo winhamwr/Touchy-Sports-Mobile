@@ -8,6 +8,7 @@ $.extend(WebUiController, {
 		this._f = field; // The field dimensions
 
 		this.init();
+                this.bindEvents();
 	}
 });
 
@@ -66,6 +67,32 @@ WebUiController.ui.prototype.init = function() {
     $('#undo_b').append('<button>Undo</button>');
     $('#turnover_b').append('<button>Turnover</button>');
 	$('#sub_b').append('<button onClick="showSub()">Sub</button>');
+};
+
+/**
+ * Bind the event listeners on the UI controls
+ */
+WebUiController.ui.prototype.bindEvents = function() {
+	var c = this;
+
+	this._elem.click(function(event) {
+                c.handlePass(event);
+	});
+
+	var player_bar = $('#player-bar');
+	player_bar.click(function(event) {
+		c.handlePlayerClick(event);
+	});
+
+	var turnover_b = $('#turnover_b')
+	turnover_b.click(function(event) {
+		c.handleTurnover();
+	});
+
+	var undo_b = $('#undo_b')
+	undo_b.click(function(event) {
+		c.handleUndo();
+	});
 };
 
 

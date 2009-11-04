@@ -70,40 +70,12 @@ UltimateCanvas.canvas.prototype.init = function() {
 	this.ui = new this._options.ui_controller(this._canvas, field, {});
 	this.db = new this._options.db_controller(this.unique_id);
 
-	this.bindEvents();
-
 	if(this.db.gameExists()){
 		this.db.loadGame(this);
 		this.draw();
 	}else{
 		this.initGame();
 	}
-};
-
-/**
- * Bind the event listeners on the UI controls
- */
-UltimateCanvas.canvas.prototype.bindEvents = function() {
-	var c = this;
-
-	this._elem.click(function(event) {
-                c.handlePass(event);
-	});
-
-	var player_bar = $('#player-bar');
-	player_bar.click(function(event) {
-		c.handlePlayerClick(event);
-	});
-
-	var turnover_b = $('#turnover_b')
-	turnover_b.click(function(event) {
-		c.handleTurnover();
-	});
-
-	var undo_b = $('#undo_b')
-	undo_b.click(function(event) {
-		c.handleUndo();
-	});
 };
 
 UltimateCanvas.canvas.prototype.initGame =	function() {
