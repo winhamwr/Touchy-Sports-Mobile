@@ -29,27 +29,10 @@ $.extend(UltimateCanvas, {
 $.fn.ultimateCanvas = function(options) {
 
 	defaults = {
-		total_width			: 480,
-		field_height		: 320,
-		endzone_width		: 80,
 		score_limit			: 7
 	};
 
 	options = $.extend(defaults, options);
-
-	// Stuff that depends on options
-	var field_width			= options.total_width - options.endzone_width * 2;
-	var inner_field_width	= options.total_width - options.endzone_width * 2;
-	var hash_height			= options.field_height / 3;
-	var hash_width			= field_width / 4;
-
-	options = $.extend(options,
-		{
-			field_width			: field_width,
-			inner_field_width	: inner_field_width,
-			hash_height			: hash_height,
-			hash_width			: hash_width
-		}, options);
 
 	return this.each(function() {
 		new UltimateCanvas.canvas($(this), options);
@@ -57,17 +40,9 @@ $.fn.ultimateCanvas = function(options) {
 };
 
 UltimateCanvas.canvas.prototype.init = function() {
-	field = {
-		w		: this._options.total_width, //Total field width
-		h		: this._options.field_height, //Total field height
-		inner_w	: this._options.inner_field_width, //Field width not counting endzones
-		ez_w	: this._options.endzone_width, // Width of an endzone
-		hash_w	: this._options.hash_width, // Spacing of vertical hashes on the inner field
-		hash_h	: this._options.hash_height // Spacing of horizontal hashes on the field
-	};
 	this.unique_id = 1;
 
-	this.ui = new this._options.ui_controller(this._canvas, field, {});
+	this.ui = new this._options.ui_controller(this._canvas);
 	this.db = new this._options.db_controller(this.unique_id);
 
 	this.ui.bindEvents(this);
@@ -374,11 +349,11 @@ UltimateCanvas.canvas.prototype.passIsInEz = function(pass, possession){
 	var attackersEndzone = this.getAttackersEndzone();
 
 	if(attackersEndzone == UltimateCanvas.LEFT_EZ){
-		if(pass.x >= this._options.endzone_width + this._options.inner_field_width){
+		if(pass.x >= this.ui.field.ez_w + this.ui.field.inner_w){
 			return true;
 		}
 	}else{
-		if(pass.x <= this._options.endzone_width){
+		if(pass.x <= this.ui.field.ez_w){
 			return true;
 		}
 	}

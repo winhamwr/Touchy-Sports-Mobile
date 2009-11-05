@@ -1,20 +1,14 @@
-if(!WebUiController) var WebUiController = {};
+function WebUiController(canvas) {
+	this._canvas = canvas;
+}
 
-$.extend(WebUiController, {
+WebUiController.prototype = new BaseUiController;
+WebUiController.prototype.contructor = new WebUiController;
 
-	ui	: function(canvas, field, options) {
-		this._options = options;
-		this._canvas = canvas;
-		this._f = field; // The field dimensions
+WebUiController.prototype.init = function() {
+	// Call the parent's init method
+	BaseUiController.prototype.init.call(this);
 
-		this.init();
-	}
-});
-
-WebUiController.ui.prototype = new BaseUiController.ui();
-WebUiController.ui.prototype.contructor = new WebUiController.ui();
-
-WebUiController.ui.prototype.init = function() {
 	console.log(this);
     this.setPlayerBarNames();
 
@@ -23,7 +17,7 @@ WebUiController.ui.prototype.init = function() {
 	$('#sub_b').append('<button>Sub</button>');
 };
 
-WebUiController.ui.prototype.setPlayerBarNames = function() {
+WebUiController.prototype.setPlayerBarNames = function() {
 	if (homeTeam == 'undefined' || homeTeam == null) {
 		alert('Unable to get player names from homeTeam in ui.setPlayerBarNames');
 	} else {
@@ -40,11 +34,11 @@ WebUiController.ui.prototype.setPlayerBarNames = function() {
 	}
 };
 
-WebUiController.ui.prototype.bindEvents = function(ultimate_canvas) {
+WebUiController.prototype.bindEvents = function(ultimate_canvas) {
 	ultimate_canvas._elem.click(function(event) {
 		ultimate_canvas.handlePass(event);
 	});
-	
+
 	for (var i=1;i<8;i++) {
 		var playerButton = $('#player-button-'+i);
 		playerButton.click(function() {
@@ -71,7 +65,7 @@ WebUiController.ui.prototype.bindEvents = function(ultimate_canvas) {
 /*
  * Pops up an alert/message box displaying the given message.
  */
-WebUiController.ui.prototype.alert = function(msg) {
+WebUiController.prototype.alert = function(msg) {
 	alert(msg);
 };
 
@@ -79,7 +73,7 @@ WebUiController.ui.prototype.alert = function(msg) {
  * Displays/updates the score for the given team, 0 for home, 1 for away.
  * Takes the team, endzone and current score of that team
  */
-WebUiController.ui.prototype.displayScore = function(team, ez, score) {
+WebUiController.prototype.displayScore = function(team, ez, score) {
 	var context = this._canvas.getContext("2d");
 	context.font = "bold 12px sans-serif";
 
@@ -98,14 +92,14 @@ WebUiController.ui.prototype.displayScore = function(team, ez, score) {
 			// Left side score
 			context.fillText(
 				score,
-				40,
-				135);
+				this.field.ez_w/2,
+				this.field.h/2 - 5);
 		} else {
 			// Right side score
 			context.fillText(
 				score,
-				440,
-				135);
+				this.field.w - this.field.ez_w/2,
+				this.field.h/2 - 5);
 		}
 	} else {
 		if(DEBUG == true){
@@ -117,4 +111,4 @@ WebUiController.ui.prototype.displayScore = function(team, ez, score) {
 
 
 
-ui_controller = WebUiController.ui;
+ui_controller = WebUiController;

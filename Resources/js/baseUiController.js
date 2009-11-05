@@ -1,43 +1,68 @@
-if(!BaseUiController) var BaseUiController = {};
-
-$.extend(BaseUiController, {
-
-	ui	: function(canvas, field, options) {
-		this._options = options;
-		this._canvas = canvas;
-		this._f = field; // The field dimensions
-
-		this.init();
-	}
-});
-
-BaseUiController.ui.prototype.init = function() {
+function BaseUiController(canvas) {
+	this._canvas = canvas;
 };
 
-BaseUiController.ui.prototype.bindEvents = function() {
+BaseUiController.prototype.init = function() {
+	this.field = this.generateField();
+};
+
+/**
+ * Determine the field size parameters.
+ */
+BaseUiController.prototype.generateField = function() {
+	var total_width = $(window).width();
+	var total_height = $(window).height();
+	var endzone_width = 80;
+
+	// Stuff that depends on options
+	var inner_field_width	= total_width - endzone_width * 2;
+	var hash_height			= total_height / 3;
+	var hash_width			= inner_field_width / 4;
+
+	var f = {
+		w		:	total_width, //Total field width
+		h		:	total_height, //Total field height
+		inner_w	:	inner_field_width, //Field width not counting endzones
+		ez_w	:	endzone_width, // Width of an endzone
+		hash_w	:	hash_width, // Spacing of vertical hashes on the inner field
+		hash_h	:	hash_height // Spacing of horizontal hashes on the field
+	}
+
+	return f;
+};
+
+/**
+ * Resize the field based on the current screen size.
+ */
+BaseUiController.prototype.resizeField = function() {
+	$('#field').attr('height', $(window).height()-HEIGHT_OFFSET);
+	$('#field').attr('width', $(window).width()-WIDTH_OFFSET);
+}
+
+BaseUiController.prototype.bindEvents = function() {
 	alert("BaseUiController.ui.prototype.bindEvents NOT IMPLEMENTED");
 };
 
-BaseUiController.ui.prototype.setPlayerBarNames = function() {
+BaseUiController.prototype.setPlayerBarNames = function() {
 	alert("BaseUiController.ui.prototype.setPlayerBarNames NOT IMPLEMENTED");
 };
 
-BaseUiController.ui.prototype.draw = function(){
+BaseUiController.prototype.draw = function(){
 	this.drawField();
 };
 
-BaseUiController.ui.prototype.drawField = function() {
+BaseUiController.prototype.drawField = function() {
 	this.drawFieldRects();
 	this.drawFieldHorizontalLines();
 	this.drawFieldVerticalLines();
 };
 
-BaseUiController.ui.prototype.drawFieldRects = function() {
+BaseUiController.prototype.drawFieldRects = function() {
 	var context = this._canvas.getContext("2d");
 
-	var ez_w = this._f.ez_w;
-	var h = this._f.h;
-	var inner_w = this._f.inner_w;
+	var ez_w = this.field.ez_w;
+	var h = this.field.h;
+	var inner_w = this.field.inner_w;
 
 	// endzone rectangles
 	context.fillStyle = "#003300";	// Dark Green
@@ -61,11 +86,11 @@ BaseUiController.ui.prototype.drawFieldRects = function() {
 	context.strokeRect(ez_w, 0, inner_w, h)
 };
 
-BaseUiController.ui.prototype.drawFieldHorizontalLines = function() {
+BaseUiController.prototype.drawFieldHorizontalLines = function() {
 	var context = this._canvas.getContext("2d");
 
-	var hash_h = this._f.hash_h;
-	var w = this._f.w;
+	var hash_h = this.field.hash_h;
+	var w = this.field.w;
 
 	context.strokeStyle = "#FFFFFF";
 	context.beginPath();
@@ -76,12 +101,12 @@ BaseUiController.ui.prototype.drawFieldHorizontalLines = function() {
 	context.stroke();
 };
 
-BaseUiController.ui.prototype.drawFieldVerticalLines = function() {
+BaseUiController.prototype.drawFieldVerticalLines = function() {
 	var context = this._canvas.getContext("2d");
 
-	var ez_w = this._f.ez_w;
-	var h = this._f.h;
-	var hash_w = this._f.hash_w;
+	var ez_w = this.field.ez_w;
+	var h = this.field.h;
+	var hash_w = this.field.hash_w;
 
 	context.strokeStyle = "#FFFFFF";
 	context.beginPath();
@@ -98,7 +123,7 @@ BaseUiController.ui.prototype.drawFieldVerticalLines = function() {
 	context.stroke();
 };
 
-BaseUiController.ui.prototype.drawPass = function(from, to, last_pass) {
+BaseUiController.prototype.drawPass = function(from, to, last_pass) {
 	if(from){
 		// We have a source point, draw a line between the points
 		var context = this._canvas.getContext("2d");
@@ -121,7 +146,7 @@ BaseUiController.ui.prototype.drawPass = function(from, to, last_pass) {
 /**
  * Draws a single point on the field representing a pass.
  */
-BaseUiController.ui.prototype.drawPoint = function(point, color){
+BaseUiController.prototype.drawPoint = function(point, color){
 	var context = this._canvas.getContext("2d");
 
 	if(color){
@@ -144,7 +169,7 @@ BaseUiController.ui.prototype.drawPoint = function(point, color){
 	context.stroke();
 };
 
-BaseUiController.ui.prototype.drawPasses = function(passes){
+BaseUiController.prototype.drawPasses = function(passes){
 	var ui = this;
 
 	if(passes.length == 0){
@@ -168,7 +193,7 @@ BaseUiController.ui.prototype.drawPasses = function(passes){
 /*
  * Pops up an alert/message box displaying the given message.
  */
-BaseUiController.ui.prototype.alert = function(msg) {
+BaseUiController.prototype.alert = function(msg) {
 	alert("BaseUiController.ui.prototype.alert NOT IMPLEMENTED");
 };
 
@@ -176,7 +201,7 @@ BaseUiController.ui.prototype.alert = function(msg) {
  * Displays/updates the score for the given team, 0 for home, 1 for away.
  * Takes the team, endzone and current score of that team
  */
-BaseUiController.ui.prototype.displayScore = function(team, ez, score) {
+BaseUiController.prototype.displayScore = function(team, ez, score) {
 	var context = this._canvas.getContext("2d");
 	context.font = "bold 12px sans-serif";
 
@@ -215,14 +240,14 @@ BaseUiController.ui.prototype.displayScore = function(team, ez, score) {
  * Display the possession indicator on the field, which lets the user know which
  * team has the ball and in what direction they're going.
  */
-BaseUiController.ui.prototype.displayPossessionIndicator = function(direction) {
+BaseUiController.prototype.displayPossessionIndicator = function(direction) {
 	var context = this._canvas.getContext("2d");
 
 	context.strokeStyle = "#000000";
 	context.beginPath();
 	// Draw the cross-field line
-	var ez_w = this._f.ez_w;
-	var field_h = this._f.h;
+	var ez_w = this.field.ez_w;
+	var field_h = this.field.h;
 
 	context.moveTo(2*ez_w, field_h/2);
 	context.lineTo(4*ez_w, field_h/2);
@@ -246,41 +271,41 @@ BaseUiController.ui.prototype.displayPossessionIndicator = function(direction) {
 /*
  * Display the undo button.
  */
-BaseUiController.ui.prototype.showUndoButton = function() {
+BaseUiController.prototype.showUndoButton = function() {
 	$('#undo_b').show();
 };
 
 /*
  * Hide the undo button.
  */
-BaseUiController.ui.prototype.hideUndoButton = function() {
+BaseUiController.prototype.hideUndoButton = function() {
 	$('#undo_b').hide();
 };
 
 /*
  * Display the turnover button.
  */
-BaseUiController.ui.prototype.showTurnoverButton = function() {
+BaseUiController.prototype.showTurnoverButton = function() {
 	$('#turnover_b').show();
 };
 
 /*
  * Hide the turnover button.
  */
-BaseUiController.ui.prototype.hideTurnoverButton = function() {
+BaseUiController.prototype.hideTurnoverButton = function() {
 	$('#turnover_b').hide();
 };
 
 /*
  * Display the player buttons.
  */
-BaseUiController.ui.prototype.showPlayerButtons = function() {
+BaseUiController.prototype.showPlayerButtons = function() {
 	$('#player-bar').show();
 };
 
 /*
  * Hide the player button.
  */
-BaseUiController.ui.prototype.hidePlayerButtons = function() {
+BaseUiController.prototype.hidePlayerButtons = function() {
 	$('#player-bar').hide();
 };
