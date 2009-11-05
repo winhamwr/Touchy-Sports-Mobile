@@ -15,22 +15,42 @@ WebUiController.ui.prototype = new BaseUiController.ui();
 WebUiController.ui.prototype.contructor = new WebUiController.ui();
 
 WebUiController.ui.prototype.init = function() {
-    $('#player-bar > div > div').append('<button>Fred Sanford</button>');
+	console.log(this);
+    this.setPlayerBarNames();
 
     $('#undo_b').append('<button>Undo</button>');
     $('#turnover_b').append('<button>Turnover</button>');
-	$('#sub_b').append('<button onClick="showSub()">Sub</button>');
+	$('#sub_b').append('<button>Sub</button>');
+};
+
+WebUiController.ui.prototype.setPlayerBarNames = function() {
+	if (homeTeam == 'undefined' || homeTeam == null) {
+		alert('Unable to get player names from homeTeam in ui.setPlayerBarNames');
+	} else {
+		console.log(homeTeam, '\n\n', homeTeam.playersInPlay);
+		var playerCount = homeTeam.playersInPlay.length;
+		if (playerCount < ultimateTeam.MAX_INPLAY) {
+			alert('Not enough players to play the game!');
+		} else {
+			for (var i=0;i<playerCount;i++) {
+				$playerBarButton = $('#player-button-'+(i+1));
+				$playerBarButton.html('<button>'+homeTeam.playersInPlay[i].nickname+'</button>');
+			}
+		}
+	}
 };
 
 WebUiController.ui.prototype.bindEvents = function(ultimate_canvas) {
 	ultimate_canvas._elem.click(function(event) {
 		ultimate_canvas.handlePass(event);
 	});
-
-	var player_bar = $('#player-bar');
-	player_bar.click(function(event) {
-		ultimate_canvas.handlePlayerClick(event);
-	});
+	
+	for (var i=1;i<8;i++) {
+		var playerButton = $('#player-button-'+i);
+		playerButton.click(function() {
+			ultimate_canvas.handlePlayerClick($(this));
+		});
+	}
 
 	var turnover_b = $('#turnover_b')
 	turnover_b.click(function(event) {
@@ -40,6 +60,11 @@ WebUiController.ui.prototype.bindEvents = function(ultimate_canvas) {
 	var undo_b = $('#undo_b')
 	undo_b.click(function(event) {
 		ultimate_canvas.handleUndo();
+	});
+
+	var sub_b = $('#sub_b')
+	sub_b.click(function(event) {
+		ultimate_canvas.handleSub();
 	});
 }
 

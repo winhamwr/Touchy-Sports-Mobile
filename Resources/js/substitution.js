@@ -3,12 +3,9 @@ var subbingIn = null;
 var subLastClicked = null;
 var rosterChanged = true;	/* if a player is added, or injury/substitution occurs, this
 							should be changed to true; true forces the dialog to be rebuilt. */
+var subUi = null;
 var $subDialog = null;
-
-$(document).ready(function() {	
-	/* TODO: This should be retrieved */
-	subbingOut = homeTeam.playersInPlay[0].name;
-});	
+var notCancelled = false;
 
 function initSubDialog() {
 	$subDialog = $('<div></div>')
@@ -31,6 +28,9 @@ function initSubDialog() {
 				opacity: .5
 			},
 			position: [81,5],
+			close: function() {
+				catchCancel();
+			},
 			buttons: {
 				"Sub": function() {
 					handleSubClick();
@@ -64,7 +64,8 @@ function initSubDialog() {
 		rosterChanged = false;
 };
 
-function showSub() {
+function showSub(canvas, playerName) {
+	console.log('showSub playerName = ', playerName);
 	if (homeTeam != null) {
 		if (rosterChanged) {
 			initSubDialog();	/* TODO: initDialog once, then just change the dialog
@@ -74,15 +75,40 @@ function showSub() {
 			$(subLastClicked).addClass("normal");
 			subLastClicked = null;
 		}
-		$subDialog.dialog('open');
+		subUi = canvas;
+		if (subUi != null) {
+			if (playerName != null) {
+				notCancelled = false;
+				subbingOut = playerName;
+				$($subDialog.find("th")).html("Who\'s going in for "+subbingOut+"?");
+				$subDialog.dialog('open');
+			} else {
+				alert('ERROR: showSub called, but playerName is null');
+			}
+		} else {
+			alert('ERROR: showSub called, but canvas is null');
+		}
 	} else {
 		alert('ERROR: showSub called, but homeTeam not set');
 	}
 };
 
 function handleSubClick() {
+	notCancelled = true;
 	subbingIn = $(subLastClicked).text();
+	//console.log(subbingOut, ' is leaving and new to the game is ', subbingIn);
+	//console.log(homeTeam.playersInPlay, '\n\n', homeTeam.playersBenched);
 	homeTeam.sub(subbingOut, subbingIn);
+	//console.log(homeTeam.playersInPlay, '\n\n', homeTeam.playersBenched);
 	rosterChanged = true;
 	subbingIn = null;
+	subUi.handleSubCommit();
+};
+
+/*  this is called because hitting the Escape key closes the dialog,
+	but does not call the same code as the Cancel button 			 */
+function catchCancel() {
+	if (!notCancelled) {
+		subUi.handleSubCancel();
+	}
 };

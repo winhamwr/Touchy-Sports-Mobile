@@ -1,5 +1,3 @@
-var MAX_INPLAY = 7;	// 7 players allowed on the field for Ultimate Frisbee
-
 if(typeof(homeTeam) == 'undefined'){
 	var homeTeam = null;
 }
@@ -14,6 +12,12 @@ ultimateTeam.prototype.init = function(name, coach, ultimatePlayersArray) {
 	this.playersInPlay = new Array();				// an array of type Player; all players in play
 	this.playersBenched = new Array();				// an array of type Player; all players warming the bench
 	this.playersInjured = new Array();				// an array of type Player; all broken players
+	
+	this.MAX_INPLAY = 7;	// 7 players allowed on the field for Ultimate Frisbee
+	this.ULTIMATE_STATUS_NOTSET = -1;
+	this.ULTIMATE_STATUS_INPLAY = 0;
+	this.ULTIMATE_STATUS_BENCHED = 1;
+	this.ULTIMATE_STATUS_INJURED = 2;
 
 	// Set the first 7 players in play by default. This should be a stored lineup
 	// or set by the user before the game.  Should also set injured players, if
@@ -22,16 +26,16 @@ ultimateTeam.prototype.init = function(name, coach, ultimatePlayersArray) {
 		var player;
 		var numPlayers = 0;
 		for (player in ultimatePlayersArray) {
-			if (numPlayers < MAX_INPLAY) {
+			if (numPlayers < this.MAX_INPLAY) {
 				this.playersInPlay[numPlayers] = ultimatePlayersArray[player];
 			} else {
-				this.playersBenched[numPlayers-MAX_INPLAY] = ultimatePlayersArray[player];
+				this.playersBenched[numPlayers-this.MAX_INPLAY] = ultimatePlayersArray[player];
 			}
 			numPlayers++;
 		}
 	}
 	
-	if (this.playersInPlay < MAX_INPLAY) {
+	if (this.playersInPlay < this.MAX_INPLAY) {
 		// TODO: Not enough players to play the game.
 	}
 };
@@ -77,7 +81,7 @@ function createTestTeam() {
 		'Alpha','Beta','Chi','Delta','Epsilon','Gamma','Omega','Sigma','Theta','Zeta');
 	var teamPlayers = new Array();
 	for (i=0; i<playerNames.length; i++) {
-		teamPlayers[i] = new ultimatePlayer(i,playerNames[i],i,ULTIMATE_STATUS_NOTSET,playerNames[i]);
+		teamPlayers[i] = new ultimatePlayer(i,playerNames[i],i,this.ULTIMATE_STATUS_NOTSET,playerNames[i]);
 	}
 	homeTeam = new ultimateTeam('Stepdads','Mini Me',teamPlayers);
 };

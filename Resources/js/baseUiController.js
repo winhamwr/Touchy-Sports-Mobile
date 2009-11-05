@@ -16,7 +16,11 @@ BaseUiController.ui.prototype.init = function() {
 
 BaseUiController.ui.prototype.bindEvents = function() {
 	alert("BaseUiController.ui.prototype.bindEvents NOT IMPLEMENTED");
-}
+};
+
+BaseUiController.ui.prototype.setPlayerBarNames = function() {
+	alert("BaseUiController.ui.prototype.setPlayerBarNames NOT IMPLEMENTED");
+};
 
 BaseUiController.ui.prototype.draw = function(){
 	this.drawField();
