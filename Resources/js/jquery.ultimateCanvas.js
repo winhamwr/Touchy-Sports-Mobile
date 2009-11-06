@@ -121,6 +121,7 @@ UltimateCanvas.canvas.prototype.initPoint = function() {
 	this.passes = [];
 	this.can_click = true;
 	this.scoring_pass = false;
+	this.subbing = false;
 
 	this.ui.hideTurnoverButton();
 	this.ui.hidePlayerButtons();
@@ -226,16 +227,38 @@ UltimateCanvas.canvas.prototype.handleTurnover = function(event) {
 	this.draw();
 };
 
-UltimateCanvas.canvas.prototype.handlePlayerClick = function(event) {
+UltimateCanvas.canvas.prototype.handlePlayerClick = function(playerBtnClicked) {
 	this.ui.hideTurnoverButton();
 	this.ui.hidePlayerButtons();
 
 	if(this.scoring_pass){
 		this.endPoint(this.possession);
-	} else{
+	} else if (this.subbing) {
+		// use the player button that was clicked
+		var playerLeavingName = $(playerBtnClicked).text();
+		console.log(playerLeavingName);
+		this.ui.hidePlayerButtons();
+		showSub(this, playerLeavingName);
+	} else {
 		// Now that we've selected a player, we can handle field clicks again
 		this.can_click = true;
 	}
+};
+
+UltimateCanvas.canvas.prototype.handleSub = function() {
+	this.ui.hideTurnoverButton();
+	this.ui.showPlayerButtons();
+	this.subbing = true;
+};
+
+UltimateCanvas.canvas.prototype.handleSubCommit = function() {
+	this.ui.setPlayerBarNames();
+	this.subbing = false;
+};
+
+UltimateCanvas.canvas.prototype.handleSubCancel = function () {
+	// TODO: need to show the turnover button?
+	this.subbing = false;
 };
 
 UltimateCanvas.canvas.prototype.handleUndo = function(event) {

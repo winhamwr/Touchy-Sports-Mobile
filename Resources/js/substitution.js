@@ -1,87 +1,114 @@
-var lastClicked = null;
-var team = null;
 var subbingOut = null;
+var subbingIn = null;
+var subLastClicked = null;
+var rosterChanged = true;	/* if a player is added, or injury/substitution occurs, this
+							should be changed to true; true forces the dialog to be rebuilt. */
+var subUi = null;
+var $subDialog = null;
+var notCancelled = false;
 
-$(document).ready(function() {	
-	createTestData();	// make some test data to work with
-	
-	drawPlayerTable(team);	// draw the player table
-	
-	// bind the click event
-	$('table td').click(function() {
-		if (lastClicked != null) {
-			$(lastClicked).removeClass('highlighted');
-			$(lastClicked).addClass('normal');
-		}
-		$(this).removeClass('normal');
-		$(this).addClass('highlighted');
-		lastClicked = $(this);
-	});
-	
-	// initialize the dialog
-	$('#substitutionDialog').dialog({
-		autoOpen: false,
-		modal: true,
-		width: 304,
-		height: 255,
-		show: 'drop',
-		closeOnEscape: true,
-		draggable: false,
-		resizable: false,
-		overlay: {
-			backgroundColor: '#000',
-			opacity: .5
-		},
-		position: [81,5],
-		buttons: {
-			"Sub": function() {
-				handleSubClick();
-				$(this).dialog("close");
+function initSubDialog() {
+	$subDialog = $('<div></div>')
+		.html('<div class="playerTable">'+
+					'<table align="center" id="benchedPlayers">'+
+						'<thead></thead>'+
+						'<tbody></tbody>'+
+				'</table></div>')
+		.dialog({
+			autoOpen: false,
+			modal: true,
+			width: 304,
+			height: 255,
+			show: 'drop',
+			closeOnEscape: true,
+			draggable: false,
+			resizable: false,
+			overlay: {
+				backgroundColor: '#000',
+				opacity: .5
 			},
-			"Cancel": function() {
-				handleCancelClick();
-				$(this).dialog("close");
+			position: [81,5],
+			close: function() {
+				catchCancel();
+			},
+			buttons: {
+				"Sub": function() {
+					handleSubClick();
+					$(this).dialog("close");
+				},
+				"Cancel": function() {
+					$(this).dialog("close");
+				}
 			}
+		});
+		if (homeTeam != null) {
+			$($subDialog.find("thead")).append("<tr><th colspan=2>Who\'s going in for "+subbingOut+"?</th></tr>");
+			var playersList = '';
+			for (a=0;a<homeTeam.playersBenched.length;a++) {
+				playersList+='<tr><td class="playerName normal">'+homeTeam.playersBenched[a].name+'</td></tr>';
+			}
+			$($subDialog.find("tbody")).append(playersList);
 		}
-	});
-	// remove the titlebar
-	$('#substitutionDialog').dialog().parents(".ui-dialog").find(".ui-dialog-titlebar").remove();
-});	
+		// remove the titlebar
+		$subDialog.dialog().parents(".ui-dialog").find(".ui-dialog-titlebar").remove();
+		// add the click event for the players
+		$($subDialog.find("td")).click(function() {
+			if (subLastClicked != null) {
+				$(subLastClicked).removeClass("highlighted");
+				$(subLastClicked).addClass("normal");
+			}
+			$(this).removeClass("normal");
+			$(this).addClass("highlighted");
+			subLastClicked = $(this);
+		});
+		rosterChanged = false;
+};
 
-function drawPlayerTable(team) {
-	if (team != null) {
-		$('table thead').append('<tr><th colspan=2>Who\'s going in for '+subbingOut+'?</th></tr>');
-		var playersList = '';
-		for (a=0;a<team.playersBenched.length;a++) {
-			playersList+='<tr><td class="playerName normal">'+team.playersBenched[a].name+'</td></tr>';
+function showSub(canvas, playerName) {
+	console.log('showSub playerName = ', playerName);
+	if (homeTeam != null) {
+		if (rosterChanged) {
+			initSubDialog();	/* TODO: initDialog once, then just change the dialog
+								contents each time a roster change occurs? */
+		} else if (subLastClicked != null) {
+			$(subLastClicked).removeClass("highlighted");
+			$(subLastClicked).addClass("normal");
+			subLastClicked = null;
 		}
-		$('table tbody').append(playersList);
-	};
+		subUi = canvas;
+		if (subUi != null) {
+			if (playerName != null) {
+				notCancelled = false;
+				subbingOut = playerName;
+				$($subDialog.find("th")).html("Who\'s going in for "+subbingOut+"?");
+				$subDialog.dialog('open');
+			} else {
+				alert('ERROR: showSub called, but playerName is null');
+			}
+		} else {
+			alert('ERROR: showSub called, but canvas is null');
+		}
+	} else {
+		alert('ERROR: showSub called, but homeTeam not set');
+	}
 };
 
 function handleSubClick() {
-	var subbingPlayerName = $(lastClicked).text();
-	console.log('btnSub was clicked, but this is not yet finished.');
-	// team.sub(team.playersInPlay[0].name,subbingPlayerName);
+	notCancelled = true;
+	subbingIn = $(subLastClicked).text();
+	//console.log(subbingOut, ' is leaving and new to the game is ', subbingIn);
+	//console.log(homeTeam.playersInPlay, '\n\n', homeTeam.playersBenched);
+	homeTeam.sub(subbingOut, subbingIn);
+	//console.log(homeTeam.playersInPlay, '\n\n', homeTeam.playersBenched);
+	rosterChanged = true;
+	subbingIn = null;
+	subUi.handleSubCommit();
 };
 
-function handleCancelClick() {
-	console.log('btnCancel was clicked, but this is not yet finished..');
-};
-
-function createTestData() {
-	// Create our test team--this should be loaded from the game data, or at least the
-	// name of the player that is being subbed and an array of the benched players.
-	var playerNames = new Array('Kail','Wes','Andy','Eric','Jack','Jim','Jose',
-		'Alpha','Beta','Chi','Delta','Epsilon','Gamma','Omega','Sigma','Theta','Zeta');
-	var teamPlayers = new Array();
-	for (i=0; i<playerNames.length; i++) {
-		teamPlayers[i] = new Player(i,playerNames[i],i);
+/*  this is called because hitting the Escape key closes the dialog,
+	but does not call the same code as the Cancel button 			 */
+function catchCancel() {
+	if (!notCancelled) {
+		subUi.handleSubCancel();
 	}
-	team = new Team('Stepdads','Mini Me',teamPlayers);
-	subbingOut = team.playersInPlay[0].name;
-};
-
-function showSub() {
-	$('#substitutionDialog').dialog('open');
 };
