@@ -1,16 +1,14 @@
 function WebUiController(canvas) {
-	this._canvas = canvas;
+	this.canvas = canvas;
 }
 
-WebUiController.prototype = new BaseUiController;
-WebUiController.prototype.contructor = new WebUiController;
+mixin(WebUiController.prototype, uiControlling);
 
 WebUiController.prototype.init = function() {
-	// Call the parent's init method
-	BaseUiController.prototype.init.call(this);
-
-	console.log(this);
-    this.setPlayerBarNames();
+	this.WIDTH_OFFSET = -15;
+	this.HEIGHT_OFFSET = -50;
+	// Initialize the field
+	this.initField();
 
     $('#undo_b').append('<button>Undo</button>');
     $('#turnover_b').append('<button>Turnover</button>');
@@ -74,7 +72,7 @@ WebUiController.prototype.alert = function(msg) {
  * Takes the team, endzone and current score of that team
  */
 WebUiController.prototype.displayScore = function(team, ez, score) {
-	var context = this._canvas.getContext("2d");
+	var context = this.canvas.getContext("2d");
 	context.font = "bold 12px sans-serif";
 
 	if(team == 0){

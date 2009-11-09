@@ -43,6 +43,7 @@ UltimateCanvas.canvas.prototype.init = function() {
 	this.unique_id = 1;
 
 	this.ui = new this._options.ui_controller(this._canvas);
+	this.ui.init();
 	this.db = new this._options.db_controller(this.unique_id);
 
 	this.ui.bindEvents(this);
