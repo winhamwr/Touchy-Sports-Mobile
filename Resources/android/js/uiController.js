@@ -1,18 +1,20 @@
-if(!AndroidUiController) var AndroidUiController = {};
+function AndroidUiController(canvas) {
+	this.canvas = canvas;
+}
 
-$.extend(AndroidUiController, {
+mixin(AndroidUiController.prototype, uiControlling);
 
-	ui	: function(canvas, field, options) {
-		this._options = options;
-		this._canvas = canvas;
-		this._f = field; // The field dimensions
+AndroidUiController.prototype.init = function() {
+	this.WIDTH_OFFSET = 0;
+	this.HEIGHT_OFFSET = 0;
+	// Initialize the field
+	this.initField();
 
-		this.init;
-	}
-});
+    $('#undo_b').append('<button>Undo</button>');
+    $('#turnover_b').append('<button>Turnover</button>');
+	$('#sub_b').append('<button>Sub</button>');
+};
 
-AndroidUiController.ui.prototype = new BaseUiController.ui();
-AndroidUiController.ui.prototype.contructor = new AndroidUiController.ui();
 
 AndroidUiController.ui.prototype.init = function() {
     $('#player-bar > div > div').append('<button>Fred Sanford</button>');
@@ -23,7 +25,7 @@ AndroidUiController.ui.prototype.init = function() {
 };
 
 AndroidUiController.ui.prototype.bindEvents = function(ultimate_canvas) {
-    
+
 //        var turnover_button = Titanium.UI.createButton({
 //            id:'#turnover_b',
 //            title:'Turnover',
@@ -40,21 +42,28 @@ AndroidUiController.ui.prototype.bindEvents = function(ultimate_canvas) {
 		ultimate_canvas.handlePass(event);
 	});
 
-	var player_bar = $('#player-bar');
-	player_bar.click(function(event) {
-		ultimate_canvas.handlePlayerClick(event);
-	});
+	for (var i=1;i<8;i++) {
+		var playerButton = $('#player-button-'+i);
+		playerButton.click(function() {
+			ultimate_canvas.handlePlayerClick($(this));
+		});
+	}
 
 	var turnover_b = $('#turnover_b')
 	turnover_b.click(function(event) {
 		ultimate_canvas.handleTurnover();
 	});
 
-        var undo_b = $('#undo_b')
+	var undo_b = $('#undo_b')
 	undo_b.click(function(event) {
 		ultimate_canvas.handleUndo();
 	});
-        
+
+	var sub_b = $('#sub_b')
+	sub_b.click(function(event) {
+		ultimate_canvas.handleSub();
+	});
+
 //        var undo_button = Titanium.UI.createButton({
 //            id:'menu-bar',
 //            title:'Undo',
@@ -91,7 +100,7 @@ AndroidUiController.ui.prototype.alert = function(msg) {
  * Takes the team, endzone and current score of that team
  */
 AndroidUiController.ui.prototype.displayScore = function(team, ez, score) {
-	var context = this._canvas.getContext("2d");
+	var context = this.canvas.getContext("2d");
 	context.font = "bold 12px sans-serif";
 
 	if(team == 0){
@@ -109,14 +118,14 @@ AndroidUiController.ui.prototype.displayScore = function(team, ez, score) {
 			// Left side score
 			context.fillText(
 				score,
-				40,
-				135);
+				this.field.ez_w/2,
+				this.field.h/2 - 5);
 		} else {
 			// Right side score
 			context.fillText(
 				score,
-				440,
-				135);
+				this.field.w - this.field.ez_w/2,
+				this.field.h/2 - 5);
 		}
 	} else {
 		if(DEBUG == true){
@@ -125,4 +134,4 @@ AndroidUiController.ui.prototype.displayScore = function(team, ez, score) {
 	}
 };
 
-ui_controller = AndroidUiController.ui;
+ui_controller = AndroidUiController;

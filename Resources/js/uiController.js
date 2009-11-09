@@ -10,8 +10,6 @@ WebUiController.prototype.init = function() {
 	// Initialize the field
 	this.initField();
 
-    this.setPlayerBarNames();
-
     $('#undo_b').append('<button>Undo</button>');
     $('#turnover_b').append('<button>Turnover</button>');
 	$('#sub_b').append('<button>Sub</button>');
