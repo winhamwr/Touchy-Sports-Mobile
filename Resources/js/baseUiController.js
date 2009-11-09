@@ -279,6 +279,13 @@ var uiControlling = {
 		context.stroke();
 	},
 
+	updatePlayerNames: function(player_names) {
+		$.each(player_names, function(i, name){
+			$playerBarButton = $('#player-button-'+(i+1));
+			$playerBarButton.html('<button>'+name+'</button>');
+		});
+	},
+
 	/*
 	 * Display the undo button.
 	 */

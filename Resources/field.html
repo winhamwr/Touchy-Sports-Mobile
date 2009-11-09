@@ -21,7 +21,6 @@
 <link type="text/css" href="css/jquery-ui/redmond/ui.all.css" rel="stylesheet" />
 <!--<link type="text/css" href="css/substitutionSouth.css" rel="stylesheet" />
 <link type="text/css" href="css/jquery-ui/south-street/ui.all.css" rel="stylesheet" />-->
-<script type="text/javascript" src="js/touchysports.player.js"></script>
 <script type="text/javascript" src="js/touchysports.team.js"></script>
 
 <script type="text/javascript" src="js/jquery.ultimateCanvas.js"></script>
@@ -69,10 +68,34 @@
 	</div>
 	<script type="text/javascript">
 		$(document).ready(function(){
+
+			// Until we have the team creation/loading working, just going to
+			// generate a team and load them here for testing.
+			function createTestTeam() {
+				var player_names = new Array('Kail','Wes','Andy','Eric','Jack','Jim','Jose',
+					'Alpha','Beta','Chi','Delta','Epsilon','Gamma','Omega','Sigma','Theta','Zeta');
+
+				var players = new Array();
+				$.each(player_names, function(i, name){
+					var player = new UltimatePlayer(name);
+					players.push(player);
+				});
+
+				var home_team = new UltimateTeam('Stepdads', players);
+
+				var starting_players = players.slice(0, 7);
+				home_team.setStartingLineup(starting_players);
+
+				return home_team;
+			};
+
+			var home_team = createTestTeam();
+
 			$('#field').ultimateCanvas(
 				{
 					ui_controller	:	ui_controller,
-					db_controller	:	db_controller
+					db_controller	:	db_controller,
+					home_team		:	home_team
 				}
 			);
 		});

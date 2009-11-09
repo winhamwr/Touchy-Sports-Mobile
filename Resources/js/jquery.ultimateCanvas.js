@@ -45,6 +45,7 @@ UltimateCanvas.canvas.prototype.init = function() {
 	this.ui = new this._options.ui_controller(this._canvas);
 	this.ui.init();
 	this.db = new this._options.db_controller(this.unique_id);
+	this.home_team = this._options.home_team;
 
 	this.ui.bindEvents(this);
 
@@ -304,10 +305,10 @@ UltimateCanvas.canvas.prototype.draw = function(){
 	this.ui.displayScore(UltimateCanvas.HOME_TEAM, this.home_endzone, this.home_score);
 	this.ui.displayScore(UltimateCanvas.AWAY_TEAM, this.away_endzone, this.away_score);
 
+	var player_names = this.home_team.getPlayingPlayerNames();
+	this.ui.updatePlayerNames(player_names);
+
 };
-
-
-
 
 UltimateCanvas.canvas.prototype.drawPasses = function(){
 	this.ui.drawPasses(this.passes);
