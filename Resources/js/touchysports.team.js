@@ -12,7 +12,7 @@ ultimateTeam.prototype.init = function(name, coach, ultimatePlayersArray) {
 	this.playersInPlay = new Array();				// an array of type Player; all players in play
 	this.playersBenched = new Array();				// an array of type Player; all players warming the bench
 	this.playersInjured = new Array();				// an array of type Player; all broken players
-	
+
 	this.MAX_INPLAY = 7;	// 7 players allowed on the field for Ultimate Frisbee
 	this.ULTIMATE_STATUS_NOTSET = -1;
 	this.ULTIMATE_STATUS_INPLAY = 0;
@@ -34,16 +34,16 @@ ultimateTeam.prototype.init = function(name, coach, ultimatePlayersArray) {
 			numPlayers++;
 		}
 	}
-	
+
 	if (this.playersInPlay < this.MAX_INPLAY) {
 		// TODO: Not enough players to play the game.
 	}
 };
 
 ultimateTeam.prototype.sub = function(leavingPlayerName,enteringPlayerName) {
-	var leavingIndex = findPlayerByName(this.playersInPlay,leavingPlayerName);
-	var enteringIndex = findPlayerByName(this.playersBenched,enteringPlayerName);
-	
+	var leavingIndex = findPlayerByName(this.playersInPlay, leavingPlayerName);
+	var enteringIndex = findPlayerByName(this.playersBenched, enteringPlayerName);
+
 	if (leavingIndex != -1) {
 		if (enteringIndex != -1) {
 			// store the player leaving the game
@@ -61,7 +61,7 @@ ultimateTeam.prototype.sub = function(leavingPlayerName,enteringPlayerName) {
 };
 
 // Returns the index of the player, or -1 if not found (indexOf didn't work for my player object)
-function findPlayerByName(playerArray,playerName) {
+function findPlayerByName(playerArray, playerName) {
 	for (var i=0;i<playerArray.length;i++) {
 		if (playerArray[i].name == playerName) {
 			return i;
