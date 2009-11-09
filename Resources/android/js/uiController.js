@@ -16,15 +16,7 @@ AndroidUiController.prototype.init = function() {
 };
 
 
-AndroidUiController.ui.prototype.init = function() {
-    $('#player-bar > div > div').append('<button>Fred Sanford</button>');
-
-    $('#undo_b').append('<button>Undo</button>');
-    $('#turnover_b').append('<button>Turnover</button>');
-    $('#sub_b').append('<button onClick="showSub()">Sub</button>');
-};
-
-AndroidUiController.ui.prototype.bindEvents = function(ultimate_canvas) {
+AndroidUiConroller.prototype.bindEvents = function(ultimate_canvas) {
 
 //        var turnover_button = Titanium.UI.createButton({
 //            id:'#turnover_b',
@@ -88,7 +80,7 @@ AndroidUiController.ui.prototype.bindEvents = function(ultimate_canvas) {
 /*
  * Pops up an alert/message box displaying the given message.
  */
-AndroidUiController.ui.prototype.alert = function(msg) {
+AndroidUiConroller.prototype.alert = function(msg) {
         var myalert = Titanium.UI.createAlertDialog();
         myalert.setMessage(msg);
         myalert.setButtonNames(['OK']);
@@ -99,7 +91,7 @@ AndroidUiController.ui.prototype.alert = function(msg) {
  * Displays/updates the score for the given team, 0 for home, 1 for away.
  * Takes the team, endzone and current score of that team
  */
-AndroidUiController.ui.prototype.displayScore = function(team, ez, score) {
+AndroidUiConroller.prototype.displayScore = function(team, ez, score) {
 	var context = this.canvas.getContext("2d");
 	context.font = "bold 12px sans-serif";
 
