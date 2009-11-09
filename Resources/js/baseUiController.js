@@ -69,7 +69,7 @@ var uiControlling = {
 	},
 
 	drawFieldRects:	function() {
-		var context = this.canvas.getContext("2d");
+		var context = this.canvas[0].getContext("2d");
 
 		var ez_w = this.field.ez_w;
 		var h = this.field.h;
@@ -98,7 +98,7 @@ var uiControlling = {
 	},
 
 	drawFieldHorizontalLines: function() {
-		var context = this.canvas.getContext("2d");
+		var context = this.canvas[0].getContext("2d");
 
 		var hash_h = this.field.hash_h;
 		var w = this.field.w;
@@ -113,7 +113,7 @@ var uiControlling = {
 	},
 
 	drawFieldVerticalLines: function() {
-		var context = this.canvas.getContext("2d");
+		var context = this.canvas[0].getContext("2d");
 
 		var ez_w = this.field.ez_w;
 		var h = this.field.h;
@@ -137,7 +137,7 @@ var uiControlling = {
 	drawPass: function(from, to, last_pass) {
 		if(from){
 			// We have a source point, draw a line between the points
-			var context = this.canvas.getContext("2d");
+			var context = this.canvas[0].getContext("2d");
 
 			context.strokeStyle = "#003300";	// DARK GREEN
 			context.fillStyle = "#ffffff";	// White
@@ -158,7 +158,7 @@ var uiControlling = {
 	 * Draws a single point on the field representing a pass.
 	 */
 	drawPoint: function(point, color){
-		var context = this.canvas.getContext("2d");
+		var context = this.canvas[0].getContext("2d");
 
 		if(color){
 			context.strokeStyle = color;
@@ -213,7 +213,7 @@ var uiControlling = {
 	 * Takes the team, endzone and current score of that team
 	 */
 	displayScore: function(team, ez, score) {
-		var context = this.canvas.getContext("2d");
+		var context = this.canvas[0].getContext("2d");
 		context.font = "bold 12px sans-serif";
 
 		if(team == 0){
@@ -252,7 +252,7 @@ var uiControlling = {
 	 * team has the ball and in what direction they're going.
 	 */
 	displayPossessionIndicator: function(direction) {
-		var context = this.canvas.getContext("2d");
+		var context = this.canvas[0].getContext("2d");
 
 		context.strokeStyle = "#000000";
 		context.beginPath();

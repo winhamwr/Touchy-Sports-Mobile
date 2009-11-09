@@ -16,7 +16,7 @@ WebUiController.prototype.init = function() {
 };
 
 WebUiController.prototype.bindEvents = function(ultimate_canvas) {
-	ultimate_canvas._elem.click(function(event) {
+	ultimate_canvas.canvas.click(function(event) {
 		ultimate_canvas.handlePass(event);
 	});
 
@@ -55,7 +55,7 @@ WebUiController.prototype.alert = function(msg) {
  * Takes the team, endzone and current score of that team
  */
 WebUiController.prototype.displayScore = function(team, ez, score) {
-	var context = this.canvas.getContext("2d");
+	var context = this.canvas[0].getContext("2d");
 	context.font = "bold 12px sans-serif";
 
 	if(team == 0){
@@ -88,8 +88,5 @@ WebUiController.prototype.displayScore = function(team, ez, score) {
 		}
 	}
 };
-
-
-
 
 ui_controller = WebUiController;

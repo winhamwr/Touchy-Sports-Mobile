@@ -18,10 +18,9 @@ mixin(IPhoneUiController.prototype, uiControlling);
 IPhoneUiController.prototype.init = function() {
 	this.WIDTH_OFFSET = 0;
 	this.HEIGHT_OFFSET = 0;
+
 	// Initialize the field
 	this.initField();
-
-    this.setPlayerBarNames();
 
     $('#undo_b').append('<button>Undo</button>');
     $('#turnover_b').append('<button>Turnover</button>');
@@ -41,7 +40,7 @@ IPhoneUiController.prototype.alert = function(msg) {
 };
 
 IPhoneUiController.prototype.bindEvents = function(ultimate_canvas) {
-	ultimate_canvas._elem.click(function(event) {
+	ultimate_canvas.canvas.click(function(event) {
 		ultimate_canvas.handlePass(event);
 	});
 
@@ -67,23 +66,6 @@ IPhoneUiController.prototype.bindEvents = function(ultimate_canvas) {
 		ultimate_canvas.handleSub();
 	});
 }
-
-IPhoneUiController.prototype.setPlayerBarNames = function() {
-	if (homeTeam == 'undefined' || homeTeam == null) {
-		alert('Unable to get player names from homeTeam in ui.setPlayerBarNames');
-	} else {
-		console.log(homeTeam, '\n\n', homeTeam.playersInPlay);
-		var playerCount = homeTeam.playersInPlay.length;
-		if (playerCount < ultimateTeam.MAX_INPLAY) {
-			alert('Not enough players to play the game!');
-		} else {
-			for (var i=0;i<playerCount;i++) {
-				$playerBarButton = $('#player-button-'+(i+1));
-				$playerBarButton.html('<button>'+homeTeam.playersInPlay[i].nickname+'</button>');
-			}
-		}
-	}
-};
 
 /*
     Creates an iPhone style toolbar with 8 buttons for use in landscape orientation.

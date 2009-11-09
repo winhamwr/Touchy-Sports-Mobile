@@ -7,6 +7,7 @@ mixin(AndroidUiController.prototype, uiControlling);
 AndroidUiController.prototype.init = function() {
 	this.WIDTH_OFFSET = 0;
 	this.HEIGHT_OFFSET = 0;
+
 	// Initialize the field
 	this.initField();
 
@@ -30,7 +31,7 @@ AndroidUiConroller.prototype.bindEvents = function(ultimate_canvas) {
 //            ultimate_canvas.handleTurnover();
 //        });
 
-	ultimate_canvas._elem.click(function(event) {
+	ultimate_canvas.canvas.click(function(event) {
 		ultimate_canvas.handlePass(event);
 	});
 
@@ -92,7 +93,7 @@ AndroidUiConroller.prototype.alert = function(msg) {
  * Takes the team, endzone and current score of that team
  */
 AndroidUiConroller.prototype.displayScore = function(team, ez, score) {
-	var context = this.canvas.getContext("2d");
+	var context = this.canvas[0].getContext("2d");
 	context.font = "bold 12px sans-serif";
 
 	if(team == 0){

@@ -1,48 +1,19 @@
 ;(function($) {
 
-if(!UltimateCanvas) var UltimateCanvas = {};
+UltimateCanvas = function(canvas, options) {
+	this.canvas = canvas;
+	this._options = options;
+}
 
-$.extend(UltimateCanvas, {
-	/*
-	 * Constant values
-	 */
-	HOME_TEAM		: 0,
-	AWAY_TEAM		: 1,
-	LEFT_EZ			: 0,
-	RIGHT_EZ		: 1,
+UltimateCanvas.HOME_TEAM = 0;
+UltimateCanvas.AWAY_TEAM = 1;
+UltimateCanvas.LEFT_EZ = 0;
+UltimateCanvas.RIGHT_EZ = 1;
 
-	/*
-	 * Canvas object constructor
-	 */
-	canvas	: function(elem, options) {
-		this._elem = elem;
-		this._canvas = elem[0];
-		this._options = options;
-
-		this.init();
-	}
-});
-
-/*
- * Registers the jquery plugin function
- */
-$.fn.ultimateCanvas = function(options) {
-
-	defaults = {
-		score_limit			: 7
-	};
-
-	options = $.extend(defaults, options);
-
-	return this.each(function() {
-		new UltimateCanvas.canvas($(this), options);
-	});
-};
-
-UltimateCanvas.canvas.prototype.init = function() {
+UltimateCanvas.prototype.init = function() {
 	this.unique_id = 1;
 
-	this.ui = new this._options.ui_controller(this._canvas);
+	this.ui = new this._options.ui_controller(this.canvas);
 	this.ui.init();
 	this.db = new this._options.db_controller(this.unique_id);
 	this.home_team = this._options.home_team;
@@ -57,7 +28,7 @@ UltimateCanvas.canvas.prototype.init = function() {
 	}
 };
 
-UltimateCanvas.canvas.prototype.initGame =	function() {
+UltimateCanvas.prototype.initGame =	function() {
 	this.possession = UltimateCanvas.HOME_TEAM;
 	this.home_endzone = UltimateCanvas.LEFT_EZ;
 	this.away_endzone = UltimateCanvas.RIGHT_EZ;
@@ -75,7 +46,7 @@ UltimateCanvas.canvas.prototype.initGame =	function() {
 /**
  * Store info about the current point if there is one, and prepare a new one.
  */
-UltimateCanvas.canvas.prototype.initPoint = function() {
+UltimateCanvas.prototype.initPoint = function() {
 	//Handle the last point
   	if(this.passes && this.passes.length >= 0){
 		var point = {}
@@ -114,7 +85,7 @@ UltimateCanvas.canvas.prototype.initPoint = function() {
 /**
  * Handle a field click to indicate a pass. Make a decision whether or not we should use the player buttons.
  */
-UltimateCanvas.canvas.prototype.handlePass = function(event) {
+UltimateCanvas.prototype.handlePass = function(event) {
 	var c = this;
 
         if(!c.choose_away_player){
@@ -131,7 +102,7 @@ UltimateCanvas.canvas.prototype.handlePass = function(event) {
 /**
  * Handle a field click to indicate a pass made by the home team. The player buttons are enabled.
  */
-UltimateCanvas.canvas.prototype.handleHomePass = function(event) {
+UltimateCanvas.prototype.handleHomePass = function(event) {
         var c = this;
 
         // If clicking is disabled, don't do anything
@@ -159,7 +130,7 @@ UltimateCanvas.canvas.prototype.handleHomePass = function(event) {
 /**
  * Handle a field click to indicate a pass by the away team.  The player buttons are disabled.
  */
-UltimateCanvas.canvas.prototype.handleAwayPass = function(event) {
+UltimateCanvas.prototype.handleAwayPass = function(event) {
         var c = this;
 
         var new_pass = {
@@ -181,7 +152,7 @@ UltimateCanvas.canvas.prototype.handleAwayPass = function(event) {
         c.ui.showTurnoverButton();
 };
 
-UltimateCanvas.canvas.prototype.handleTurnover = function(event) {
+UltimateCanvas.prototype.handleTurnover = function(event) {
 	var c = this;
 
 	function switchPos(possession){
@@ -204,7 +175,7 @@ UltimateCanvas.canvas.prototype.handleTurnover = function(event) {
 	this.draw();
 };
 
-UltimateCanvas.canvas.prototype.handlePlayerClick = function(playerBtnClicked) {
+UltimateCanvas.prototype.handlePlayerClick = function(playerBtnClicked) {
 	this.ui.hideTurnoverButton();
 	this.ui.hidePlayerButtons();
 
@@ -222,23 +193,23 @@ UltimateCanvas.canvas.prototype.handlePlayerClick = function(playerBtnClicked) {
 	}
 };
 
-UltimateCanvas.canvas.prototype.handleSub = function() {
+UltimateCanvas.prototype.handleSub = function() {
 	this.ui.hideTurnoverButton();
 	this.ui.showPlayerButtons();
 	this.subbing = true;
 };
 
-UltimateCanvas.canvas.prototype.handleSubCommit = function() {
+UltimateCanvas.prototype.handleSubCommit = function() {
 	this.ui.setPlayerBarNames();
 	this.subbing = false;
 };
 
-UltimateCanvas.canvas.prototype.handleSubCancel = function () {
+UltimateCanvas.prototype.handleSubCancel = function () {
 	// TODO: need to show the turnover button?
 	this.subbing = false;
 };
 
-UltimateCanvas.canvas.prototype.handleUndo = function(event) {
+UltimateCanvas.prototype.handleUndo = function(event) {
 	if(this.can_click){
 		//Undo a player choice
 		if(this.passes.length == 0){
@@ -298,7 +269,7 @@ UltimateCanvas.canvas.prototype.handleUndo = function(event) {
 // DRAWING
 //
 
-UltimateCanvas.canvas.prototype.draw = function(){
+UltimateCanvas.prototype.draw = function(){
 	this.ui.draw();
 	this.displayPossessionIndicator();
 	this.drawPasses();
@@ -310,16 +281,16 @@ UltimateCanvas.canvas.prototype.draw = function(){
 
 };
 
-UltimateCanvas.canvas.prototype.drawPasses = function(){
+UltimateCanvas.prototype.drawPasses = function(){
 	this.ui.drawPasses(this.passes);
 }
 
-UltimateCanvas.canvas.prototype.getPlayer = function() {
+UltimateCanvas.prototype.getPlayer = function() {
 	this.ui.showTurnoverButton();
 	this.ui.showPlayerButtons();
 };
 
-UltimateCanvas.canvas.prototype.displayPossessionIndicator = function() {
+UltimateCanvas.prototype.displayPossessionIndicator = function() {
 	var attackersEndzone = this.getAttackersEndzone();
 
 	if(attackersEndzone == UltimateCanvas.LEFT_EZ){
@@ -332,7 +303,7 @@ UltimateCanvas.canvas.prototype.displayPossessionIndicator = function() {
 /**
  * Determine the attackers endzone
  */
-UltimateCanvas.canvas.prototype.getAttackersEndzone = function(){
+UltimateCanvas.prototype.getAttackersEndzone = function(){
 	if(this.possession == UltimateCanvas.HOME_TEAM){
 		//Home team has possession
 		var attackersEndzone = this.home_endzone;
@@ -347,7 +318,7 @@ UltimateCanvas.canvas.prototype.getAttackersEndzone = function(){
 /**
  * Determine if a pass click is in the endzone.
  */
-UltimateCanvas.canvas.prototype.passIsInEz = function(pass, possession){
+UltimateCanvas.prototype.passIsInEz = function(pass, possession){
 	var attackersEndzone = this.getAttackersEndzone();
 
 	if(attackersEndzone == UltimateCanvas.LEFT_EZ){
@@ -366,7 +337,7 @@ UltimateCanvas.canvas.prototype.passIsInEz = function(pass, possession){
 /**
  * Called when a catch was in the endzone.
  */
-UltimateCanvas.canvas.prototype.handleEzCatch = function(){
+UltimateCanvas.prototype.handleEzCatch = function(){
 	// This was a scoring pass.
 	// We want to end the point after the user picks the catcher
 	this.scoring_pass = true;
@@ -376,7 +347,7 @@ UltimateCanvas.canvas.prototype.handleEzCatch = function(){
  * Called after the person who caught the point is selected. Wraps up the point
  * and either starts another or ends the game.
  */
-UltimateCanvas.canvas.prototype.endPoint = function(possession){
+UltimateCanvas.prototype.endPoint = function(possession){
 	if(possession == UltimateCanvas.HOME_TEAM){
 		this.home_score++;
 		this.possession = UltimateCanvas.AWAY_TEAM;
@@ -401,6 +372,22 @@ UltimateCanvas.canvas.prototype.endPoint = function(possession){
 	} else {
 		this.initPoint();
 	}
+};
+
+/*
+ * Registers the jquery plugin function
+ */
+$.fn.ultimateCanvas = function(options) {
+
+	defaults = {
+		score_limit			: 7
+	};
+
+	options = $.extend(defaults, options);
+
+	var uc = new UltimateCanvas($(this), options);
+	uc.init();
+	return uc;
 };
 
 })(jQuery);
