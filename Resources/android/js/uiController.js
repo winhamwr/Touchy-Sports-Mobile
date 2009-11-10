@@ -11,9 +11,17 @@ AndroidUiController.prototype.init = function() {
 	// Initialize the field
 	this.initField();
 
-    $('#undo_b').append('<button>Undo</button>');
+//    $('#undo_b').append('<button>Undo</button>');
     $('#turnover_b').append('<button>Turnover</button>');
 	$('#sub_b').append('<button>Sub</button>');
+};
+
+AndroidUiController.prototype.getTotalHeight = function() {
+        return 290;
+};
+
+AndroidUiController.prototype.getTotalWidth = function() {
+        return 480;
 };
 
 
@@ -24,7 +32,8 @@ AndroidUiController.prototype.bindEvents = function(ultimate_canvas) {
 //            title:'Turnover',
 //            color:'#ffffff',
 //            height:50,
-//            fontSize:20,
+//            fontSize:20,}
+//
 //            fontWeight:'bold'
 //        });
 //        turnover_button.addEventListener('click',function(e) {
@@ -47,27 +56,28 @@ AndroidUiController.prototype.bindEvents = function(ultimate_canvas) {
 		ultimate_canvas.handleTurnover();
 	});
 
-	var undo_b = $('#undo_b')
-	undo_b.click(function(event) {
-		ultimate_canvas.handleUndo();
-	});
+//	var undo_b = $('#undo_b')
+//	undo_b.click(function(event) {
+//		ultimate_canvas.handleUndo();
+//	});
 
 	var sub_b = $('#sub_b')
 	sub_b.click(function(event) {
 		ultimate_canvas.handleSub();
 	});
 
-//        var undo_button = Titanium.UI.createButton({
-//            id:'menu-bar',
-//            title:'Undo',
-//            color:'#336699',
-//            height:50,
-//            fontSize:20
-//        });
-//        undo_button.addEventListener('click',function(e) {
-//            alert('Undo button pressed.');
-//            ultimate_canvas.handleUndo();
-//        });
+        var undo_button = Titanium.UI.createButton({
+            id:'undo_b',
+            title:'Undo',
+            color:'#336699',
+            height:30,
+            width:50,
+            fontSize:14
+        });
+        undo_button.addEventListener('click',function(e) {
+            alert('Undo button pressed.');
+            ultimate_canvas.handleUndo();
+        });
 
 //        var player_button_bar = Titanium.UI.createButtonBar({
 //            id:'#player-bar',
@@ -125,6 +135,20 @@ AndroidUiController.prototype.displayScore = function(team, ez, score) {
 			this.alert("Your device does not support text on canvas");
 		}
 	}
+};
+
+/*
+ * 
+ */
+AndroidUiController.prototype.hideUndoButton = function() {
+
+};
+
+/*
+ *
+ */
+AndroidUiController.prototype.showUndoButton = function() {
+
 };
 
 ui_controller = AndroidUiController;
