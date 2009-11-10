@@ -15,14 +15,15 @@ var uiControlling = {
 	initField: function() {
 		this.field = this.generateField();
 		this.resizeField();
+		this.createButtons();
 	},
 
 	/**
 	* Determine the field size parameters.
 	*/
 	generateField: function() {
-		var total_width = $(window).width() + this.WIDTH_OFFSET;
-		var total_height = $(window).height() + this.HEIGHT_OFFSET;
+		var total_width = this.getTotalWidth();
+		var total_height = this.getTotalHeight();
 		var endzone_width = 80;
 
 		// Stuff that depends on options
@@ -42,6 +43,14 @@ var uiControlling = {
 		return f;
 	},
 
+	getTotalHeight: function() {
+			return $(document).height() + this.HEIGHT_OFFSET;
+	},
+
+	getTotalWidth: function() {
+			return $(document).width() + this.WIDTH_OFFSET;
+	},
+
 	/**
 	* Redraw the field's size based on the currentely generated field.
 	*/
@@ -52,10 +61,6 @@ var uiControlling = {
 
 	bindEvents:	function() {
 		alert("bindEvents NOT IMPLEMENTED");
-	},
-
-	setPlayerBarNames: function() {
-		alert("setPlayerBarNames NOT IMPLEMENTED");
 	},
 
 	draw: function(){
@@ -286,6 +291,19 @@ var uiControlling = {
 		});
 	},
 
+	createButtons: function() {
+		this.createUndoButton();
+		this.createTurnoverButton();
+		this.createSubButton();
+	},
+
+	/*
+	 * Create the undo button.
+	 */
+	createUndoButton: function() {
+		$('#undo_b').append('<button>Undo</button>');
+	},
+
 	/*
 	 * Display the undo button.
 	 */
@@ -298,6 +316,13 @@ var uiControlling = {
 	 */
 	hideUndoButton:		function() {
 		$('#undo_b').hide();
+	},
+
+	/*
+	 * Create the turnover button.
+	 */
+	createTurnoverButton: function() {
+		$('#turnover_b').append('<button>Turnover</button>');
 	},
 
 	/*
@@ -314,7 +339,7 @@ var uiControlling = {
 		$('#turnover_b').hide();
 	},
 
-	/*
+        /*
 	 * Display the player buttons.
 	 */
 	showPlayerButtons: function() {
@@ -326,6 +351,13 @@ var uiControlling = {
 	 */
 	hidePlayerButtons: function() {
 		$('#player-bar').hide();
+	},
+
+        /*
+	 * Hide the player button.
+	 */
+	createSubButton: function() {
+		$('#sub_b').append('<button>Sub</button>')
 	}
 
 };

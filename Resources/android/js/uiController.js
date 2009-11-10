@@ -6,30 +6,12 @@ mixin(AndroidUiController.prototype, uiControlling);
 
 AndroidUiController.prototype.init = function() {
 	this.WIDTH_OFFSET = 0;
-	this.HEIGHT_OFFSET = 0;
+	this.HEIGHT_OFFSET = -40;
 
-	// Initialize the field
 	this.initField();
-
-    $('#undo_b').append('<button>Undo</button>');
-    $('#turnover_b').append('<button>Turnover</button>');
-	$('#sub_b').append('<button>Sub</button>');
 };
 
-
-AndroidUiConroller.prototype.bindEvents = function(ultimate_canvas) {
-
-//        var turnover_button = Titanium.UI.createButton({
-//            id:'#turnover_b',
-//            title:'Turnover',
-//            color:'#ffffff',
-//            height:50,
-//            fontSize:20,
-//            fontWeight:'bold'
-//        });
-//        turnover_button.addEventListener('click',function(e) {
-//            ultimate_canvas.handleTurnover();
-//        });
+AndroidUiController.prototype.bindEvents = function(ultimate_canvas) {
 
 	ultimate_canvas.canvas.click(function(event) {
 		ultimate_canvas.handlePass(event);
@@ -42,32 +24,28 @@ AndroidUiConroller.prototype.bindEvents = function(ultimate_canvas) {
 		});
 	}
 
-	var turnover_b = $('#turnover_b')
-	turnover_b.click(function(event) {
-		ultimate_canvas.handleTurnover();
-	});
+//	var turnover_b = $('#turnover_b')
+//	turnover_b.click(function(event) {
+//		ultimate_canvas.handleTurnover();
+//	});
 
-	var undo_b = $('#undo_b')
-	undo_b.click(function(event) {
-		ultimate_canvas.handleUndo();
-	});
+//	var undo_b = $('#undo_b')
+//	undo_b.click(function(event) {
+//		ultimate_canvas.handleUndo();
+//	});
 
-	var sub_b = $('#sub_b')
-	sub_b.click(function(event) {
-		ultimate_canvas.handleSub();
-	});
+        this.sub_button.addEventListener('click', function(e){
+            ultimate_canvas.handleSub();
+        })
 
-//        var undo_button = Titanium.UI.createButton({
-//            id:'menu-bar',
-//            title:'Undo',
-//            color:'#336699',
-//            height:50,
-//            fontSize:20
-//        });
-//        undo_button.addEventListener('click',function(e) {
-//            alert('Undo button pressed.');
-//            ultimate_canvas.handleUndo();
-//        });
+        this.undo_button.addEventListener('click',function(e) {
+            alert('Undo button pressed.');
+            ultimate_canvas.handleUndo();
+        });
+
+        this.turnover_button.addEventListener('click',function(e) {
+            ultimate_canvas.handleTurnover();
+        });
 
 //        var player_button_bar = Titanium.UI.createButtonBar({
 //            id:'#player-bar',
@@ -81,7 +59,7 @@ AndroidUiConroller.prototype.bindEvents = function(ultimate_canvas) {
 /*
  * Pops up an alert/message box displaying the given message.
  */
-AndroidUiConroller.prototype.alert = function(msg) {
+AndroidUiController.prototype.alert = function(msg) {
         var myalert = Titanium.UI.createAlertDialog();
         myalert.setMessage(msg);
         myalert.setButtonNames(['OK']);
@@ -92,7 +70,7 @@ AndroidUiConroller.prototype.alert = function(msg) {
  * Displays/updates the score for the given team, 0 for home, 1 for away.
  * Takes the team, endzone and current score of that team
  */
-AndroidUiConroller.prototype.displayScore = function(team, ez, score) {
+AndroidUiController.prototype.displayScore = function(team, ez, score) {
 	var context = this.canvas[0].getContext("2d");
 	context.font = "bold 12px sans-serif";
 
@@ -125,6 +103,39 @@ AndroidUiConroller.prototype.displayScore = function(team, ez, score) {
 			this.alert("Your device does not support text on canvas");
 		}
 	}
+};
+
+AndroidUiController.prototype.createTurnoverButton = function() {
+        this.turnover_button = Titanium.UI.createButton({
+            id:'turnover_b',
+            title:'Turnover',
+            color:'#000000',
+            height:40,
+            width:80,
+            fontSize:14
+        });
+};
+
+AndroidUiController.prototype.createUndoButton = function() {
+        this.undo_button = Titanium.UI.createButton({
+            id:'undo_b',
+            title:'Undo',
+            color:'#000000',
+            height:40,
+            width:60,
+            fontSize:14
+        });
+};
+
+AndroidUiController.prototype.createSubButton = function() {
+        this.sub_button = Titanium.UI.createButton({
+            id:'sub_b',
+            title:'Sub',
+            color:'#000000',
+            height:40,
+            width:60,
+            fontSize:14
+        });
 };
 
 ui_controller = AndroidUiController;

@@ -7,12 +7,8 @@ mixin(WebUiController.prototype, uiControlling);
 WebUiController.prototype.init = function() {
 	this.WIDTH_OFFSET = -15;
 	this.HEIGHT_OFFSET = -50;
-	// Initialize the field
-	this.initField();
 
-    $('#undo_b').append('<button>Undo</button>');
-    $('#turnover_b').append('<button>Turnover</button>');
-	$('#sub_b').append('<button>Sub</button>');
+	this.initField();
 };
 
 WebUiController.prototype.bindEvents = function(ultimate_canvas) {
