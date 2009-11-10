@@ -23,9 +23,7 @@ var uiControlling = {
 	generateField: function() {
 		var total_width = this.getTotalWidth();
 		var total_height = this.getTotalHeight();
-                alert($(window).width());
-                alert($(window).height());
-                var endzone_width = 80;
+		var endzone_width = 80;
 
 		// Stuff that depends on options
 		var inner_field_width	= total_width - endzone_width * 2;
@@ -44,13 +42,13 @@ var uiControlling = {
 		return f;
 	},
 
-        getTotalHeight: function() {
-                return $(window).width() + this.WIDTH_OFFSET;
-        },
+	getTotalHeight: function() {
+			return $(document).height() + this.HEIGHT_OFFSET;
+	},
 
-        getTotalWidth: function() {
-                return $(window).height() + this.HEIGHT_OFFSET;
-        },
+	getTotalWidth: function() {
+			return $(document).width() + this.WIDTH_OFFSET;
+	},
 
 	/**
 	* Redraw the field's size based on the currentely generated field.
