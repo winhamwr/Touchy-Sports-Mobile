@@ -15,7 +15,7 @@ var uiControlling = {
 	initField: function() {
 		this.field = this.generateField();
 		this.resizeField();
-                this.createButtons();
+		this.createButtons();
 	},
 
 	/**
@@ -291,11 +291,11 @@ var uiControlling = {
 		});
 	},
 
-        createButtons: function() {
-                this.createUndoButton();
-                this.createTurnoverButton();
-                this.createSubButton();
-        },
+	createButtons: function() {
+		this.createUndoButton();
+		this.createTurnoverButton();
+		this.createSubButton();
+	},
 
 	/*
 	 * Create the undo button.
@@ -357,7 +357,7 @@ var uiControlling = {
 	 * Hide the player button.
 	 */
 	createSubButton: function() {
-                $('#sub_b').append('<button>Sub</button>')
+		$('#sub_b').append('<button>Sub</button>')
 	}
 
 };

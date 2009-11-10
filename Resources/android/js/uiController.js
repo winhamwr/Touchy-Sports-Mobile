@@ -8,13 +8,7 @@ AndroidUiController.prototype.init = function() {
 	this.WIDTH_OFFSET = 0;
 	this.HEIGHT_OFFSET = -40;
 
-	// Initialize the field
 	this.initField();
-
-//   Moved this stuff to their own functions
-//    $('#undo_b').append('<button>Undo</button>');
-//    $('#turnover_b').append('<button>Turnover</button>');
-//	$('#sub_b').append('<button>Sub</button>');
 };
 
 AndroidUiController.prototype.bindEvents = function(ultimate_canvas) {
