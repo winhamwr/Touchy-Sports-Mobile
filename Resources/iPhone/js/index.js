@@ -1,13 +1,7 @@
 $(document).ready(function() {
-	Titanium.UI.addEventListener('tabchange',function(e)
-	{
-		Titanium.API.info('>>>>>>>>>>>>>>>>>>>>>>>>>> TABCHANGE index ' + e.index  + ' name ' + e.name + ' prevIndex ' + e.prevIndex + ' prevName ' + e.prevName);
-	});
-
 	// data for tableview
 	var data = [
 		{title:'Test Field View', hasChild:true},
-		{title:'Test Substitution View', hasChild:true},
 		{title:'About', hasChild:true}
 	];
 
@@ -34,18 +28,6 @@ $(document).ready(function() {
 				break;
 			}
 			case 1:
-			{
-				var win = Titanium.UI.createWindow({
-					url:'substitution.html',
-					name:'substitution',
-					backgroundColor:'#ffffff',
-					fullscreen:false,
-					orientation:'landscape'
-				});
-				win.open({animated:true});
-				break;
-			}
-			case 2:
 			{
 				var win = Titanium.UI.createWindow({
 					url:'about.html',

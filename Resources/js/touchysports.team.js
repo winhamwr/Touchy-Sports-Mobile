@@ -9,7 +9,7 @@ UltimateTeam.MAX_IN_PLAY = 7;
 
 UltimateTeam.prototype.init = function(name, players) {
 	this.name = name;								// team name
-	this.players = new Array();		// All players on this team
+	this.players = players;		// All players on this team
 	this.playersInPlay = new Array();				// an array of type Player; all players in play
 };
 
@@ -68,4 +68,16 @@ UltimateTeam.prototype.findPlayerByName = function(playerArray, playerName) {
 	}
 	// we made it here, so we didn't find the player in the array
 	return -1;
+};
+
+UltimateTeam.prototype.getBenchedPlayers = function() {
+	var playersBenched = new Array();
+	var playersInPlay = this.playersInPlay;
+	$.each(this.players, function(i, player) {
+		var player_index = $.inArray(player, playersInPlay);
+		if (player_index == -1) {
+			playersBenched.push(player);
+		}
+	});
+	return playersBenched;
 };

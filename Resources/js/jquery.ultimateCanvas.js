@@ -175,18 +175,14 @@ UltimateCanvas.prototype.handleTurnover = function(event) {
 	this.draw();
 };
 
-UltimateCanvas.prototype.handlePlayerClick = function(playerBtnClicked) {
+UltimateCanvas.prototype.handlePlayerClick = function(playerClicked) {
 	this.ui.hideTurnoverButton();
 	this.ui.hidePlayerButtons();
 
 	if(this.scoring_pass){
 		this.endPoint(this.possession);
 	} else if (this.subbing) {
-		// use the player button that was clicked
-		var playerLeavingName = $(playerBtnClicked).text();
-		console.log(playerLeavingName);
-		this.ui.hidePlayerButtons();
-		showSub(this, playerLeavingName);
+		this.showSub(playerClicked);
 	} else {
 		// Now that we've selected a player, we can handle field clicks again
 		this.can_click = true;
@@ -195,17 +191,24 @@ UltimateCanvas.prototype.handlePlayerClick = function(playerBtnClicked) {
 
 UltimateCanvas.prototype.handleSub = function() {
 	this.ui.hideTurnoverButton();
+	this.ui.hideSubButton();
+	this.ui.hideUndoButton();
 	this.ui.showPlayerButtons();
 	this.subbing = true;
 };
 
-UltimateCanvas.prototype.handleSubCommit = function() {
-	this.ui.setPlayerBarNames();
-	this.subbing = false;
+UltimateCanvas.prototype.showSub = function(playerLeavingGame) {
+	this.ui.showSub(this.home_team, playerLeavingGame);
 };
 
-UltimateCanvas.prototype.handleSubCancel = function () {
-	// TODO: need to show the turnover button?
+UltimateCanvas.prototype.hideSub = function (requiresUpdate) {
+	if (requiresUpdate) {
+		/* TODO: this.ui.setPlayerBarNames() */
+	}
+	this.ui.showTurnoverButton();	// should we show this here, or only after a pass?
+	this.ui.showSubButton();
+	this.ui.showUndoButton();
+	this.can_click = true;
 	this.subbing = false;
 };
 

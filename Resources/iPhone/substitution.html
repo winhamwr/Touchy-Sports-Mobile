@@ -1,0 +1,45 @@
+<html>
+<head>
+	<script type="text/javascript" src="../js/jquery-1.3.2.js"></script>
+	<script type="text/javascript" src="../js/json2.js"></script>
+	<script type="text/javascript" src="../js/touchysports.team.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			// build the list of benched players to choose from
+			var subData = JSON.parse(Titanium.App.Properties.getString('subData'));
+			var playersBenched = new Array();
+			for(key in subData){
+				playersBenched[key] = subData[key];
+			}
+			// make sure we have at least one player
+			var tableView = null;
+			if (playersBenched.length > 0) {
+				// data for tableview
+				var data  = [{title:playersBenched[0].name, hasChild:true}];
+				// create the tableview object
+				tableView = Titanium.UI.createTableView({
+					data:data,
+				}, function(e) {
+					Titanium.App.Properties.setString('subData', e.rowData.title);
+					Titanium.App.Properties.setString('subFlag', 'updated');
+					Titanium.UI.currentWindow.close();
+				});
+			}
+		
+			// if we have more players, loop through and add them to the table
+			var newData = null;
+			for (var i=1;i<playersBenched.length;i++) {
+				newData = {title:playersBenched[i].name, hasChild:true};
+				tableView.appendRow(newData);
+			}
+			
+			// show the view
+			Titanium.UI.currentWindow.addView(tableView);
+			Titanium.UI.currentWindow.showView(tableView);
+		});
+	</script>
+</head>
+<body>
+	<p id="test"></p>
+</body>
+</html>
