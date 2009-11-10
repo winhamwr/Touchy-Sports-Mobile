@@ -15,6 +15,7 @@ var uiControlling = {
 	initField: function() {
 		this.field = this.generateField();
 		this.resizeField();
+                this.createButtons();
 	},
 
 	/**
@@ -60,10 +61,6 @@ var uiControlling = {
 
 	bindEvents:	function() {
 		alert("bindEvents NOT IMPLEMENTED");
-	},
-
-	setPlayerBarNames: function() {
-		alert("setPlayerBarNames NOT IMPLEMENTED");
 	},
 
 	draw: function(){
@@ -294,6 +291,19 @@ var uiControlling = {
 		});
 	},
 
+        createButtons: function() {
+                this.createUndoButton();
+                this.createTurnoverButton();
+                this.createSubButton();
+        },
+
+	/*
+	 * Create the undo button.
+	 */
+	createUndoButton: function() {
+		$('#undo_b').append('<button>Undo</button>');
+	},
+
 	/*
 	 * Display the undo button.
 	 */
@@ -306,6 +316,13 @@ var uiControlling = {
 	 */
 	hideUndoButton:		function() {
 		$('#undo_b').hide();
+	},
+
+	/*
+	 * Create the turnover button.
+	 */
+	createTurnoverButton: function() {
+		$('#turnover_b').append('<button>Turnover</button>');
 	},
 
 	/*
@@ -322,7 +339,7 @@ var uiControlling = {
 		$('#turnover_b').hide();
 	},
 
-	/*
+        /*
 	 * Display the player buttons.
 	 */
 	showPlayerButtons: function() {
@@ -334,6 +351,13 @@ var uiControlling = {
 	 */
 	hidePlayerButtons: function() {
 		$('#player-bar').hide();
+	},
+
+        /*
+	 * Hide the player button.
+	 */
+	createSubButton: function() {
+                $('#sub_b').append('<button>Sub</button>')
 	}
 
 };

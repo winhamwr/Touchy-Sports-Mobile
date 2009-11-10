@@ -6,39 +6,18 @@ mixin(AndroidUiController.prototype, uiControlling);
 
 AndroidUiController.prototype.init = function() {
 	this.WIDTH_OFFSET = 0;
-	this.HEIGHT_OFFSET = 0;
+	this.HEIGHT_OFFSET = -40;
 
 	// Initialize the field
 	this.initField();
 
+//   Moved this stuff to their own functions
 //    $('#undo_b').append('<button>Undo</button>');
-    $('#turnover_b').append('<button>Turnover</button>');
-	$('#sub_b').append('<button>Sub</button>');
+//    $('#turnover_b').append('<button>Turnover</button>');
+//	$('#sub_b').append('<button>Sub</button>');
 };
-
-AndroidUiController.prototype.getTotalHeight = function() {
-        return 290;
-};
-
-AndroidUiController.prototype.getTotalWidth = function() {
-        return 480;
-};
-
 
 AndroidUiController.prototype.bindEvents = function(ultimate_canvas) {
-
-//        var turnover_button = Titanium.UI.createButton({
-//            id:'#turnover_b',
-//            title:'Turnover',
-//            color:'#ffffff',
-//            height:50,
-//            fontSize:20,}
-//
-//            fontWeight:'bold'
-//        });
-//        turnover_button.addEventListener('click',function(e) {
-//            ultimate_canvas.handleTurnover();
-//        });
 
 	ultimate_canvas.canvas.click(function(event) {
 		ultimate_canvas.handlePass(event);
@@ -51,32 +30,27 @@ AndroidUiController.prototype.bindEvents = function(ultimate_canvas) {
 		});
 	}
 
-	var turnover_b = $('#turnover_b')
-	turnover_b.click(function(event) {
-		ultimate_canvas.handleTurnover();
-	});
+//	var turnover_b = $('#turnover_b')
+//	turnover_b.click(function(event) {
+//		ultimate_canvas.handleTurnover();
+//	});
 
 //	var undo_b = $('#undo_b')
 //	undo_b.click(function(event) {
 //		ultimate_canvas.handleUndo();
 //	});
 
-	var sub_b = $('#sub_b')
-	sub_b.click(function(event) {
-		ultimate_canvas.handleSub();
-	});
+        this.sub_button.addEventListener('click', function(e){
+            ultimate_canvas.handleSub();
+        })
 
-        var undo_button = Titanium.UI.createButton({
-            id:'undo_b',
-            title:'Undo',
-            color:'#336699',
-            height:30,
-            width:50,
-            fontSize:14
-        });
-        undo_button.addEventListener('click',function(e) {
+        this.undo_button.addEventListener('click',function(e) {
             alert('Undo button pressed.');
             ultimate_canvas.handleUndo();
+        });
+
+        this.turnover_button.addEventListener('click',function(e) {
+            ultimate_canvas.handleTurnover();
         });
 
 //        var player_button_bar = Titanium.UI.createButtonBar({
@@ -137,18 +111,37 @@ AndroidUiController.prototype.displayScore = function(team, ez, score) {
 	}
 };
 
-/*
- * 
- */
-AndroidUiController.prototype.hideUndoButton = function() {
-
+AndroidUiController.prototype.createTurnoverButton = function() {
+        this.turnover_button = Titanium.UI.createButton({
+            id:'turnover_b',
+            title:'Turnover',
+            color:'#000000',
+            height:40,
+            width:80,
+            fontSize:14
+        });
 };
 
-/*
- *
- */
-AndroidUiController.prototype.showUndoButton = function() {
+AndroidUiController.prototype.createUndoButton = function() {
+        this.undo_button = Titanium.UI.createButton({
+            id:'undo_b',
+            title:'Undo',
+            color:'#000000',
+            height:40,
+            width:60,
+            fontSize:14
+        });
+};
 
+AndroidUiController.prototype.createSubButton = function() {
+        this.sub_button = Titanium.UI.createButton({
+            id:'sub_b',
+            title:'Sub',
+            color:'#000000',
+            height:40,
+            width:60,
+            fontSize:14
+        });
 };
 
 ui_controller = AndroidUiController;
