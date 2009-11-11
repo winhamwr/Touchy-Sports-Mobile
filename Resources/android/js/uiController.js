@@ -116,6 +116,18 @@ AndroidUiController.prototype.createTurnoverButton = function() {
         });
 };
 
+AndroidUiController.prototype.showTurnoverButton = function() {
+        alert('AndroidUiController.prototype.showTurnoverButton');
+//        document.getElementById('turnover_b').style.height = '40';
+//        Titanium.UI.currentWindow.repaint();
+};
+
+AndroidUiController.prototype.hideTurnoverButton = function() {
+        alert('AndroidUiController.prototype.hideTurnoverButton');
+//        document.getElementById('turnover_b').style.height = '0';
+//        Titanium.UI.currentWindow.repaint();
+};
+
 AndroidUiController.prototype.createUndoButton = function() {
         this.undo_button = Titanium.UI.createButton({
             id:'undo_b',
@@ -125,6 +137,18 @@ AndroidUiController.prototype.createUndoButton = function() {
             width:60,
             fontSize:14
         });
+};
+
+AndroidUiController.prototype.showUndoButton = function() {
+        alert('AndroidUiController.prototype.showUndoButton');
+//        document.getElementById('turnover_b').style.height = '40';
+//        Titanium.UI.currentWindow.repaint();
+};
+
+AndroidUiController.prototype.hideUndoButton = function() {
+        alert('AndroidUiController.prototype.hideUndoButton');
+//        document.getElementById('turnover_b').style.height = '0';
+//        Titanium.UI.currentWindow.repaint();
 };
 
 AndroidUiController.prototype.createSubButton = function() {
