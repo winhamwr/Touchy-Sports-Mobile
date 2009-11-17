@@ -198,12 +198,12 @@ UltimateCanvas.prototype.handleSub = function() {
 };
 
 UltimateCanvas.prototype.showSub = function(playerLeavingGame) {
-	this.ui.showSub(this.home_team, playerLeavingGame);
+	this.ui.showSubDialog(this.home_team, playerLeavingGame);
 };
 
 UltimateCanvas.prototype.hideSub = function (requiresUpdate) {
 	if (requiresUpdate) {
-		/* TODO: this.ui.setPlayerBarNames() */
+		this.ui.updatePlayerNames(this.home_team.getPlayingPlayerNames());
 	}
 	this.ui.showTurnoverButton();	// should we show this here, or only after a pass?
 	this.ui.showSubButton();

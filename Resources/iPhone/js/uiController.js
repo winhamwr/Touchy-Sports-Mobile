@@ -26,6 +26,7 @@ IPhoneUiController.prototype.init = function() {
     $('#undo_b').append('<button>Undo</button>');
     $('#turnover_b').append('<button>Turnover</button>');
 	$('#sub_b').append('<button>Sub</button>');
+	this.addScoreTags();
 };
 
 /*
@@ -76,11 +77,13 @@ IPhoneUiController.prototype.bindEvents = function(ultimate_canvas) {
 			subCancelled(ultimate_canvas);
 		}
 	});
+	
+	/* TODO: Need to bind an event to the score div click */
 };
 
 IPhoneUiController.prototype.showSubDialog(home_team, playerLeavingName) {
 		this.subbingOut = playerLeavingName;
-		Titanium.App.Properties.setString('subData', JSON.stringify(home_team.getBenchedPlayers));
+		Titanium.App.Properties.setString('subData', JSON.stringify(home_team.getBenchedPlayers()));
 		var dlgTitle = 'Who\'s going in for ' + this.subbingOut + '?';
 		var dlgBtn = Titanium.UI.createButton({
 			title:'Cancel',
@@ -119,6 +122,38 @@ IPhoneUiController.prototype.subUpdated(ultimate_canvas) {
 
 IPhoneUiController.prototype.subCancelled(ultimate_canvas) {
 	ultimate_canvas.hideSub(false);
+};
+
+/*
+ * Displays/updates the score for the given team, 0 for home, 1 for away.
+ * Takes the team, endzone and current score of that team
+ */
+iPhoneUiController.ui.prototype.displayScore = function(team, ez, score) {
+	var scoreTag = '';
+	if (ez == 0) {
+		scoreTag = '#scoreLeft';	// Left side score
+	} else {
+		scoreTag = '#scoreRight';	// Right side score
+	}
+	if(team == 0){
+		// home score
+		$(scoreTag).removeClass('scoreAway');	// this necessary?
+		$(scoreTag).addClass('scoreHome');
+	} else {
+		// away score
+		$(scoreTag).removeClass('scoreHome');	// this necessary?
+		$(scoreTag).addClass('scoreAway');
+	}
+	$(scoreTag).html(score);
+};
+
+/*
+ * Adds the score divs to the page
+ */
+iPhoneUiController.ui.prototype.addScoreTags = function() {
+	var tagLeft = '<div id="scoreLeft" class="scoreDiv"><button>test</button></div>';
+	var tagRight = '<div id="scoreRight" class="scoreDiv"></div>';
+	$('body').append(tagLeft+tagRight);
 };
 
 ui_controller = IPhoneUiController;

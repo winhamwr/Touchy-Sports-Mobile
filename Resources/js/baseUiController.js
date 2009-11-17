@@ -312,6 +312,13 @@ var uiControlling = {
 	},
 
 	/*
+	 * Create the sub button.
+	 */
+	createSubButton: function() {
+		$('#sub_b').append('<button>Sub</button>');
+	},
+
+	/*
 	 * Hide the undo button.
 	 */
 	hideUndoButton:		function() {
@@ -353,11 +360,18 @@ var uiControlling = {
 		$('#player-bar').hide();
 	},
 
-        /*
-	 * Hide the player button.
+    /*
+	 * Hide the sub button.
 	 */
-	createSubButton: function() {
-		$('#sub_b').append('<button>Sub</button>')
+	hideSubButton: function() {
+		$('#sub_b').hide();
+	},
+
+    /*
+	 * Show the sub button.
+	 */
+	showSubButton: function() {
+		$('#sub_b').show();
 	}
 
 };

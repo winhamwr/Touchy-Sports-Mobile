@@ -50,13 +50,13 @@ UltimateTeam.prototype.sub = function(leavingPlayerName, enteringPlayerName) {
 		console.log("Can't sub out someone that's not in the game.");
 		return;
 	}
-	if(enteringPlayerName && entering_index){
+	if(enteringPlayerName && entering_index == -1){
 		console.log("Can't sub in someone not on the team");
 		return;
 	}
 
 	// replace the player leaving the game with the sub
-	this.playersInPlay[leavingIndex] = this.players[enteringIndex]
+	this.playersInPlay[leaving_index] = this.players[entering_index]
 };
 
 // Returns the index of the player, or -1 if not found (indexOf didn't work for my player object)

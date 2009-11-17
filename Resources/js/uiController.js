@@ -1,3 +1,7 @@
+var subLastClicked = null;
+var subbingOut = null;
+var subbingIn = null;
+
 function WebUiController(canvas) {
 	this.canvas = canvas;
 }
@@ -9,6 +13,11 @@ WebUiController.prototype.init = function() {
 	this.HEIGHT_OFFSET = -50;
 
 	this.initField();
+	
+	/* substitution dialog stuff */
+	this.$subDialog = null;
+	this.subbingIn = null;
+	this.subbingOut = null;
 };
 
 WebUiController.prototype.bindEvents = function(ultimate_canvas) {
@@ -19,7 +28,7 @@ WebUiController.prototype.bindEvents = function(ultimate_canvas) {
 	for (var i=1;i<8;i++) {
 		var playerButton = $('#player-button-'+i);
 		playerButton.click(function() {
-			ultimate_canvas.handlePlayerClick($(this));
+			ultimate_canvas.handlePlayerClick($(this).text());
 		});
 	}
 
@@ -37,6 +46,8 @@ WebUiController.prototype.bindEvents = function(ultimate_canvas) {
 	sub_b.click(function(event) {
 		ultimate_canvas.handleSub();
 	});
+	
+	this.initSubDialog(ultimate_canvas);
 }
 
 /*
@@ -83,6 +94,87 @@ WebUiController.prototype.displayScore = function(team, ez, score) {
 			this.alert("Your device does not support text on canvas");
 		}
 	}
+};
+
+WebUiController.prototype.showSubDialog = function(home_team, playerLeavingName) {
+	// store the player leaving and set the header
+	subbingOut = playerLeavingName;
+	$(this.$subDialog.find("thead")).html("<tr><th colspan=2>Who\'s going in for "+subbingOut+"?</th></tr>");
+	
+	// get the list of benched players and add them to the table
+	var playersBenched = new Array();
+	playersBenched = home_team.getBenchedPlayers();
+	var playersList = '';
+	for (a=0;a<playersBenched.length;a++) {
+		playersList+='<tr><td class="playerName normal">'+playersBenched[a].name+'</td></tr>';
+	}
+	$(this.$subDialog.find("tbody")).html(playersList);
+
+	// add the click event for the players
+	$(this.$subDialog.find("td")).click(function() {
+		if (subLastClicked != null) {
+			$(subLastClicked).removeClass("highlighted");
+			$(subLastClicked).addClass("normal");
+		}
+		$(this).removeClass("normal");
+		$(this).addClass("highlighted");
+		subLastClicked = $(this);
+		subbingIn = $(this).text();
+	});
+	
+	// show the dialog
+	this.$subDialog.dialog('open');
+};
+
+WebUiController.prototype.subUpdated = function(ultimate_canvas) {
+	ultimate_canvas.home_team.sub(this.subbingOut, this.subbingIn);
+	ultimate_canvas.hideSub(true);
+	subbingIn = null;
+	subbingOut = null;
+};
+
+WebUiController.prototype.subCancelled = function(ultimate_canvas) {
+	ultimate_canvas.hideSub(false);
+};
+
+WebUiController.prototype.initSubDialog = function(ultimate_canvas) {
+	this.$subDialog = $('<div></div>')
+		.html('<div class="playerTable">'+
+					'<table align="center" id="benchedPlayers">'+
+						'<thead></thead>'+
+						'<tbody></tbody>'+
+				'</table></div>')
+		.dialog({
+			autoOpen: false,
+			modal: true,
+			width: 304,
+			height: 255,
+			show: 'drop',
+			closeOnEscape: false,
+			draggable: false,
+			resizable: false,
+			overlay: {
+				backgroundColor: '#000',
+				opacity: .5
+			},
+			position: [81,5],
+			buttons: {
+				"Sub": function() {
+					ultimate_canvas.home_team.sub(subbingOut, subbingIn);
+					ultimate_canvas.hideSub(true);
+					subbingIn = null;
+					subbingOut = null;
+					$(this).dialog("close");
+				},
+				"Cancel": function() {
+					ultimate_canvas.hideSub(false);
+					$(this).dialog("close");
+				}
+			}
+		});
+
+		// remove the titlebar
+	this.$subDialog.dialog().parents(".ui-dialog").find(".ui-dialog-titlebar").remove();
 };
 
 ui_controller = WebUiController;
