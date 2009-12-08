@@ -26,31 +26,37 @@ BaseDbController.prototype.saveGame = function(ultimate_canvas) {
 		saved_data[key] = ultimate_canvas[key];
 	}
 
-	localStorage.setItem('game', JSON.stringify(saved_data));
+	this.setGame(JSON.stringify(saved_data));
 };
 
 BaseDbController.prototype.loadGame = function(ultimate_canvas) {
-	var game = localStorage.getItem('game');
+	var game = this.getGame();
 	if(game != null){
-		var saved_data = JSON.parse(localStorage.getItem('game'));
-
-		for(key in saved_data){
+		for(key in game){
 			console.log('saved_key:'+key);
-			console.log('saved_data:'+saved_data[key]);
-			ultimate_canvas[key] = saved_data[key];
+			console.log('saved_data:'+game[key]);
+			ultimate_canvas[key] = game[key];
 		}
 	}
 };
 
-BaseDbController.prototype.gameExists = function() {
-	var game = localStorage.getItem('game');
+BaseDbController.prototype.getGame = function() {
+	var game = localStorage.getItem('game'+this.unique_id);
+	var game_object = null;
 	if(game != null){
-		var saved_uc = JSON.parse(localStorage.getItem('game'));
-	}else{
-		var saved_uc = null;
+		game_object = JSON.parse(game);
 	}
+	return game_object;
+}
 
-	if(saved_uc != null){
+BaseDbController.prototype.setGame = function(json_string) {
+	localStorage.setItem('game'+this.unique_id, json_string);
+}
+
+BaseDbController.prototype.gameExists = function() {
+	var game = this.getGame();
+
+	if(game != null){
 		return true;
 	}else{
 		return false;
