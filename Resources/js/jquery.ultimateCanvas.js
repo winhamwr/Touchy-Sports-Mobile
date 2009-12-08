@@ -11,11 +11,11 @@ UltimateCanvas.LEFT_EZ = 0;
 UltimateCanvas.RIGHT_EZ = 1;
 
 UltimateCanvas.prototype.init = function() {
-	this.unique_id = 1;
-
 	this.ui = new this._options.ui_controller(this.canvas);
 	this.ui.init();
-	this.db = new this._options.db_controller(this.unique_id);
+	this.db = new this._options.db_controller();
+	this.db.continueGame(1);
+	//this.db.startNewGame();
 	this.home_team = this._options.home_team;
 
 	this.ui.bindEvents(this);
