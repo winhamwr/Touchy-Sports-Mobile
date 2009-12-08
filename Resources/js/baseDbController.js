@@ -11,9 +11,13 @@ BaseDbController.prototype.init = function(unique_id) {
 		return;
 	}
 
-	this.unique_id = unique_id;
+	this.changeGame(unique_id);
 };
 
+BaseDbController.prototype.changeGame = function(unique_id) {
+	this.unique_id = unique_id;
+	localStorage.setItem('cur_game_id', unique_id);
+}
 
 BaseDbController.prototype.saveGame = function(ultimate_canvas) {
 	var savable_keys = ['possession', 'home_endzone', 'away_endzone', 'home_score', 'away_score', 'points', 'passes']
@@ -26,11 +30,11 @@ BaseDbController.prototype.saveGame = function(ultimate_canvas) {
 		saved_data[key] = ultimate_canvas[key];
 	}
 
-	this.setGame(JSON.stringify(saved_data));
+	this._storeGameData(JSON.stringify(saved_data));
 };
 
 BaseDbController.prototype.loadGame = function(ultimate_canvas) {
-	var game = this.getGame();
+	var game = this._getGameData();
 	if(game != null){
 		for(key in game){
 			console.log('saved_key:'+key);
@@ -40,7 +44,7 @@ BaseDbController.prototype.loadGame = function(ultimate_canvas) {
 	}
 };
 
-BaseDbController.prototype.getGame = function() {
+BaseDbController.prototype._getGameData= function() {
 	var game = localStorage.getItem('game'+this.unique_id);
 	var game_object = null;
 	if(game != null){
@@ -49,12 +53,12 @@ BaseDbController.prototype.getGame = function() {
 	return game_object;
 }
 
-BaseDbController.prototype.setGame = function(json_string) {
+BaseDbController.prototype._storeGameData = function(json_string) {
 	localStorage.setItem('game'+this.unique_id, json_string);
 }
 
 BaseDbController.prototype.gameExists = function() {
-	var game = this.getGame();
+	var game = this._getGameData();
 
 	if(game != null){
 		return true;
