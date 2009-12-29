@@ -16,6 +16,7 @@ var uiControlling = {
 		this.field = this.generateField();
 		this.resizeField();
 		this.createButtons();
+		// sub button starts hidden
 	},
 
 	/**
@@ -315,7 +316,7 @@ var uiControlling = {
 	 * Create the sub button.
 	 */
 	createSubButton: function() {
-		$('#sub_b').append('<button>Sub</button>');
+		$('#sub_b').append('<button>No Sub</button>');
 	},
 
 	/*
@@ -346,7 +347,7 @@ var uiControlling = {
 		$('#turnover_b').hide();
 	},
 
-        /*
+    /*
 	 * Display the player buttons.
 	 */
 	showPlayerButtons: function() {

@@ -18,6 +18,7 @@ WebUiController.prototype.init = function() {
 	this.$subDialog = null;
 	this.subbingIn = null;
 	this.subbingOut = null;
+	this.hideSubButton();
 };
 
 WebUiController.prototype.bindEvents = function(ultimate_canvas) {
@@ -44,7 +45,7 @@ WebUiController.prototype.bindEvents = function(ultimate_canvas) {
 
 	var sub_b = $('#sub_b')
 	sub_b.click(function(event) {
-		ultimate_canvas.handleSub();
+		ultimate_canvas.hideSub(false);	// the user is finished marking substitutions
 	});
 	
 	this.initSubDialog(ultimate_canvas);

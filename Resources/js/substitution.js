@@ -33,6 +33,7 @@ function showSub(canvas, playerName) {
 	}
 };
 
+/*
 function handleSubClick() {
 	notCancelled = true;
 	subbingIn = $(subLastClicked).text();
@@ -44,3 +45,4 @@ function handleSubClick() {
 	subbingIn = null;
 	subUi.handleSubCommit();
 };
+*/

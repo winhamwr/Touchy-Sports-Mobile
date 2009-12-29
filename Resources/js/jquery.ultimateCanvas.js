@@ -189,9 +189,11 @@ UltimateCanvas.prototype.handlePlayerClick = function(playerClicked) {
 	}
 };
 
-UltimateCanvas.prototype.handleSub = function() {
+UltimateCanvas.prototype.startSubbing = function() {
 	this.ui.hideTurnoverButton();
-	this.ui.hideSubButton();
+	// next line is commented out, as it is now a "done" button for substitution
+	//this.ui.hideSubButton();
+	this.ui.showSubButton();
 	this.ui.hideUndoButton();
 	this.ui.showPlayerButtons();
 	this.subbing = true;
@@ -203,13 +205,19 @@ UltimateCanvas.prototype.showSub = function(playerLeavingGame) {
 
 UltimateCanvas.prototype.hideSub = function (requiresUpdate) {
 	if (requiresUpdate) {
+		// a player was subbed in
 		this.ui.updatePlayerNames(this.home_team.getPlayingPlayerNames());
+		this.ui.showPlayerButtons();
+		this.subbing = true;
+	} else {
+		// user clicked cancel in the sub dialog
+		this.ui.showTurnoverButton();	// should we show this here, or only after a pass?
+		this.ui.showUndoButton();
+		this.ui.hideSubButton();
+		this.ui.hidePlayerButtons();
+		this.can_click = true;
+		this.subbing = false;
 	}
-	this.ui.showTurnoverButton();	// should we show this here, or only after a pass?
-	this.ui.showSubButton();
-	this.ui.showUndoButton();
-	this.can_click = true;
-	this.subbing = false;
 };
 
 UltimateCanvas.prototype.handleUndo = function(event) {
@@ -368,12 +376,14 @@ UltimateCanvas.prototype.endPoint = function(possession){
         this.ui.hideTurnoverButton();
 
 	// UiController
-	this.ui.alert("omg. You scored!. You've got "+score+" points!");
+	this.ui.alert("omg. You scored!. You've got "+score+" points!\nNow sub in some new playas, homie!");
 	if(score >= this._options.score_limit){
 		this.ui.alert("Whoa. You totally scored enough points to make you the winner!");
 		this.initGame();
 	} else {
 		this.initPoint();
+		console.log("you are here!");
+		this.startSubbing();	// a point was scored, but the game isn't over; see if there are substitutions
 	}
 };
 
