@@ -379,7 +379,7 @@ UltimateCanvas.prototype.endPoint = function(possession){
 	this.ui.alert("omg. You scored!. You've got "+score+" points!\nNow sub in some new playas, homie!");
 	if(score >= this._options.score_limit){
 		this.ui.alert("Whoa. You totally scored enough points to make you the winner!");
-		this.initGame();
+		//this.initGame();
 	} else {
 		this.initPoint();
 		console.log("you are here!");
