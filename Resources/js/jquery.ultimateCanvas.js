@@ -115,7 +115,9 @@ UltimateCanvas.prototype.handleHomePass = function(event) {
 
         var new_pass = {
                 "x":event.clientX,
-                "y":event.clientY
+                "y":event.clientY,
+		"team":'HOME',
+		'receiver':null
         };
         c.passes.push(new_pass);
 
@@ -135,7 +137,9 @@ UltimateCanvas.prototype.handleAwayPass = function(event) {
 
         var new_pass = {
                 "x":event.clientX,
-                "y":event.clientY
+                "y":event.clientY,
+		"team":'AWAY',
+		'receiver':null
         };
         c.passes.push(new_pass);
 
@@ -180,14 +184,29 @@ UltimateCanvas.prototype.handlePlayerClick = function(playerClicked) {
 	this.ui.hidePlayerButtons();
 
 	if(this.scoring_pass){
+		this.logReception(playerClicked)
 		this.endPoint(this.possession);
 	} else if (this.subbing) {
 		this.showSub(playerClicked);
 	} else {
+		this.logReception(playerClicked)
 		// Now that we've selected a player, we can handle field clicks again
 		this.can_click = true;
 	}
 };
+
+/**
+ *Log a player as having been the receiver on the most recent pass.
+ */
+UltimateCanvas.prototype.logReception = function(player) {
+	if(player == null){
+		console.log("trying to log a reception for a null player");
+		return;
+	}
+	var last_pass = this.passes.pop();
+	last_pass['receiver'] = player;
+	this.passes.push(last_pass);
+}
 
 UltimateCanvas.prototype.startSubbing = function() {
 	this.ui.hideTurnoverButton();
