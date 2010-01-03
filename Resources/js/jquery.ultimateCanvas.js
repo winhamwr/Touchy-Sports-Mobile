@@ -28,7 +28,7 @@ UltimateCanvas.prototype.init = function() {
 	}
 };
 
-UltimateCanvas.prototype.initGame =	function() {
+UltimateCanvas.prototype.initGame = function() {
 	this.possession = UltimateCanvas.HOME_TEAM;
 	this.home_endzone = UltimateCanvas.LEFT_EZ;
 	this.away_endzone = UltimateCanvas.RIGHT_EZ;
@@ -228,7 +228,7 @@ UltimateCanvas.prototype.handleUndo = function(event) {
 			if(this.home_score + this.away_score == 0){
 				//Trying to undo the first pass. Weird?
 				this.ui.alert("Undoing nothing is kind of a metaphysical thing to try. Whoaaaa. Dude.");
-				return null;
+				return;
 			}
 
 			var point = this.points.pop();
@@ -259,7 +259,7 @@ UltimateCanvas.prototype.handleUndo = function(event) {
 			this.can_click = false;
 			this.getPlayer();
 			this.draw();
-			return null;
+			return;
 		}
 
 		//Undo the player selection for the last pass
@@ -315,12 +315,13 @@ UltimateCanvas.prototype.displayPossessionIndicator = function() {
  * Determine the attackers endzone
  */
 UltimateCanvas.prototype.getAttackersEndzone = function(){
+	var attackersEndzone = null;
 	if(this.possession == UltimateCanvas.HOME_TEAM){
 		//Home team has possession
-		var attackersEndzone = this.home_endzone;
+		attackersEndzone = this.home_endzone;
 	} else{
 		//Away team has possession
-		var attackersEndzone = this.away_endzone;
+		attackersEndzone = this.away_endzone;
 	}
 	return attackersEndzone;
 };
@@ -359,14 +360,15 @@ UltimateCanvas.prototype.handleEzCatch = function(){
  * and either starts another or ends the game.
  */
 UltimateCanvas.prototype.endPoint = function(possession){
+	var score = null;
 	if(possession == UltimateCanvas.HOME_TEAM){
 		this.home_score++;
 		this.possession = UltimateCanvas.AWAY_TEAM;
-		var score = this.home_score;
+		score = this.home_score;
 	}else{
 		this.away_score++;
 		this.possession = UltimateCanvas.HOME_TEAM;
-		var score = this.away_score;
+		score = this.away_score;
 	}
 	//Switch endzones
 	var a_ez = this.away_endzone;
