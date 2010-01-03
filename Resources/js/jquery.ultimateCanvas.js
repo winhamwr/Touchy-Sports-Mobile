@@ -196,6 +196,8 @@ UltimateCanvas.prototype.startSubbing = function() {
 	this.ui.showSubButton();
 	this.ui.hideUndoButton();
 	this.ui.showPlayerButtons();
+	/* TODO: Should show some notification that substitutions are happening here */
+	this.can_click = false;
 	this.subbing = true;
 };
 
