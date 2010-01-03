@@ -58,7 +58,7 @@ BaseDbController.prototype.startNewGame= function() {
 }
 
 BaseDbController.prototype.saveGame = function(ultimate_canvas) {
-	var savable_keys = ['possession', 'home_endzone', 'away_endzone', 'home_score', 'away_score', 'points', 'passes']
+	var savable_keys = ['possession', 'home_endzone', 'away_endzone', 'home_score', 'away_score', 'points', 'passes', 'home_team']
 
 	var saved_data = {}
 	for(i in savable_keys){
