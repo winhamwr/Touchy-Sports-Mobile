@@ -53,6 +53,7 @@ UltimateCanvas.prototype.initPoint = function() {
 		point.passes = this.passes;
 		point.home_score = this.home_score;
 		point.away_score = this.away_score;
+		point.home_players = this.home_team.getPlayingPlayerNames();
 		// Determine who just scored and subtract that point. Score is the score at the start of the point
 		if(this.possession == UltimateCanvas.HOME_TEAM){
 			//away scored
