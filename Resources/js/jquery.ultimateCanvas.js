@@ -87,7 +87,6 @@ UltimateCanvas.prototype.initPoint = function() {
  */
 UltimateCanvas.prototype.handlePass = function(event) {
 	var c = this;
-
         if(!c.choose_away_player){
                 if(c.possession==UltimateCanvas.HOME_TEAM){
                         c.handleHomePass(event);
@@ -107,7 +106,7 @@ UltimateCanvas.prototype.handleHomePass = function(event) {
 
         // If clicking is disabled, don't do anything
         if(c.can_click == false){
-                c.ui.alert("Whoa! Hold your horses. Who caught that last pass?");
+					c.ui.alert("Doh! Finish subbing or click the No Sub button.");
                 return
         }
 
@@ -133,6 +132,16 @@ UltimateCanvas.prototype.handleHomePass = function(event) {
 UltimateCanvas.prototype.handleAwayPass = function(event) {
         var c = this;
 
+        // If clicking is disabled, don't do anything
+        if(c.can_click == false){
+				if(c.subbing == true) {
+					c.ui.alert("Doh! Finish subbing or click the No Sub button.");
+				} else {
+					c.ui.alert("Whoa! Hold your horses. Who caught that last pass?");
+				}
+                return
+        }
+		
         var new_pass = {
                 "x":event.clientX,
                 "y":event.clientY
@@ -384,7 +393,6 @@ UltimateCanvas.prototype.endPoint = function(possession){
 		this.initGame();
 	} else {
 		this.initPoint();
-		console.log("you are here!");
 		this.startSubbing();	// a point was scored, but the game isn't over; see if there are substitutions
 	}
 };
