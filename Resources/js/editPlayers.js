@@ -1,10 +1,8 @@
-
 $(document).ready(function(){
     $("#buttonAdd").click(function() {
         addPlayer();
     });
 });
-
 
 function addPlayer() {
     console.log("addPlayer");
@@ -13,10 +11,10 @@ function addPlayer() {
     var num = (document.getElementById("theValue").value -1)+ 2;
     numi.value = num;
     var divIdName = "my"+num+"Div";
-    $("#content").append("<input type=\"text\" id=divIdName value=\"Name\"</input> <a href=\"javascript:;\" onclick=\"removePlayer(\'"+divIdName+"\')\">Remove</a><p></p>");
-}
+    $("#content").append("<div id='"+divIdName+"'><input type=\"text\" value=\"Name\"</input> <a href=\"javascript:;\" onclick=\"removePlayer(\'"+divIdName+"\')\">Remove</a></div>");
+};
 
 function removePlayer(player) {
     console.log("removePlayer");
     $("#"+player).remove();
-}
+};
