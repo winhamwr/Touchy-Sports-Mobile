@@ -23,7 +23,10 @@ and open the template in the editor.
 	</style>
   </head>
   <body>
-	  <div id="control_bar"><button id="reset_game">Reset Game</button></div>
+	  <div id="control_bar">
+		  <button id="reset_game">Reset Game</button>
+		  <button id="reset_all">Reset All</button>
+	  </div>
 	  <div id="games">
 
 	  </div>
@@ -47,7 +50,12 @@ and open the template in the editor.
 				$games.append('<div class="game" id="game_'+val+'">'+game_str+'</div>');
 			});
 
-			$('#games').click(function(event){
+			$('#reset_game').click(function(event){
+				$db.startNewGame();
+			});
+			$('#reset_all').click(function(event){
+				localStorage.setItem('STORED_GAMES', null);
+				localStorage.setItem('game1', JSON.stringify(null));
 				$db.startNewGame();
 			});
 		});
