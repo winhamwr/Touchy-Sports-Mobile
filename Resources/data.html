@@ -11,16 +11,37 @@ and open the template in the editor.
 	<script type="text/javascript" src="js/jquery.ultimateCanvas.js"></script>
 	<script type="text/javascript" src="js/baseDbController.js"></script>
 	<script type="text/javascript" src="js/json2.js"></script>
+	<style>
+		#games > .game{
+			padding-top: 2em;
+			padding-bottom: 2em;
+			border: .25em solid red;
+		}
+	</style>
   </head>
   <body>
+	  <div id="games">
+
+	  </div>
     
 	<script type="text/javascript">
 		$(document).ready(function(){
+			var $games = $('#games');
 			var $db = new db_controller();
-			$db.continueGame(1);
-			var game = $db._getGameData();
-			var game_str = JSON.stringify(game);
-			alert(game_str);
+			var game_ids = $db.getStoredGames();
+			var used_ids = [];
+			$.each(game_ids, function(i, val){
+				if($.inArray(val, used_ids) != -1){
+					return;
+				}
+				used_ids.push(val);
+
+				$db.continueGame(val);
+				var game = $db._getGameData();
+				var game_str = JSON.stringify(game);
+				$games.append('<h2 class="game_id">'+val+'</h2>');
+				$games.append('<div class="game" id="game_'+val+'">'+game_str+'</div>');
+			});
 		});
 	</script>
   </body>
