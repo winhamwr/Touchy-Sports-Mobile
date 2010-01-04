@@ -143,6 +143,7 @@ UltimateCanvas.prototype.handleAwayPass = function(event) {
 				if(c.subbing == true) {
 					c.ui.alert("Doh! Finish subbing or click the No Sub button.");
                 return
+			}
         }
 		
         var new_pass = {
