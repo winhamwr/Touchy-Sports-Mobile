@@ -28,7 +28,7 @@ UltimateCanvas.prototype.init = function() {
 	}
 };
 
-UltimateCanvas.prototype.initGame =	function() {
+UltimateCanvas.prototype.initGame = function() {
 	this.possession = UltimateCanvas.HOME_TEAM;
 	this.home_endzone = UltimateCanvas.LEFT_EZ;
 	this.away_endzone = UltimateCanvas.RIGHT_EZ;
@@ -53,6 +53,7 @@ UltimateCanvas.prototype.initPoint = function() {
 		point.passes = this.passes;
 		point.home_score = this.home_score;
 		point.away_score = this.away_score;
+		point.home_players = this.home_team.getPlayingPlayerNames();
 		// Determine who just scored and subtract that point. Score is the score at the start of the point
 		if(this.possession == UltimateCanvas.HOME_TEAM){
 			//away scored
@@ -114,7 +115,9 @@ UltimateCanvas.prototype.handleHomePass = function(event) {
 
         var new_pass = {
                 "x":event.clientX,
-                "y":event.clientY
+                "y":event.clientY,
+		"team":'HOME',
+		'receiver':null
         };
         c.passes.push(new_pass);
 
@@ -144,7 +147,9 @@ UltimateCanvas.prototype.handleAwayPass = function(event) {
 		
         var new_pass = {
                 "x":event.clientX,
-                "y":event.clientY
+                "y":event.clientY,
+		"team":'AWAY',
+		'receiver':null
         };
         c.passes.push(new_pass);
 
@@ -189,14 +194,29 @@ UltimateCanvas.prototype.handlePlayerClick = function(playerClicked) {
 	this.ui.hidePlayerButtons();
 
 	if(this.scoring_pass){
+		this.logReception(playerClicked)
 		this.endPoint(this.possession);
 	} else if (this.subbing) {
 		this.showSub(playerClicked);
 	} else {
+		this.logReception(playerClicked)
 		// Now that we've selected a player, we can handle field clicks again
 		this.can_click = true;
 	}
 };
+
+/**
+ *Log a player as having been the receiver on the most recent pass.
+ */
+UltimateCanvas.prototype.logReception = function(player) {
+	if(player == null){
+		console.log("trying to log a reception for a null player");
+		return;
+	}
+	var last_pass = this.passes.pop();
+	last_pass['receiver'] = player;
+	this.passes.push(last_pass);
+}
 
 UltimateCanvas.prototype.startSubbing = function() {
 	this.ui.hideTurnoverButton();
@@ -239,7 +259,7 @@ UltimateCanvas.prototype.handleUndo = function(event) {
 			if(this.home_score + this.away_score == 0){
 				//Trying to undo the first pass. Weird?
 				this.ui.alert("Undoing nothing is kind of a metaphysical thing to try. Whoaaaa. Dude.");
-				return null;
+				return;
 			}
 
 			var point = this.points.pop();
@@ -270,7 +290,7 @@ UltimateCanvas.prototype.handleUndo = function(event) {
 			this.can_click = false;
 			this.getPlayer();
 			this.draw();
-			return null;
+			return;
 		}
 
 		//Undo the player selection for the last pass
@@ -326,12 +346,13 @@ UltimateCanvas.prototype.displayPossessionIndicator = function() {
  * Determine the attackers endzone
  */
 UltimateCanvas.prototype.getAttackersEndzone = function(){
+	var attackersEndzone = null;
 	if(this.possession == UltimateCanvas.HOME_TEAM){
 		//Home team has possession
-		var attackersEndzone = this.home_endzone;
+		attackersEndzone = this.home_endzone;
 	} else{
 		//Away team has possession
-		var attackersEndzone = this.away_endzone;
+		attackersEndzone = this.away_endzone;
 	}
 	return attackersEndzone;
 };
@@ -370,14 +391,15 @@ UltimateCanvas.prototype.handleEzCatch = function(){
  * and either starts another or ends the game.
  */
 UltimateCanvas.prototype.endPoint = function(possession){
+	var score = null;
 	if(possession == UltimateCanvas.HOME_TEAM){
 		this.home_score++;
 		this.possession = UltimateCanvas.AWAY_TEAM;
-		var score = this.home_score;
+		score = this.home_score;
 	}else{
 		this.away_score++;
 		this.possession = UltimateCanvas.HOME_TEAM;
-		var score = this.away_score;
+		score = this.away_score;
 	}
 	//Switch endzones
 	var a_ez = this.away_endzone;
@@ -390,7 +412,7 @@ UltimateCanvas.prototype.endPoint = function(possession){
 	this.ui.alert("omg. You scored!. You've got "+score+" points!\nNow sub in some new playas, homie!");
 	if(score >= this._options.score_limit){
 		this.ui.alert("Whoa. You totally scored enough points to make you the winner!");
-		this.initGame();
+		//this.initGame();
 	} else {
 		this.initPoint();
 		this.startSubbing();	// a point was scored, but the game isn't over; see if there are substitutions
