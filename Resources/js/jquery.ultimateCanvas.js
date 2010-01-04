@@ -108,6 +108,9 @@ UltimateCanvas.prototype.handleHomePass = function(event) {
         // If clicking is disabled, don't do anything
         if(c.can_click == false){
 					c.ui.alert("Doh! Finish subbing or click the No Sub button.");
+				} else {
+					c.ui.alert("Whoa! Hold your horses. Who caught that last pass?");
+				}
                 return
         }
 
@@ -139,9 +142,6 @@ UltimateCanvas.prototype.handleAwayPass = function(event) {
         if(c.can_click == false){
 				if(c.subbing == true) {
 					c.ui.alert("Doh! Finish subbing or click the No Sub button.");
-				} else {
-					c.ui.alert("Whoa! Hold your horses. Who caught that last pass?");
-				}
                 return
         }
 		
