@@ -11,15 +11,19 @@ and open the template in the editor.
 	<script type="text/javascript" src="js/jquery.ultimateCanvas.js"></script>
 	<script type="text/javascript" src="js/baseDbController.js"></script>
 	<script type="text/javascript" src="js/json2.js"></script>
-	<style>
+	<style type="text/css">
 		#games > .game{
 			padding-top: 2em;
 			padding-bottom: 2em;
 			border: .25em solid red;
 		}
+		#games {
+			display: inline;
+		}
 	</style>
   </head>
   <body>
+	  <div id="control_bar"><button id="reset_game">Reset Game</button></div>
 	  <div id="games">
 
 	  </div>
@@ -41,6 +45,10 @@ and open the template in the editor.
 				var game_str = JSON.stringify(game);
 				$games.append('<h2 class="game_id">'+val+'</h2>');
 				$games.append('<div class="game" id="game_'+val+'">'+game_str+'</div>');
+			});
+
+			$('#games').click(function(event){
+				$db.startNewGame();
 			});
 		});
 	</script>
