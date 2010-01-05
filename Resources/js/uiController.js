@@ -64,7 +64,7 @@ WebUiController.prototype.alert = function(msg) {
  */
 WebUiController.prototype.displayScore = function(team, ez, score) {
 	var context = this.canvas[0].getContext("2d");
-	context.font = "bold 12px sans-serif";
+	context.font = "bold 20px sans-serif";
 
 	if(team == 0){
 		// home score
