@@ -71,7 +71,7 @@ function saveTeam() {
 	var $playerDivs = $('#content > div');
 	$.each($playerDivs, function() {
 		var playerName = ($(this).children().val());
-		players.push(playerName);
+		players.push(new UltimatePlayer(playerName));
 	});
 	var newTeam = new UltimateTeam('StepDads', players);
 	newTeam.setStartingLineup(newTeam.players.slice(0,UltimateTeam.MAX_IN_PLAY));
