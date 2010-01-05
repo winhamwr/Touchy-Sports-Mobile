@@ -9,8 +9,8 @@ function WebUiController(canvas) {
 mixin(WebUiController.prototype, uiControlling);
 
 WebUiController.prototype.init = function() {
-	this.WIDTH_OFFSET = -15;
-	this.HEIGHT_OFFSET = -50;
+	this.WIDTH_OFFSET = 15;
+	this.HEIGHT_OFFSET = -40;
 
 	this.initField();
 	

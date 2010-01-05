@@ -60,12 +60,15 @@ h1,h2
 	color:#900;
 }
 
+#field_wrap {
+	width: 100%;
+}
 #field {
 	margin: 0;
 	background: #BBBBBB url(/images/star.gif) repeat-x;
 }
 #player-bar {
-	width: 480px;
+	width: 100%;
 	position: absolute;
 	left: 0px;
 	top: 0px;
@@ -103,6 +106,7 @@ h1,h2
 
 #player-bar > div > div > button {
 	background: #222 url(/images/alert-overlay.png) repeat-x;
+	width: 10%;
 }
 
 #menu-bar {
