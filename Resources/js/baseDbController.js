@@ -68,6 +68,7 @@ BaseDbController.prototype.saveGame = function(ultimate_canvas) {
 		saved_data[key] = ultimate_canvas[key];
 	}
 
+
 	this._storeGameData(JSON.stringify(saved_data));
 };
 
@@ -80,6 +81,12 @@ BaseDbController.prototype.loadGame = function(ultimate_canvas) {
 			ultimate_canvas[key] = game[key];
 		}
 	}
+	// Load the home team object
+	var home_team_d = game['home_team'];
+	var home_team = new UltimateTeam(home_team_d['name'], home_team_d['players']);
+	home_team.playersInPlay = home_team_d['playersInPlay'];
+
+	ultimate_canvas['home_team'] = home_team;
 };
 
 BaseDbController.prototype._getGameData= function() {
