@@ -77,7 +77,7 @@
 			function loadHomeTeam() {
 
 				var home_team_j = localStorage.getItem('CURRENT_TEAM');
-				if(!home_team_j == null){
+				if(home_team_j != null){
 					localStorage.removeItem('CURRENT_TEAM');
 					var home_team_d = JSON.parse(home_team_j);
 					var home_team = new UltimateTeam(home_team_d['name'], home_team_d['players']);
