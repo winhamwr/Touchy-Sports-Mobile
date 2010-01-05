@@ -54,9 +54,7 @@ and open the template in the editor.
 				$db.startNewGame();
 			});
 			$('#reset_all').click(function(event){
-				localStorage.setItem('STORED_GAMES', null);
-				localStorage.setItem('game1', JSON.stringify(null));
-				$db.startNewGame();
+				localStorage.clear();
 			});
 		});
 	</script>
