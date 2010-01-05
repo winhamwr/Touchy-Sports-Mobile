@@ -75,21 +75,21 @@
 			 * expect there to be a CURRENT_TEAM in localStorage.
 			 */
 			function loadHomeTeam() {
-				var db = new db_controller();
 
-				if(db.gameExists()){
-					return {};
-				} else {
-					var home_team_j = localStorage.getItem('CURRENT_TEAM');
-					if(home_team_j == null){
-						alert("Error loading current team");
-						1/0;
-					}
+				var home_team_j = localStorage.getItem('CURRENT_TEAM');
+				if(!home_team_j == null){
+					localStorage.remove('CURRENT_TEAM');
 					var home_team_d = JSON.parse(home_team_j);
 					var home_team = new UltimateTeam(home_team_d['name'], home_team_d['players']);
 					home_team.playersInPlay = home_team_d['playersInPlay'];
 
 					return home_team;
+				}
+
+				var db = new db_controller();
+				if(!db.gameExists()){
+					alert("Error loading team. Must visit team management before starting a new game");
+					1/0;
 				}
 			};
 
