@@ -69,27 +69,31 @@
 	<script type="text/javascript">
 		$(document).ready(function(){
 
-			// Until we have the team creation/loading working, just going to
-			// generate a team and load them here for testing.
-			function createTestTeam() {
-				var player_names = new Array('Kail','Wes','Andy','Eric','Jack','Jim','Jose',
-					'Alpha','Beta','Chi','Delta','Epsilon','Gamma','Omega','Sigma','Theta','Zeta');
+			/**
+			 * Load the home team this game will use. If it's a continuation
+			 * of an existing game, just load from the save. If it's not, then
+			 * expect there to be a CURRENT_TEAM in localStorage.
+			 */
+			function loadHomeTeam() {
+				var db = new db_controller();
 
-				var players = new Array();
-				$.each(player_names, function(i, name){
-					var player = new UltimatePlayer(name);
-					players.push(player);
-				});
+				if(db.gameExists()){
+					return {};
+				} else {
+					var home_team_j = localStorage.getItem('CURRENT_TEAM');
+					if(home_team_j == null){
+						alert("Error loading current team");
+						1/0;
+					}
+					var home_team_d = JSON.parse(home_team_j);
+					var home_team = new UltimateTeam(home_team_d['name'], home_team_d['players']);
+					home_team.playersInPlay = home_team_d['playersInPlay'];
 
-				var home_team = new UltimateTeam('Stepdads', players);
-
-				var starting_players = players.slice(0, 7);
-				home_team.setStartingLineup(starting_players);
-
-				return home_team;
+					return home_team;
+				}
 			};
 
-			var home_team = createTestTeam();
+			var home_team = loadHomeTeam();
 
 			var canvases = $('#field').ultimateCanvas(
 				{
