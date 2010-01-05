@@ -2,15 +2,20 @@
   <head>
     <title>Team Management</title>
     <script type="text/javascript" src="js/jquery-1.3.2.js"></script>
+	<script type="text/javascript" src="js/json2.js"></script>
+	<script type="text/javascript" src="js/touchysports.team.js"></script>
+	<script type="text/javascript" src="js/baseDbController.js"></script>
     <script type="text/javascript" src="js/editPlayers.js"></script>
+	<link type="text/css" href="css/editPlayers.css" rel="stylesheet" />
   </head>
   
   <body>
     <div id="doc">
       <h1>Player Editor</h1>
+	  <div id="clearTeam">Start Over</div>
       <input type="button" id="buttonAdd" value="Add"/>
-      <input type="button" value="Save" class="buttonSave"/>
-      <input type="button" value="Cancel" class="buttonCancel"/>
+      <input type="button" id="buttonSave" value="Save" class="buttonSave"/>
+      <input type="button" id="buttonCancel" value="Cancel" class="buttonCancel"/>
       <p></p>
       <input type="hidden" value="0" id="theValue" />
       <div id="content"></div>
