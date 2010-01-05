@@ -10,6 +10,11 @@ BaseDbController.prototype.init = function() {
 		localStorage.getItem = function(foo, bar){return null};
 		return;
 	}
+	var cur_game_id = localStorage.getItem('cur_game_id');
+	if(cur_game_id != null){ // We already have a game going
+		this.continueGame(cur_game_id);
+	} 
+	return;
 };
 
 BaseDbController.prototype.getStoredGames = function() {

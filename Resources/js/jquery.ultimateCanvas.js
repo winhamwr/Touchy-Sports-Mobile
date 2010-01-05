@@ -14,7 +14,6 @@ UltimateCanvas.prototype.init = function() {
 	this.ui = new this._options.ui_controller(this.canvas);
 	this.ui.init();
 	this.db = new this._options.db_controller();
-	this.db.continueGame(1);
 	//this.db.startNewGame();
 	this.home_team = this._options.home_team;
 
@@ -24,6 +23,7 @@ UltimateCanvas.prototype.init = function() {
 		this.db.loadGame(this);
 		this.draw();
 	}else{
+		this.db.startNewGame();
 		this.initGame();
 	}
 };
