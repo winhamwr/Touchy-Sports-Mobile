@@ -14,6 +14,13 @@ UltimateTeam.prototype.init = function(name, players) {
 };
 
 /**
+ * Get the primary identifier for this object. Should be unique.
+ */
+UltimateTeam.prototype.getPk = function() {
+	return this.name;
+}
+
+/**
  * Set the players that are in the game to start
  */
 UltimateTeam.prototype.setStartingLineup = function(starting_players) {
