@@ -10,15 +10,16 @@ and open the template in the editor.
 	<script type="text/javascript" src="js/jquery-1.3.2.js"></script>
 	<script type="text/javascript" src="js/jquery.ultimateCanvas.js"></script>
 	<script type="text/javascript" src="js/baseDbController.js"></script>
-	<script type="text/javascript" src="js/json2.js"></script>
 	<style type="text/css">
 		#games > .game{
 			padding-top: 2em;
 			padding-bottom: 2em;
 			border: .25em solid red;
+			width: 100%;
 		}
 		#games {
 			display: inline;
+			width: 100%;
 		}
 	</style>
   </head>
@@ -47,7 +48,7 @@ and open the template in the editor.
 				var game = $db._getGameData();
 				var game_str = JSON.stringify(game);
 				$games.append('<h2 class="game_id">'+val+'</h2>');
-				$games.append('<div class="game" id="game_'+val+'">'+game_str+'</div>');
+				$games.append('<textarea class="game" id="game_'+val+'">'+game_str+'</textarea>');
 			});
 
 			$('#reset_game').click(function(event){
