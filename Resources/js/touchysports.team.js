@@ -31,7 +31,7 @@ UltimateTeam.prototype.setStartingLineup = function(starting_players) {
 	var players = this.players;
 	$.each(this.playersInPlay, function(i, player) {
 		var player_index = $.inArray(player, players);
-		if(player_index == -1) { // Not in the players list
+		if(player_index == -1) { // Not in the players listfield.html
 			players.push(player);
 		}
 	});
@@ -78,10 +78,11 @@ UltimateTeam.prototype.findPlayerByName = function(playerArray, playerName) {
 };
 
 UltimateTeam.prototype.getBenchedPlayers = function() {
+        var t = this;
 	var playersBenched = new Array();
-	var playersInPlay = this.playersInPlay;
+	var playersInPlay = t.playersInPlay;
 	$.each(this.players, function(i, player) {
-		var player_index = $.inArray(player, playersInPlay);
+                var player_index = t.findPlayerByName(playersInPlay, player.name);
 		if (player_index == -1) {
 			playersBenched.push(player);
 		}
