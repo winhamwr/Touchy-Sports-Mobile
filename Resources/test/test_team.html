@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+	<meta charset="utf-8">
+	<script src="http://code.jquery.com/jquery-latest.js"></script>
+	<link rel="stylesheet" href="http://github.com/jquery/qunit/raw/master/qunit/qunit.css" type="text/css" media="screen" />
+	<script type="text/javascript" src="http://github.com/jquery/qunit/raw/master/qunit/qunit.js"></script>
+
+	<script type="text/javascript" src="../js/touchysports.team.js"></script>
+	<script>
+		$(document).ready(function(){
+
+			module("Initialization");
+			test("Test basic init", function() {
+				var test_name = 'foobar';
+				var team = new UltimateTeam(test_name, new Array());
+				equals(team.name, test_name);
+				equals(team.players.length, 0);
+				equals(team.playersInPlay.length, 0);
+			});
+
+			module("Serialization");
+
+			test("Test only expected fields serialize", function() {
+				var test_name = 'foobar';
+				var team = new UltimateTeam(test_name, new Array());
+				team.foo = 'bar';
+
+				var j_team = JSON.stringify(team);
+				var deserialized_team = JSON.parse(j_team);
+
+				equals(typeof(deserialized_team.foo), 'undefined');
+			});
+
+		});
+  </script>
+</head>
+<body>
+  <h1 id="qunit-header">QUnit example</h1>
+ <h2 id="qunit-banner"></h2>
+ <h2 id="qunit-userAgent"></h2>
+ <ol id="qunit-tests"></ol>
+</body>
+</html>

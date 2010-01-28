@@ -7,22 +7,22 @@ UltimateTeam = function(name, ultimatePlayersArray) {
 
 UltimateTeam.MAX_IN_PLAY = 7;
 
-/**
- * All db-storable fields.
- */
-UltimateTeam.prototype.STORABLE_FIELDS = {
-	'name': ['TEAMMANAGER_CURRENT_TEAM', Team],
-	// Team to be used in any upcoming actions requiring opposing team.
-	'opposing_team': ['TEAMMANAGER_OPPOSING_TEAM', Team],
-	// Array of all saved teams
-	'teams': ['TEAMMANAGER_TEAMS', TeamCollection]
-};
 
 UltimateTeam.prototype.init = function(name, players) {
-	this.name = name;								// team name
-	this.players = players;		// All players on this team
-	this.playersInPlay = new Array();				// an array of type Player; all players in play
+	// Unique team name
+	this.name = name;
+	// All players on this team
+	this.players = players;
+	// an array of type Player; all players in play
+	this.playersInPlay = new Array();
 };
+
+UltimateTeam.prototype.toJSON = function() {
+	return JSON.stringify({
+		name: this.name,
+		players: this.players
+	});
+}
 
 /**
  * Get the primary identifier for this object. Should be unique.
