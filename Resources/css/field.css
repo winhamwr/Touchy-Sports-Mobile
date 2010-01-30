@@ -77,7 +77,7 @@ h1,h2
 }
 #player-bar > div {
 	width: 12%;
-	height: 44px;
+	height: 74px;
 	display: inline;
 	padding: 0;
 	margin: 0;
@@ -96,8 +96,8 @@ h1,h2
 	cursor: pointer;
 	white-space: normal;
 	width: 64px;
-	height: 44px;
-	font-size: x-small;
+	height: 74px;
+	font-size: 14px;
 }
 
 /**#player-bar > div.inactive > div > button {
@@ -106,30 +106,78 @@ h1,h2
 
 #player-bar > div > div > button {
 	background: #222 url(/images/alert-overlay.png) repeat-x;
-	width: 10%;
+	width: 12%;
 }
 
 #menu-bar {
+	width: 100%;
+	position: absolute;
+	bottom: 8px;
+	left:0px;
+	z-index: 1000;
+	height:56px;
+	/*
 	position: relative;
 	left: 0px;
-	bottom: 25px;
+	bottom: 46px;
+	*/
 }
 
 #menu-bar > div {
+/*
+	width: 12%;
+	height: 56px;
 	display: inline;
+	padding: 0;
+	margin: 0;
+	*/
+	display: inline;
+	height:44px;
 }
 
-#undo_b {
-	position: relative;
-	left: 0px;
+#undo_b > button {
+	left:0px;
+	display: inline-block;
+	padding: 5px 10px 6px;
+	color: #000;
+	text-decoration: none;
+	font-size:16px;
+	font-weight: bold;
+	line-height: 1;
+	cursor: pointer;
+	white-space: normal;
+	width: 70px;
+	height: 44px;
 }
-#turnover_b {
+
+#turnover_b > button {
+	display: inline-block;
+	padding: 5px 10px 6px;
+	color: #000;
+	text-decoration: none;
+	font-size:16px;
+	font-weight: bold;
+	line-height: 1;
+	cursor: pointer;
+	white-space: normal;
+	width: 94px;
+	height: 44px;
+	/*
+	display: inline-block;
+	padding: 5px 10px 6px;
 	position: relative;
 	left: 322px;
+	height:24px;
+	width:50px;
+	*/
 }
 #sub_b {
+	display: inline-block;
+	padding: 5px 10px 6px;
 	position:relative;
 	display:inline;
 	left:0px;
 	bottom:70px;
+	height:20px;
+	width:40px;
 }

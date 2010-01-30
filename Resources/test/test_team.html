@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+	<meta charset="utf-8">
+	<script src="http://code.jquery.com/jquery-latest.js"></script>
+	<link rel="stylesheet" href="http://github.com/jquery/qunit/raw/master/qunit/qunit.css" type="text/css" media="screen" />
+	<script type="text/javascript" src="http://github.com/jquery/qunit/raw/master/qunit/qunit.js"></script>
+
+	<script type="text/javascript" src="../js/ts.deserialization.js"></script>
+	<script type="text/javascript" src="../js/touchysports.team.js"></script>
+	<script>
+		$(document).ready(function(){
+
+			module("Initialization");
+			test("Test basic init", function() {
+				var test_name = 'foobar';
+				var team = new UltimateTeam(test_name, new Array());
+				equals(team.name, test_name);
+				equals(team.players.length, 0);
+				equals(team.playersInPlay.length, 0);
+			});
+
+			module("Player");
+
+			test("Test name constructor", function() {
+				var player_name = 'Steve DBag';
+				var player = new UltimatePlayer(player_name);
+
+				equals(player.name, player_name);
+			});
+
+			test("Test serialization", function() {
+				var player_name = 'Steve DBag';
+				var player = new UltimatePlayer(player_name);
+				var player_j = JSON.stringify(player);
+
+				var new_player = deserializeObject(UltimatePlayer, player_j);
+				same(player, new_player);
+			});
+
+			module("Serialization");
+
+			test("Basic serialization", function() {
+				var test_name = 'foobar';
+				var team = new UltimateTeam(test_name, new Array());
+				var team_j = JSON.stringify(team);
+
+				var new_team = deserializeObject(UltimateTeam, team_j);
+				same(team.players.length, new_team.players.length);
+				same(team, new_team);
+			});
+
+		});
+  </script>
+</head>
+<body>
+  <h1 id="qunit-header">UltimateTeam and UltimatePlayer tests</h1>
+ <h2 id="qunit-banner"></h2>
+ <h2 id="qunit-userAgent"></h2>
+ <ol id="qunit-tests"></ol>
+</body>
+</html>

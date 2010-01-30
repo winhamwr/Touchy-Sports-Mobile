@@ -1,21 +1,40 @@
+
 UltimatePlayer = function(name) {
-	this.name = name
+	// See: http://stackoverflow.com/questions/383402/is-javascript-s-new-keyword-considered-harmful
+	if ( !(this instanceof arguments.callee) )
+	   throw Error("Constructor called as a function");
+
+	this.name = name;
 };
+
+// Member data that needs to be deserialized in to objects
+UltimatePlayer.NESTED_OBJECTS = {};
+
 UltimateTeam = function(name, ultimatePlayersArray) {
+	// See: http://stackoverflow.com/questions/383402/is-javascript-s-new-keyword-considered-harmful
+	if ( !(this instanceof arguments.callee) )
+	   throw Error("Constructor called as a function");
+
+	name = name || 'no-named desperados';
+	ultimatePlayersArray = ultimatePlayersArray || new Array();
+
 	this.init(name, ultimatePlayersArray);
 };
 
-UltimateTeam.prototype.init = function(name, players) {
-	this.name = name;								// team name
-	this.players = players;		// All players on this team
-	this.playersInPlay = new Array();				// an array of type Player; all players in play
+UltimateTeam.MAX_IN_PLAY = 7;
 
-        var maxPlayersInPlay_j = sessionStorage.getItem('max_players_in_play');              //Max number of players in play, set by gameSetup using sessionStorage
-        if (maxPlayersInPlay_j == null) {
-            this.maxPlayersInPlay = 7;
-        } else {
-            this.maxPlayersInPlay = JSON.parse(maxPlayersInPlay_j);
-        }
+
+UltimateTeam.prototype.init = function(name, players) {
+	// Unique team name
+	this.name = name;
+	// All players on this team
+	this.players = players;
+	// an array of type Player; all players in play
+	this.playersInPlay = new Array();
+};
+
+UltimateTeam.prototype.toString = function() {
+	return "Team: " + this.name;
 };
 
 /**

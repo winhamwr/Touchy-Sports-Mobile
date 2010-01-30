@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+	<meta charset="utf-8">
+	<script src="http://code.jquery.com/jquery-latest.js"></script>
+	<link rel="stylesheet" href="http://github.com/jquery/qunit/raw/master/qunit/qunit.css" type="text/css" media="screen" />
+	<script type="text/javascript" src="http://github.com/jquery/qunit/raw/master/qunit/qunit.js"></script>
+
+	<script type="text/javascript" src="../js/ts.deserialization.js"></script>
+	<script>
+		$(document).ready(function(){
+
+			var fooFoo = function(){
+				return this.foo + this.foo;
+			}
+
+			module("Non-conforming objects");
+
+			// Object without a no-arguments constructor
+			NoDefaultConstructorObj = function(foo){
+				this.foo = foo;
+			}
+			NoDefaultConstructorObj.NESTED_OBJECTS = {};
+			NoDefaultConstructorObj.prototype.fooFoo = fooFoo;
+
+			// Test object with no NESTED_OBJECTS static member
+			NoNestedObjectsObj = function(foo){
+				this.foo = foo;
+			}
+			NoNestedObjectsObj.prototype.fooFoo = fooFoo;
+
+			test("Test no default constructor", function() {
+				var orig_obj = new NoDefaultConstructorObj('foo');
+				var obj_j = JSON.stringify(orig_obj);
+
+				var new_obj = deserializeObject(NoDefaultConstructorObj, obj_j);
+				equals(new_obj.foo, 'foo');
+				equals(new_obj.fooFoo(), 'foofoo');
+			});
+
+			test("Test no NESTED_OBJECTS static member", function() {
+				var orig_obj = new NoNestedObjectsObj('foo');
+				var obj_j = JSON.stringify(orig_obj);
+
+				var new_obj = deserializeObject(NoNestedObjectsObj, obj_j);
+				equals(new_obj.foo, 'foo');
+				equals(new_obj.fooFoo(), 'foofoo');
+			});
+
+			module("Deserializing single-nested");
+
+			// Object with a single nested object
+			SingleNestedObj = function(foo){
+				this.foo = foo;
+				this.nested_obj = new NoDefaultConstructorObj(foo + foo);
+			}
+			SingleNestedObj.NESTED_OBJECTS = {'nested_obj': NoDefaultConstructorObj};
+			SingleNestedObj.prototype.fooFoo = fooFoo;
+
+			test("Normal functions work", function() {
+				var orig_obj = new SingleNestedObj('foo');
+				var obj_j = JSON.stringify(orig_obj);
+
+				var new_obj = deserializeObject(SingleNestedObj, obj_j);
+				equals(new_obj.foo, 'foo');
+				equals(new_obj.fooFoo(), 'foofoo');
+			});
+
+			test("Nested functions work", function() {
+				var orig_obj = new SingleNestedObj('foo');
+				var obj_j = JSON.stringify(orig_obj);
+
+				var new_obj = deserializeObject(SingleNestedObj, obj_j);
+				equals(new_obj.nested_obj.foo, 'foofoo');
+				equals(new_obj.nested_obj.fooFoo(), 'foofoofoofoo');
+			});
+
+			module("Deserializing double-nested");
+
+			// Object with a double nested object
+			DoubleNestedObj = function(foo){
+				this.foo = foo;
+				this.nested_obj = new SingleNestedObj(foo + foo);
+			}
+			DoubleNestedObj.NESTED_OBJECTS = {'nested_obj': SingleNestedObj};
+			DoubleNestedObj.prototype.fooFoo = fooFoo;
+
+			test("Normal functions work", function() {
+				var orig_obj = new DoubleNestedObj('foo');
+				var obj_j = JSON.stringify(orig_obj);
+
+				var new_obj = deserializeObject(DoubleNestedObj, obj_j);
+				equals(new_obj.foo, 'foo');
+				equals(new_obj.fooFoo(), 'foofoo');
+			});
+
+			test("Nested functions work", function() {
+				var orig_obj = new DoubleNestedObj('foo');
+				var obj_j = JSON.stringify(orig_obj);
+
+				var new_obj = deserializeObject(DoubleNestedObj, obj_j);
+				equals(new_obj.nested_obj.foo, 'foofoo');
+				equals(new_obj.nested_obj.fooFoo(), 'foofoofoofoo');
+			});
+
+			test("Double-Nested functions work", function() {
+				var orig_obj = new DoubleNestedObj('foo');
+				var obj_j = JSON.stringify(orig_obj);
+
+				var new_obj = deserializeObject(DoubleNestedObj, obj_j);
+				equals(new_obj.nested_obj.nested_obj.foo, 'foofoofoofoo');
+				equals(new_obj.nested_obj.nested_obj.fooFoo(), 'foofoofoofoofoofoofoofoo');
+			});
+
+			module("fromJSON call");
+
+			// Object without a no-arguments constructor
+			FromJsonObj = function(foo){
+				this.foo = foo;
+			}
+			FromJsonObj.NESTED_OBJECTS = {};
+			FromJsonObj.prototype.fromJSON = function(json){
+				this.foo = this.foo + this.foo;
+			}
+
+			test("Test fromJSON is called", function() {
+				var orig_obj = new FromJsonObj('foo');
+				var obj_j = JSON.stringify(orig_obj);
+
+				var new_obj = deserializeObject(FromJsonObj, obj_j);
+				equals(new_obj.foo, 'foofoo');
+			});	
+
+			module("Array of nested objects");
+
+			// Test object with an array of nested members
+			ArrayMembersObj = function(foo_array){
+				foo_array = foo_array || new Array();
+
+				this.foo_array = foo_array;
+				this.foo = foo_array.length;
+			}
+			ArrayMembersObj.prototype.origSize = function(){
+				return this.foo;
+			}
+			ArrayMembersObj.NESTED_OBJECTS = {'foo_array': NoNestedObjectsObj};
+
+			test("Single-nested array", function() {
+				var nno_array = Array();
+				for(var i=0; i<10; i++){
+					nno_array.push(new NoNestedObjectsObj(i));
+				}
+				var orig_obj = new ArrayMembersObj(nno_array);
+				var obj_j = JSON.stringify(orig_obj);
+
+				var new_obj = deserializeObject(ArrayMembersObj, obj_j);
+				same(orig_obj.foo_array.length, new_obj.foo_array.length);
+				same(orig_obj, new_obj);
+			});
+		});
+  </script>
+</head>
+<body>
+	<h1 id="qunit-header">Object Deserialization Helper Tests</h1>
+	<h2 id="qunit-banner"></h2>
+	<h2 id="qunit-userAgent"></h2>
+	<ol id="qunit-tests"></ol>
+</body>
+</html>

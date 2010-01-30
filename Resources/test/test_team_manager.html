@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+	<meta charset="utf-8">
+	<script src="http://code.jquery.com/jquery-latest.js"></script>
+	<link rel="stylesheet" href="http://github.com/jquery/qunit/raw/master/qunit/qunit.css" type="text/css" media="screen" />
+	<script type="text/javascript" src="http://github.com/jquery/qunit/raw/master/qunit/qunit.js"></script>
+
+	<script type="text/javascript" src="../js/ts.deserialization.js"></script>
+	<script type="text/javascript" src="../js/touchysports.team.js"></script>
+	<script type="text/javascript" src="../js/team_manager.js"></script>
+	<script>
+		$(document).ready(function(){
+
+			module("Initialization");
+			test("Test basic init", function() {
+				sessionStorage.clear();
+				var tm = new TeamManager(true, sessionStorage);
+
+				same(tm.teams, new Array());
+			});
+
+			module("Saving Teams");
+
+			test("Test saving empty team", function() {
+				sessionStorage.clear();
+
+				var team = new UltimateTeam('test name', new Array());
+				var team_array = new Array(team);
+				var team_array_j  = JSON.stringify(team_array);
+
+				var tm = new TeamManager(true, sessionStorage);
+				tm.teams = team_array;
+				tm.save();
+
+				var saved_team_array_j = sessionStorage.getItem('TEAMMANAGER_TEAMS');
+
+				same(team_array_j, saved_team_array_j);
+			});
+
+			test("Test saving full team", function() {
+				sessionStorage.clear();
+
+				var player_names = new Array('Kail','Wes','Andy','Eric','Jack','Jim','Jose',
+					'Alpha','Beta','Chi','Delta','Epsilon','Gamma','Omega','Sigma','Theta','Zeta');
+
+				var players = new Array();
+				$.each(player_names, function(i, name){
+					var player = new UltimatePlayer(name);
+					players.push(player);
+				});
+
+				var team = new UltimateTeam('test name2', players);
+				var team_array = new Array(team);
+				var team_array_j  = JSON.stringify(team_array);
+
+				var tm = new TeamManager(true, sessionStorage);
+				tm.teams = team_array;
+				tm.save();
+
+				var saved_team_array_j = sessionStorage.getItem('TEAMMANAGER_TEAMS');
+
+				same(team_array_j, saved_team_array_j);
+			});
+
+			test("Test saving 2 full teams", function() {
+				sessionStorage.clear();
+
+				var player_names = new Array('Kail','Wes','Andy','Eric','Jack','Jim','Jose');
+
+				var players = new Array();
+				$.each(player_names, function(i, name){
+					var player = new UltimatePlayer(name);
+					players.push(player);
+				});
+
+				var team1 = new UltimateTeam('test name1', players);
+				var team2 = new UltimateTeam('test name2', players);
+				var team_array = new Array(team1, team2);
+				var team_array_j  = JSON.stringify(team_array);
+
+				var tm = new TeamManager(true, sessionStorage);
+				tm.teams = team_array;
+				tm.save();
+
+				var saved_team_array_j = sessionStorage.getItem('TEAMMANAGER_TEAMS');
+
+				same(team_array_j, saved_team_array_j);
+			});
+
+			module("loading");
+
+			test("Test saving then loading an empty team", function() {
+				sessionStorage.clear();
+
+				var team = new UltimateTeam('test name', new Array());
+				var team_array = new Array(team);
+
+				var tm = new TeamManager(false, sessionStorage);
+				tm.teams = team_array;
+				tm.save();
+
+				var tm2 = new TeamManager(false, sessionStorage);
+				tm2.load();
+
+				same(team_array.length, tm.teams.length);
+				same(team_array, tm.teams);
+
+				same(tm.teams.length, tm2.teams.length);
+				same(tm.teams, tm2.teams);
+			});
+
+			test("Test saving full team", function() {
+				sessionStorage.clear();
+
+				var player_names = new Array('Kail','Wes','Andy','Eric','Jack','Jim','Jose');
+
+				var players = new Array();
+				$.each(player_names, function(i, name){
+					var player = new UltimatePlayer(name);
+					players.push(player);
+				});
+
+				var team = new UltimateTeam('test name2', players);
+				var team_array = new Array(team);
+				var team_array_j  = JSON.stringify(team_array);
+
+				var tm = new TeamManager(true, sessionStorage);
+				tm.teams = team_array;
+				tm.save();
+
+				var saved_team_array_j = sessionStorage.getItem('TEAMMANAGER_TEAMS');
+
+				same(team_array_j, saved_team_array_j);
+			});
+			test("Test saving then loading 2 full teams", function() {
+				sessionStorage.clear();
+
+				var player_names = new Array('Kail','Wes','Andy','Eric','Jack','Jim','Jose');
+
+				var players = new Array();
+				$.each(player_names, function(i, name){
+					var player = new UltimatePlayer(name);
+					players.push(player);
+				});
+
+				var team1 = new UltimateTeam('test name1', players);
+				var team2 = new UltimateTeam('test name2', players);
+				var team_array = new Array(team1, team2);
+
+				var tm = new TeamManager(false, sessionStorage);
+				tm.teams = team_array;
+				tm.save();
+
+				var tm2 = new TeamManager(false, sessionStorage);
+				tm2.teams = null;
+				tm2.load();
+
+				same(team_array, tm.teams);
+
+				same(tm.teams.length, tm2.teams.length);
+				same(tm.teams, tm2.teams);
+			});
+		});
+  </script>
+</head>
+<body>
+  <h1 id="qunit-header">UltimateTeam manager tests</h1>
+ <h2 id="qunit-banner"></h2>
+ <h2 id="qunit-userAgent"></h2>
+ <ol id="qunit-tests"></ol>
+</body>
+</html>
