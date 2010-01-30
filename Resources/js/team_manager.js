@@ -1,11 +1,21 @@
-TeamManager = function(){
-	this.storage = arguments[0] || localStorage;
+TeamManager = function(load_to_start, storage){
+	if(typeof(load_to_start) == 'undefined'){
+		load_to_start = true;
+	}
+	this.storage = storage || localStorage;
 
-	this.init();
+	this.init(load_to_start);
 }
 
-TeamManager.prototype.init = function() {
-	this.load();
+/**
+ * Initialize a TeamManager to keep track of all of the persisted teams.
+ * 
+ * @param should_load Whether or not to load the stored teams on init. Defaults to true.
+ **/
+TeamManager.prototype.init = function(should_load) {
+	if(should_load){
+		this.load();
+	}
 };
 
 /**
@@ -14,6 +24,24 @@ TeamManager.prototype.init = function() {
 TeamManager.prototype.STORABLE_FIELDS = {
 	// Array of all saved teams
 	'teams': ['TEAMMANAGER_TEAMS', UltimateTeam, new Array()]
+};
+
+/**
+ * Save all of the storable fields to the database.
+ */
+TeamManager.prototype.save = function() {
+	for(var field_name in this.STORABLE_FIELDS){
+		this._saveField(field_name);
+	}
+};
+
+/**
+ * Load all of this object's data from storage.
+ */
+TeamManager.prototype.load = function() {
+	for(var field_name in this.STORABLE_FIELDS){
+		this._loadField(field_name);
+	}
 };
 
 /**
@@ -39,10 +67,9 @@ TeamManager.prototype._loadField = function(field_name) {
 };
 
 /**
- * Save a field object to storage, taking in to account the field type.
+ * Save a field object to storage,
  */
 TeamManager.prototype._saveField = function(field_name) {
-	// Not in cache. Grab thee field from localstorage
 	var storage_key = this.STORABLE_FIELDS[field_name][0];
 
 	var field_j = JSON.stringify(null);
@@ -51,21 +78,4 @@ TeamManager.prototype._saveField = function(field_name) {
 	}
 
 	this.storage.setItem(storage_key, field_j);
-};
-/**
- * Save all of the storable fields to the database.
- */
-TeamManager.prototype.save = function() {
-	for(var field_name in this.STORABLE_FIELDS){
-		this._saveField(field_name);
-	}
-};
-
-/**
- * Load all of this object's data from storage.
- */
-TeamManager.prototype.load = function() {
-	for(var field_name in this.STORABLE_FIELDS){
-		this[field_name] = this._loadField(field_name);
-	}
 };

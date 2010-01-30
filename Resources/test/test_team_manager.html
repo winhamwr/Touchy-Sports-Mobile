@@ -15,7 +15,7 @@
 			module("Initialization");
 			test("Test basic init", function() {
 				sessionStorage.clear();
-				var tm = new TeamManager(sessionStorage);
+				var tm = new TeamManager(true, sessionStorage);
 
 				same(tm.teams, new Array());
 			});
@@ -29,7 +29,7 @@
 				var team_array = new Array(team);
 				var team_array_j  = JSON.stringify(team_array);
 
-				var tm = new TeamManager(sessionStorage);
+				var tm = new TeamManager(true, sessionStorage);
 				tm.teams = team_array;
 				tm.save();
 
@@ -54,7 +54,7 @@
 				var team_array = new Array(team);
 				var team_array_j  = JSON.stringify(team_array);
 
-				var tm = new TeamManager(sessionStorage);
+				var tm = new TeamManager(true, sessionStorage);
 				tm.teams = team_array;
 				tm.save();
 
@@ -66,8 +66,7 @@
 			test("Test saving 2 full teams", function() {
 				sessionStorage.clear();
 
-				var player_names = new Array('Kail','Wes','Andy','Eric','Jack','Jim','Jose',
-					'Alpha','Beta','Chi','Delta','Epsilon','Gamma','Omega','Sigma','Theta','Zeta');
+				var player_names = new Array('Kail','Wes','Andy','Eric','Jack','Jim','Jose');
 
 				var players = new Array();
 				$.each(player_names, function(i, name){
@@ -80,13 +79,87 @@
 				var team_array = new Array(team1, team2);
 				var team_array_j  = JSON.stringify(team_array);
 
-				var tm = new TeamManager(sessionStorage);
+				var tm = new TeamManager(true, sessionStorage);
 				tm.teams = team_array;
 				tm.save();
 
 				var saved_team_array_j = sessionStorage.getItem('TEAMMANAGER_TEAMS');
 
 				same(team_array_j, saved_team_array_j);
+			});
+
+			module("loading");
+
+			test("Test saving then loading an empty team", function() {
+				sessionStorage.clear();
+
+				var team = new UltimateTeam('test name', new Array());
+				var team_array = new Array(team);
+
+				var tm = new TeamManager(false, sessionStorage);
+				tm.teams = team_array;
+				tm.save();
+
+				var tm2 = new TeamManager(false, sessionStorage);
+				tm2.load();
+
+				same(team_array.length, tm.teams.length);
+				same(team_array, tm.teams);
+
+				same(tm.teams.length, tm2.teams.length);
+				same(tm.teams, tm2.teams);
+			});
+
+			test("Test saving full team", function() {
+				sessionStorage.clear();
+
+				var player_names = new Array('Kail','Wes','Andy','Eric','Jack','Jim','Jose');
+
+				var players = new Array();
+				$.each(player_names, function(i, name){
+					var player = new UltimatePlayer(name);
+					players.push(player);
+				});
+
+				var team = new UltimateTeam('test name2', players);
+				var team_array = new Array(team);
+				var team_array_j  = JSON.stringify(team_array);
+
+				var tm = new TeamManager(true, sessionStorage);
+				tm.teams = team_array;
+				tm.save();
+
+				var saved_team_array_j = sessionStorage.getItem('TEAMMANAGER_TEAMS');
+
+				same(team_array_j, saved_team_array_j);
+			});
+			test("Test saving then loading 2 full teams", function() {
+				sessionStorage.clear();
+
+				var player_names = new Array('Kail','Wes','Andy','Eric','Jack','Jim','Jose');
+
+				var players = new Array();
+				$.each(player_names, function(i, name){
+					var player = new UltimatePlayer(name);
+					players.push(player);
+				});
+
+				var team1 = new UltimateTeam('test name1', players);
+				var team2 = new UltimateTeam('test name2', players);
+				var team_array = new Array(team1, team2);
+
+				var tm = new TeamManager(false, sessionStorage);
+				tm.teams = team_array;
+				tm.save();
+
+				var tm2 = new TeamManager(false, sessionStorage);
+				tm2.teams = null;
+				tm2.load();
+
+				same(team_array, tm.teams);
+
+				same(tm.teams.length, tm2.teams.length);
+				same(tm.teams, tm2.teams);
 			});
 		});
   </script>
