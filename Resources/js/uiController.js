@@ -148,8 +148,8 @@ WebUiController.prototype.initSubDialog = function(ultimate_canvas) {
 		.dialog({
 			autoOpen: false,
 			modal: true,
-			width: 304,
-			height: 255,
+			width: 380,
+			height: 316,
 			show: 'drop',
 			closeOnEscape: false,
 			draggable: false,
@@ -158,7 +158,6 @@ WebUiController.prototype.initSubDialog = function(ultimate_canvas) {
 				backgroundColor: '#000',
 				opacity: .5
 			},
-			position: [81,5],
 			buttons: {
 				"Sub": function() {
 					ultimate_canvas.home_team.sub(subbingOut, subbingIn);
