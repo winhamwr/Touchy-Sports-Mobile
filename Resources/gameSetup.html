@@ -1,0 +1,44 @@
+<html>
+  <head>
+    <title>Game Setup</title>
+    <script type="text/javascript" src="js/jquery-1.3.2.js"></script>
+	<script type="text/javascript" src="js/json2.js"></script>
+	<script type="text/javascript" src="js/touchysports.team.js"></script>
+	<script type="text/javascript" src="js/baseDbController.js"></script>
+        <script type="text/javascript" src="js/gameSetup.js"></script>
+  </head>
+  
+  <body>
+    <div id="doc">
+        <h1>Game Setup</h1>
+	<p><a>Opposing Team Name</a></p>
+        <input type="text" value="Team Name">
+        <p><a>Disc Posession</a></p>
+        <form action="">
+            <select name="posession">
+                <option value="myTeam">My Team</option>
+                <option value="opposingTeam">Opposing Team</option>
+            </select>
+        </form>
+        <p><a>Field Direction</a></p>
+        <form action="">
+            <select name="direction">
+                <option value="Right">------></option>
+                <option value="Left"><------</option>
+            </select>
+        </form>
+	<p><a>Number of Players per Team</a></p>
+        </form>
+        <form action="">
+            <select name="direction">
+                <option value="five">5</option>
+                <option value="six">6</option>
+                <option value="seven">7</option>
+                <option value="eight">8</option>
+                <option value="nine">9</option>
+            </select>
+        </form>
+        <p><input type="button" id="buttonSave" value="Save" class="buttonSave"/></p>
+    </div>
+  </body>
+</html>
