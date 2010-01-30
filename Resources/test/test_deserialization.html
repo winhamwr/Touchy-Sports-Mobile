@@ -122,23 +122,17 @@
 				this.foo = foo;
 			}
 			FromJsonObj.NESTED_OBJECTS = {};
-			FromJsonObj.prototype.fooFoo = fooFoo;
-
-			// Test object with no NESTED_OBJECTS static member
-			NoNestedObjectsObj = function(foo){
-				this.foo = foo;
+			FromJsonObj.prototype.fromJSON = function(json){
+				this.foo = this.foo + this.foo;
 			}
-			NoNestedObjectsObj.prototype.fooFoo = fooFoo;
 
-			test("Test no default constructor", function() {
-				var orig_obj = new NoDefaultConstructorObj('foo');
+			test("Test fromJSON is called", function() {
+				var orig_obj = new FromJsonObj('foo');
 				var obj_j = JSON.stringify(orig_obj);
 
-				var new_obj = deserializeObject(NoDefaultConstructorObj, obj_j);
-				equals(new_obj.foo, 'foo');
-				equals(new_obj.fooFoo(), 'foofoo');
+				var new_obj = deserializeObject(FromJsonObj, obj_j);
+				equals(new_obj.foo, 'foofoo');
 			});	
-__
 		});
   </script>
 </head>
