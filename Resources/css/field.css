@@ -112,27 +112,18 @@ h1,h2
 #menu-bar {
 	width: 100%;
 	position: absolute;
+	display:inline;
 	bottom: 8px;
 	left:0px;
 	z-index: 1000;
 	height:56px;
-	/*
-	position: relative;
-	left: 0px;
-	bottom: 46px;
-	*/
 }
 
 #menu-bar > div {
-/*
-	width: 12%;
-	height: 56px;
-	display: inline;
-	padding: 0;
-	margin: 0;
-	*/
 	display: inline;
 	height:44px;
+	padding: 0;
+	margin: 0;
 }
 
 #undo_b > button {
@@ -162,22 +153,21 @@ h1,h2
 	white-space: normal;
 	width: 94px;
 	height: 44px;
-	/*
-	display: inline-block;
-	padding: 5px 10px 6px;
-	position: relative;
-	left: 322px;
-	height:24px;
-	width:50px;
-	*/
 }
-#sub_b {
+#sub_b  > button {
 	display: inline-block;
 	padding: 5px 10px 6px;
+	color: #000;
+	text-decoration: none;
+	font-size:16px;
+	font-weight: bold;
+	line-height: 1;
+	cursor: pointer;
+	white-space: normal;
+	width: 94px;
+	height: 44px;
 	position:relative;
-	display:inline;
 	left:0px;
-	bottom:70px;
-	height:20px;
-	width:40px;
+	bottom:45px;
+	/*left:165px;*/
 }
