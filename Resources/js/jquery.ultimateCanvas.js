@@ -425,7 +425,9 @@ UltimateCanvas.prototype.endPoint = function(possession){
 		//this.initGame();
 	} else {
 		this.initPoint();
-		this.startSubbing();	// a point was scored, but the game isn't over; see if there are substitutions
+		//this.startSubbing();	// a point was scored, but the game isn't over; see if there are substitutions
+		/* TODO: need to use the variable for opposing team name here instead of 'Nannies' */
+		this.ui.showGameInfoDialog(this.home_team.name, this.home_score, 'Nannies', this.away_score);	// a point was scored, but the game isn't over--show the status
 	}
 };
 

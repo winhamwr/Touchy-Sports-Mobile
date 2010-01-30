@@ -19,6 +19,9 @@ WebUiController.prototype.init = function() {
 	this.subbingIn = null;
 	this.subbingOut = null;
 	this.hideSubButton();
+	
+	/* game info dialog stuff */
+	this.$gameInfoDialog = null;
 };
 
 WebUiController.prototype.bindEvents = function(ultimate_canvas) {
@@ -48,7 +51,9 @@ WebUiController.prototype.bindEvents = function(ultimate_canvas) {
 		ultimate_canvas.hideSub(false);	// the user is finished marking substitutions
 	});
 	
+	/* TODO: Move to dialog class */
 	this.initSubDialog(ultimate_canvas);
+	this.initGameInfoDialog(ultimate_canvas);
 }
 
 /*
@@ -182,16 +187,13 @@ WebUiController.prototype.initGameInfoDialog = function(ultimate_canvas) {
 	this.$gameInfoDialog = $('<div></div>')
 		.html('<div id="gameInfoBox">'+
 					'<table align="center">'+
-						'<thead>Game Status</thead>'+
-						'<tbody><tr>'+
-							'<td><div id="giUserTeamName" class="giName"></div><div id="giUserTeamScore" class="giScore"></div></td></tr><tr>'+
-							'<td><div id="giOppTeamName" class="giName"></div><div id="giOppTeamScore" class="giScore"></div></td></tr>'+
-					'</tbody></table></div>')
+						'<thead>Scoreboard</thead>'+
+						'<tbody></tbody></table></div>')
 		.dialog({
 			autoOpen: false,
 			modal: true,
-			width: 300,
-			height: 216,
+			width: 292,
+			height: 226,
 			show: 'drop',
 			closeOnEscape: false,
 			draggable: false,
@@ -202,15 +204,11 @@ WebUiController.prototype.initGameInfoDialog = function(ultimate_canvas) {
 			},
 			buttons: {
 				"Play Point": function() {
-					/* TODO: Implement this...
-						ultimate_canvas.myFunction();
-					*/
+					ultimate_canvas.hideSub(false);
 					$(this).dialog("close");
 				},
 				"Make Substitution": function() {
-					/* TODO: Implement this...
-						ultimate_canvas.myFunction();
-					*/
+					ultimate_canvas.startSubbing();
 					$(this).dialog("close");
 				}
 			}
@@ -218,6 +216,20 @@ WebUiController.prototype.initGameInfoDialog = function(ultimate_canvas) {
 
 		// remove the titlebar
 	this.$gameInfoDialog.dialog().parents(".ui-dialog").find(".ui-dialog-titlebar").remove();
+};
+
+WebUiController.prototype.showGameInfoDialog = function(userTeamName, userTeamScore, oppTeamName, oppTeamScore) {
+	// build the info for the dialog
+	var gameInfo = '';
+	gameInfo+='<tr><td><div id="giUserTeamName" class="giName">' + userTeamName + '</div>';	// add the user team name
+	gameInfo+='<div id="giUserTeamScore" class="giScore">' + userTeamScore + '</div></td></tr>';	// add the user team score
+	gameInfo+='<tr><td><div id="giOppTeamName" class="giName">' + oppTeamName + '</div>';	// add the opposing team name
+	gameInfo+='<div id="giOppTeamScore" class="giScore">' + oppTeamScore + '</div></td></tr>';	// add the opposing team score
+	// set the info to be displayed in the dialog
+	$(this.$gameInfoDialog.find('tbody')).html(gameInfo);
+	
+	// show the dialog
+	this.$gameInfoDialog.dialog('open');
 };
 
 ui_controller = WebUiController;
