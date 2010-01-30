@@ -17,25 +17,54 @@
         <p><a>Disc Possession</a></p>
         <form action="">
             <select id="possession">
-                <option value=0>My Team</option>
-                <!-- hardcoding these for now, should eventually be from ultimateCanvas I would think -->
-                <option value=1>Opposing Team</option>
+                <option id="myTeam">My Team</option>
+                <option id="opposingTeam">Opposing Team</option>
             </select>
         <p><a>Field Direction</a></p>
             <select id="direction">
-                <option value="Right">--------></option>
-                <option value="Left"><--------</option>
+                <option id="rightEZ">--------></option>
+                <option id="leftEZ"><--------</option>
             </select>
 	<p><a>Number of Players per Team</a></p>
+        <p><a>Default at 7 right now, this does nothing</a></p>
             <select id="totalPlayers">
                 <option value=5>5</option>
                 <option value=6>6</option>
-                <option value=7>7</option>
+                <option SELECTED value=7>7</option>
                 <option value=8>8</option>
                 <option value=9>9</option>
             </select>
         </form>
-        <p><input type="button" id="buttonSave" value="Save" class="buttonSave"/></p>
+        <input type="button" id="buttonSave" value="Save" class="buttonSave"/>
+        <a class="webLink" href="field.html">Start Game</a>
     </div>
+    <script type="text/javascript">
+        $(document).ready(function(){
+
+            /**
+            * Load the home team this game will use. If it's a continuation
+            * of an existing game, just load from the save. If it's not, then
+            * expect there to be a CURRENT_TEAM in sessionStorage.
+            */
+            function loadHomeTeam() {
+
+		var home_team_j = sessionStorage.getItem('CURRENT_TEAM');
+		if(home_team_j != null){
+                        sessionStorage.removeItem('CURRENT_TEAM');
+			var home_team_d = JSON.parse(home_team_j);
+			var home_team = new UltimateTeam(home_team_d['name'], home_team_d['players']);
+			home_team.playersInPlay = home_team_d['playersInPlay'];
+
+			return home_team;
+		}
+            };
+
+            var home_team = loadHomeTeam();
+
+            $("#buttonSave").click(function() {
+                saveGameSetup(home_team);
+            });
+        });
+    </script>
   </body>
 </html>

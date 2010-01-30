@@ -73,13 +73,14 @@
 			/**
 			 * Load the home team this game will use. If it's a continuation
 			 * of an existing game, just load from the save. If it's not, then
-			 * expect there to be a CURRENT_TEAM in localStorage.
+			 * expect there to be a CURRENT_TEAM in sessionStorage.
 			 */
 			function loadHomeTeam() {
 
-				var home_team_j = localStorage.getItem('CURRENT_TEAM');
+				var home_team_j = sessionStorage.getItem('CURRENT_TEAM');
+                                console.log(home_team_j);
 				if(home_team_j != null){
-					localStorage.removeItem('CURRENT_TEAM');
+					sessionStorage.removeItem('CURRENT_TEAM');
 					var home_team_d = JSON.parse(home_team_j);
 					var home_team = new UltimateTeam(home_team_d['name'], home_team_d['players']);
 					home_team.playersInPlay = home_team_d['playersInPlay'];
