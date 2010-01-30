@@ -14,6 +14,27 @@ InvalidDeserializationObjectException.prototype.toString = function() {
 };
 
 /**
+ * Determine if a variable looks like and quacks like an array.
+ *
+ * Yoinked from: http://javascript.crockford.com/remedial.html
+ * @param value The object to check for array-ness
+ * @return true if the given object really really looks like an array
+ **/
+isArray = function(value){
+	var s = typeof value;
+    if (s === 'object') {
+        if (value) {
+            if (typeof value.length === 'number' &&
+                    !(value.propertyIsEnumerable('length')) &&
+                    typeof value.splice === 'function') {
+				return true;
+            }
+        } 
+    }	
+	return false;
+};
+
+/**
  * Deserialize a conforming object from its required data, taking in to account
  * members that are objects that need deserialization themselves.
  *
@@ -29,7 +50,7 @@ InvalidDeserializationObjectException.prototype.toString = function() {
 deserializeObject = function(ToObject, json){
 	// Check conformance of the ToObject to make sure it's kosher for deserialization
 	if(typeof(ToObject.NESTED_OBJECTS) == 'undefined') {
-		throw new InvalidDeserializationObjectException('Deserializable objects must have a NESTED_OBJECTS static member')
+		ToObject.NESTED_OBJECTS = {};
 	}
 
 	var j_obj = JSON.parse(json);
@@ -38,10 +59,24 @@ deserializeObject = function(ToObject, json){
 	for(var property_name in j_obj){
 		if(property_name in ToObject.NESTED_OBJECTS){
 			// This is a nested object, call its deserialize
+
+			// We have to special-case arrays
+			// Doubly-nested arrays will blow up :(
+			var j_property = j_obj[property_name];
 			var member_obj_type = ToObject.NESTED_OBJECTS[property_name];
-			var member_obj_json_data = JSON.stringify(j_obj[property_name]);
-			var deserialized_member_obj = deserializeObject(member_obj_type, member_obj_json_data);
-			obj[property_name] = deserialized_member_obj;
+			if(isArray(j_property)){
+				for(var arr_key in j_property){
+					var orig_property = j_property[arr_key];
+					var orig_property_j = JSON.stringify(orig_property);
+					j_property[arr_key] = deserializeObject(member_obj_type, orig_property_j);
+				}
+				obj[property_name] = j_property;
+			} else{ // Normal single deserializable object
+
+				var member_obj_json_data = JSON.stringify(j_property);
+				var deserialized_member_obj = deserializeObject(member_obj_type, member_obj_json_data);
+				obj[property_name] = deserialized_member_obj;
+			}
 		}else{
 			// Easy, just assign the data
 			obj[property_name] = j_obj[property_name];

@@ -1,7 +1,23 @@
+
 UltimatePlayer = function(name) {
-	this.name = name
+	// See: http://stackoverflow.com/questions/383402/is-javascript-s-new-keyword-considered-harmful
+	if ( !(this instanceof arguments.callee) )
+	   throw Error("Constructor called as a function");
+
+	this.name = name;
 };
+
+// Member data that needs to be deserialized in to objects
+UltimatePlayer.NESTED_OBJECTS = {};
+
 UltimateTeam = function(name, ultimatePlayersArray) {
+	// See: http://stackoverflow.com/questions/383402/is-javascript-s-new-keyword-considered-harmful
+	if ( !(this instanceof arguments.callee) )
+	   throw Error("Constructor called as a function");
+
+	name = name || 'no-named desperados';
+	ultimatePlayersArray = ultimatePlayersArray || new Array();
+
 	this.init(name, ultimatePlayersArray);
 };
 
@@ -17,12 +33,6 @@ UltimateTeam.prototype.init = function(name, players) {
 	this.playersInPlay = new Array();
 };
 
-UltimateTeam.prototype.toJSON = function() {
-	return JSON.stringify({
-		name: this.name,
-		players: this.players
-	});
-}
 
 /**
  * Get the primary identifier for this object. Should be unique.

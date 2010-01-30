@@ -42,12 +42,9 @@
 				var orig_obj = new NoNestedObjectsObj('foo');
 				var obj_j = JSON.stringify(orig_obj);
 
-				try {
-					var new_obj = deserializeObject(NoNestedObjectsObj, obj_j);
-					ok(false, "Should have thrown an exception");
-				} catch (e) {
-					ok(e instanceof InvalidDeserializationObjectException, "Exception wasn't the expected type"+typeof(e));
-				}
+				var new_obj = deserializeObject(NoNestedObjectsObj, obj_j);
+				equals(new_obj.foo, 'foo');
+				equals(new_obj.fooFoo(), 'foofoo');
 			});
 
 			module("Deserializing single-nested");
@@ -133,6 +130,33 @@
 				var new_obj = deserializeObject(FromJsonObj, obj_j);
 				equals(new_obj.foo, 'foofoo');
 			});	
+
+			module("Array of nested objects");
+
+			// Test object with an array of nested members
+			ArrayMembersObj = function(foo_array){
+				foo_array = foo_array || new Array();
+
+				this.foo_array = foo_array;
+				this.foo = foo_array.size;
+			}
+			ArrayMembersObj.prototype.origSize = function(){
+				return this.foo;
+			}
+			ArrayMembersObj.NESTED_OBJECTS = {'foo_array': NoNestedObjectsObj};
+
+			test("Single-nested array", function() {
+				var nno_array = Array();
+				for(var i=0; i<10; i++){
+					nno_array.push(new NoNestedObjectsObj(i));
+				}
+				var orig_obj = new ArrayMembersObj(nno_array);
+				var obj_j = JSON.stringify(orig_obj);
+
+				var new_obj = deserializeObject(ArrayMembersObj, obj_j);
+				same(orig_obj.foo_array.size, new_obj.foo_array.size);
+				same(orig_obj, new_obj);
+			});
 		});
   </script>
 </head>
