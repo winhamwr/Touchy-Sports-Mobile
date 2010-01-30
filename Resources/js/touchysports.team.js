@@ -33,6 +33,9 @@ UltimateTeam.prototype.init = function(name, players) {
 	this.playersInPlay = new Array();
 };
 
+UltimateTeam.prototype.toString = function() {
+	return "Team: " + this.name;
+};
 
 /**
  * Get the primary identifier for this object. Should be unique.
