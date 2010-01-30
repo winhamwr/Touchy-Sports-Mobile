@@ -132,17 +132,6 @@ WebUiController.prototype.showSubDialog = function(home_team, playerLeavingName)
 	this.$subDialog.dialog('open');
 };
 
-WebUiController.prototype.subUpdated = function(ultimate_canvas) {
-	ultimate_canvas.home_team.sub(this.subbingOut, this.subbingIn);
-	ultimate_canvas.hideSub(true);
-	subbingIn = null;
-	subbingOut = null;
-};
-
-WebUiController.prototype.subCancelled = function(ultimate_canvas) {
-	ultimate_canvas.hideSub(false);
-};
-
 WebUiController.prototype.initSubDialog = function(ultimate_canvas) {
 	this.$subDialog = $('<div></div>')
 		.html('<div class="playerTable">'+
