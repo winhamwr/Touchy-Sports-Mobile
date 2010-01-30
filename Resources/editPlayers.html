@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Team Management</title>
+    <title>Create Team</title>
     <script type="text/javascript" src="js/jquery-1.3.2.js"></script>
+	<script type="text/javascript" src="js/ts.deserialization.js"></script>
 	<script type="text/javascript" src="js/touchysports.team.js"></script>
+	<script type="text/javascript" src="js/team_manager.js"></script>
 	<script type="text/javascript" src="js/baseDbController.js"></script>
-        <script type="text/javascript" src="js/editPlayers.js"></script>
+
+	<script type="text/javascript" src="js/editPlayers.js"></script>
 	<link type="text/css" href="css/editPlayers.css" rel="stylesheet" />
   </head>
   
@@ -26,17 +29,7 @@
     </div>
 	  <script type="text/javascript">
 		 $(document).ready(function(){
-			$("#buttonAdd").click(function() {
-				addPlayer();
-			});
-			$('#clearTeam').click(function() {
-				clearTeam();
-			});
-			$('#buttonSave').click(function() {
-				saveTeam();
-			});
-			loadTeam();
-			resizeUi();
+			$('#doc').teamEditor({});
 		}); 
 	  </script>
   </body>
