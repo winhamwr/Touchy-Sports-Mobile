@@ -132,17 +132,6 @@ WebUiController.prototype.showSubDialog = function(home_team, playerLeavingName)
 	this.$subDialog.dialog('open');
 };
 
-WebUiController.prototype.subUpdated = function(ultimate_canvas) {
-	ultimate_canvas.home_team.sub(this.subbingOut, this.subbingIn);
-	ultimate_canvas.hideSub(true);
-	subbingIn = null;
-	subbingOut = null;
-};
-
-WebUiController.prototype.subCancelled = function(ultimate_canvas) {
-	ultimate_canvas.hideSub(false);
-};
-
 WebUiController.prototype.initSubDialog = function(ultimate_canvas) {
 	this.$subDialog = $('<div></div>')
 		.html('<div class="playerTable">'+
@@ -187,7 +176,7 @@ WebUiController.prototype.initGameInfoDialog = function(ultimate_canvas) {
 	this.$gameInfoDialog = $('<div></div>')
 		.html('<div id="gameInfoBox">'+
 					'<table align="center">'+
-						'<thead>Scoreboard</thead>'+
+						'<thead></thead>'+
 						'<tbody></tbody></table></div>')
 		.dialog({
 			autoOpen: false,
@@ -226,6 +215,23 @@ WebUiController.prototype.showGameInfoDialog = function(userTeamName, userTeamSc
 	gameInfo+='<tr><td><div id="giOppTeamName" class="giName">' + oppTeamName + '</div>';	// add the opposing team name
 	gameInfo+='<div id="giOppTeamScore" class="giScore">' + oppTeamScore + '</div></td></tr>';	// add the opposing team score
 	// set the info to be displayed in the dialog
+	$(this.$gameInfoDialog.find('thead')).html('Scoreboard');
+	$(this.$gameInfoDialog.find('tbody')).html(gameInfo);
+	
+	// show the dialog
+	this.$gameInfoDialog.dialog('open');
+};
+
+/* playersInPlayListAsString - a comma separated string containing the list of players to start the game */
+WebUiController.prototype.showGameOpeningDialog = function(player_names) {
+	// build the info for the dialog
+	var gameInfo = '';
+	gameInfo+='<tr><td><div id="goPlayersList">';//Starting players:  ';
+	gameInfo+=player_names.join(', ');
+	gameInfo+='</div></td></tr>';
+	
+	// set the info to be displayed in the dialog
+	$(this.$gameInfoDialog.find('thead')).html('Starting Players');
 	$(this.$gameInfoDialog.find('tbody')).html(gameInfo);
 	
 	// show the dialog
@@ -233,29 +239,3 @@ WebUiController.prototype.showGameInfoDialog = function(userTeamName, userTeamSc
 };
 
 ui_controller = WebUiController;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
