@@ -36,6 +36,7 @@ a:hover {
 	margin-left:auto;
 	margin-right:auto;
 	text-align:center;
-	line-height:150%;
+	/*line-height:150%;*/
 	position:absolute;
+	height:320px;
 }
