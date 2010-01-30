@@ -5,6 +5,7 @@
 	<script type="text/javascript" src="js/touchysports.team.js"></script>
 	<script type="text/javascript" src="js/baseDbController.js"></script>
         <script type="text/javascript" src="js/gameSetup.js"></script>
+        <script type="text/javascript" src="js/jquery.ultimateCanvas.js"></script>
         <link type="text/css" href="css/layout.css" rel="stylesheet" />
   </head>
   
@@ -16,8 +17,9 @@
         <p><a>Disc Possession</a></p>
         <form action="">
             <select id="possession">
-                <option value="myTeam">My Team</option>
-                <option value="opposingTeam">Opposing Team</option>
+                <option value=0>My Team</option>
+                <!-- hardcoding these for now, should eventually be from ultimateCanvas I would think -->
+                <option value=1>Opposing Team</option>
             </select>
         <p><a>Field Direction</a></p>
             <select id="direction">

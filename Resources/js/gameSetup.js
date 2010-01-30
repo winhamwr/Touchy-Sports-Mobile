@@ -26,3 +26,7 @@ function saveGameSetup() {
     console.log(totalPlayersInPlay);
     sessionStorage.setItem('max_players_in_play', totalPlayersInPlay);
 }
+
+function loadGameSetup() {
+    alert('it works');
+}

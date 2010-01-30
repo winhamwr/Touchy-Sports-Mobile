@@ -14,7 +14,6 @@ UltimateCanvas.prototype.init = function() {
 	this.ui = new this._options.ui_controller(this.canvas);
 	this.ui.init();
 	this.db = new this._options.db_controller();
-	//this.db.startNewGame();
 	this.home_team = this._options.home_team;
 
 	this.ui.bindEvents(this);
@@ -29,6 +28,18 @@ UltimateCanvas.prototype.init = function() {
 };
 
 UltimateCanvas.prototype.initGame = function() {
+
+        // Handle Possession coming from gameSetup
+//        var teamPossession_j = sessionStorage.getItem('team_possession');
+//        if (teamPossession_j == null) {
+//            this.possession = UltimateCanvas.HOME_TEAM;
+//        } else {
+//            this.possession = JSON.parse(teamPossession_j);
+//        }
+
+        // Handle Direction coming from gameSetup
+
+
 	this.possession = UltimateCanvas.HOME_TEAM;
 	this.home_endzone = UltimateCanvas.LEFT_EZ;
 	this.away_endzone = UltimateCanvas.RIGHT_EZ;

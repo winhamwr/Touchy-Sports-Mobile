@@ -22,6 +22,7 @@ UltimateTeam = function(name, ultimatePlayersArray) {
 };
 
 UltimateTeam.DEF_MAX_IN_PLAY = 7;
+UltimateTeam.MAX_IN_PLAY = 7;
 
 UltimateTeam.prototype.init = function(name, players) {
 	// Unique team name
