@@ -21,8 +21,7 @@ UltimateTeam = function(name, ultimatePlayersArray) {
 	this.init(name, ultimatePlayersArray);
 };
 
-UltimateTeam.MAX_IN_PLAY = 7;
-
+UltimateTeam.DEF_MAX_IN_PLAY = 7;
 
 UltimateTeam.prototype.init = function(name, players) {
 	// Unique team name
@@ -31,6 +30,13 @@ UltimateTeam.prototype.init = function(name, players) {
 	this.players = players;
 	// an array of type Player; all players in play
 	this.playersInPlay = new Array();
+
+        var maxPlayersInPlay_j = sessionStorage.getItem('max_players_in_play');              //Max number of players in play, set by gameSetup using sessionStorage
+        if (maxPlayersInPlay_j == null) {
+            this.maxPlayersInPlay = this.DEF_MAX_IN_PLAY;
+        } else {
+            this.maxPlayersInPlay = JSON.parse(maxPlayersInPlay_j);
+        }
 };
 
 UltimateTeam.prototype.toString = function() {
