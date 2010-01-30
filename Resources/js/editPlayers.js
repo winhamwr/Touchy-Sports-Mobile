@@ -62,8 +62,7 @@ function saveTeam() {
 		players.push(new UltimatePlayer(playerName));
 	});
 	var newTeam = new UltimateTeam('StepDads', players);
-	newTeam.setStartingLineup(newTeam.players.slice(0,UltimateTeam.MAX_IN_PLAY));
-	localStorage.setItem("CURRENT_TEAM", JSON.stringify(newTeam));
+	sessionStorage.setItem("CURRENT_TEAM", JSON.stringify(newTeam));
 };
 
 function clearTeam() {

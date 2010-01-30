@@ -7,6 +7,10 @@ UltimatePlayer = function(name) {
 	this.name = name;
 };
 
+UltimatePlayer.prototype.getName = function() {
+	return this.name;
+};
+
 // Member data that needs to be deserialized in to objects
 UltimatePlayer.NESTED_OBJECTS = {};
 
@@ -22,7 +26,6 @@ UltimateTeam = function(name, ultimatePlayersArray) {
 };
 
 UltimateTeam.DEF_MAX_IN_PLAY = 7;
-UltimateTeam.MAX_IN_PLAY = 7;
 
 UltimateTeam.prototype.init = function(name, players) {
 	// Unique team name
@@ -32,13 +35,15 @@ UltimateTeam.prototype.init = function(name, players) {
 	// an array of type Player; all players in play
 	this.playersInPlay = new Array();
 
-        var maxPlayersInPlay_j = sessionStorage.getItem('max_players_in_play');              //Max number of players in play, set by gameSetup using sessionStorage
-        if (maxPlayersInPlay_j == null) {
-            this.maxPlayersInPlay = this.DEF_MAX_IN_PLAY;
-        } else {
-            this.maxPlayersInPlay = JSON.parse(maxPlayersInPlay_j);
+        // Max number of players in the game, set by gameSetup, this is always going to default to 7 for right now
+        var maxPlayersInPlay_j = sessionStorage.getItem('max_players_in_play');
+        this.maxPlayersInPlay = UltimateTeam.DEF_MAX_IN_PLAY;
+        if (maxPlayersInPlay_j != null) {
+           this.maxPlayersInPlay = JSON.parse(maxPlayersInPlay_j);
         }
 };
+
+UltimateTeam.NESTED_OBJECTS = {'players': UltimatePlayer};
 
 UltimateTeam.prototype.toString = function() {
 	return "Team: " + this.name;

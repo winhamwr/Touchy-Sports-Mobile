@@ -23,8 +23,12 @@ TeamManager.prototype.init = function(should_load) {
  */
 TeamManager.prototype.STORABLE_FIELDS = {
 	// Array of all saved teams
-	'teams': ['TEAMMANAGER_TEAMS', UltimateTeam, new Array()]
+	//'name': [storage key, object type, default value, is array]
+	'teams': ['TEAMMANAGER_TEAMS', UltimateTeam, new Array(), true]
 };
+
+// Member data that needs to be deserialized in to objects
+TeamManager.NESTED_OBJECTS = {'teams': UltimateTeam};
 
 /**
  * Save all of the storable fields to the database.
@@ -55,11 +59,25 @@ TeamManager.prototype._loadField = function(field_name) {
 	var storage_key = this.STORABLE_FIELDS[field_name][0];
 	var field_type = this.STORABLE_FIELDS[field_name][1];
 	var field_default = this.STORABLE_FIELDS[field_name][2];
+	var is_array = this.STORABLE_FIELDS[field_name][3];
 
 	var field_j = this.storage.getItem(storage_key);
 
 	if(field_j != null){
-		this[field_name] = deserializeObject(field_type, field_j);
+		if(!is_array){
+			this[field_name] = deserializeObject(field_type, field_j);
+		} else { // Arrays need deserializeObject called on each element
+			var field_array = JSON.parse(field_j);
+			var deserialized_array = new Array();
+			for(var i in field_array){
+				var array_element = field_array[i];
+				var array_element_j = JSON.stringify(array_element);
+				
+				var deserialized_element = deserializeObject(field_type, array_element_j);
+				deserialized_array.push(deserialized_element);
+			}
+			this[field_name] = deserialized_array;
+		}
 	}else{
 		this[field_name] = field_default;
 	}
