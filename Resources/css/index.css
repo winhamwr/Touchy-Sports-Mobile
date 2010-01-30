@@ -7,27 +7,27 @@ h1 {
 	color:#009900;
 	font-family:verdana;
 	font-weight:bold;
-	font-size:14px;
+	font-size:36px;
 }
 
 a:link{
 	font-family:verdana;
 	font-weight:bold;
-	font-size:10px;
+	font-size:24px;
 	color:#336699;
 	text-decoration:none;
 }
 a:visited {
 	font-family:verdana;
 	font-weight:bold;
-	font-size:10px;
+	font-size:24px;
 	color:#336699;
 	text-decoration:none;
 }
 a:hover {
 	font-family:verdana;
 	font-weight:bold;
-	font-size:10px;
+	font-size:24px;
 	color:#00FF00;
 }
 
@@ -36,6 +36,6 @@ a:hover {
 	margin-left:auto;
 	margin-right:auto;
 	text-align:center;
-	line-height:140%;
+	line-height:150%;
 	position:absolute;
 }
