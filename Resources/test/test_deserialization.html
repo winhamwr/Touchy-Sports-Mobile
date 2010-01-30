@@ -138,7 +138,7 @@
 				foo_array = foo_array || new Array();
 
 				this.foo_array = foo_array;
-				this.foo = foo_array.size;
+				this.foo = foo_array.length;
 			}
 			ArrayMembersObj.prototype.origSize = function(){
 				return this.foo;
@@ -154,7 +154,7 @@
 				var obj_j = JSON.stringify(orig_obj);
 
 				var new_obj = deserializeObject(ArrayMembersObj, obj_j);
-				same(orig_obj.foo_array.size, new_obj.foo_array.size);
+				same(orig_obj.foo_array.length, new_obj.foo_array.length);
 				same(orig_obj, new_obj);
 			});
 		});
