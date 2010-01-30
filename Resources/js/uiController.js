@@ -148,8 +148,8 @@ WebUiController.prototype.initSubDialog = function(ultimate_canvas) {
 		.dialog({
 			autoOpen: false,
 			modal: true,
-			width: 304,
-			height: 255,
+			width: 380,
+			height: 316,
 			show: 'drop',
 			closeOnEscape: false,
 			draggable: false,
@@ -158,7 +158,6 @@ WebUiController.prototype.initSubDialog = function(ultimate_canvas) {
 				backgroundColor: '#000',
 				opacity: .5
 			},
-			position: [81,5],
 			buttons: {
 				"Sub": function() {
 					ultimate_canvas.home_team.sub(subbingOut, subbingIn);
@@ -178,4 +177,73 @@ WebUiController.prototype.initSubDialog = function(ultimate_canvas) {
 	this.$subDialog.dialog().parents(".ui-dialog").find(".ui-dialog-titlebar").remove();
 };
 
+WebUiController.prototype.initGameInfoDialog = function(ultimate_canvas) {
+	/* TODO: are the div tags needed or can we just use the td?  Would be cleaner... */
+	this.$gameInfoDialog = $('<div></div>')
+		.html('<div id="gameInfoBox">'+
+					'<table align="center">'+
+						'<thead>Game Status</thead>'+
+						'<tbody><tr>'+
+							'<td><div id="giUserTeamName" class="giName"></div><div id="giUserTeamScore" class="giScore"></div></td></tr><tr>'+
+							'<td><div id="giOppTeamName" class="giName"></div><div id="giOppTeamScore" class="giScore"></div></td></tr>'+
+					'</tbody></table></div>')
+		.dialog({
+			autoOpen: false,
+			modal: true,
+			width: 300,
+			height: 216,
+			show: 'drop',
+			closeOnEscape: false,
+			draggable: false,
+			resizable: false,
+			overlay: {
+				backgroundColor: '#000',
+				opacity: .5
+			},
+			buttons: {
+				"Play Point": function() {
+					/* TODO: Implement this...
+						ultimate_canvas.myFunction();
+					*/
+					$(this).dialog("close");
+				},
+				"Make Substitution": function() {
+					/* TODO: Implement this...
+						ultimate_canvas.myFunction();
+					*/
+					$(this).dialog("close");
+				}
+			}
+		});
+
+		// remove the titlebar
+	this.$gameInfoDialog.dialog().parents(".ui-dialog").find(".ui-dialog-titlebar").remove();
+};
+
 ui_controller = WebUiController;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

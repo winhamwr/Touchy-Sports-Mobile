@@ -171,3 +171,63 @@ h1,h2
 	bottom:45px;
 	/*left:165px;*/
 }
+
+/* style info for the gameInfoDialog */
+#gameInfoBox {
+	left: auto;
+	right: auto;
+}
+
+#gameInfoBox > table {
+	cursor:pointer;
+}
+
+#gameInfoBox > table > thead {
+	font-family: sans-serif;
+	font-size: 24px;
+	font-weight: bold;
+	color:#1D5987;
+	background-color:#DDECF7;
+	text-align: center;
+	width: 292px;
+	padding: 4px;
+	cursor:pointer;
+}
+
+#gameInfoBox > table > td {
+	cursor:pointer;
+}
+
+.giName {
+	font-family: sans-serif;
+	font-size: 18px;
+	float:left;
+	text-align: left;
+	width: 244px;
+	padding: 4px;
+}
+
+#giUserTeamName {
+	color: #3399ff;	/* blue */
+}
+
+#giOppTeamName {
+	color: #ff6600;	/* orange */
+}
+
+.giScore {
+	font-family: sans-serif;
+	font-size: 18px;
+	text-align: right;
+	width: 30px;
+	float: left;
+	width: 40px;
+}
+
+#giUserTeamScore {
+	color: #3399ff;	/* blue */
+}
+
+#giOppTeamScore {
+	color: #ff6600;	/* orange */
+}

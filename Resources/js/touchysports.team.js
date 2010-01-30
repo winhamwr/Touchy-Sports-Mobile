@@ -7,6 +7,10 @@ UltimatePlayer = function(name) {
 	this.name = name;
 };
 
+UltimatePlayer.prototype.getName = function() {
+	return this.name;
+};
+
 // Member data that needs to be deserialized in to objects
 UltimatePlayer.NESTED_OBJECTS = {};
 
@@ -38,6 +42,8 @@ UltimateTeam.prototype.init = function(name, players) {
            this.maxPlayersInPlay = JSON.parse(maxPlayersInPlay_j);
         }
 };
+
+UltimateTeam.NESTED_OBJECTS = {'players': UltimatePlayer};
 
 UltimateTeam.prototype.toString = function() {
 	return "Team: " + this.name;

@@ -18,7 +18,7 @@
 	color:#1D5987;				/* was #FFFFFF */
 	background-color:#DDECF7;	/* was #336699 */
 	font-weight:bold;
-	width:300px;
+	width:360px;
 	height:39px;
 }
 #benchedplayers tbody {
@@ -34,7 +34,7 @@
 }
 .playerName {
 	padding:9px 0px 0px 9px;
-	width:300px;
+	width:360px;
 	text-align:left;
 }
 .playerTable {
@@ -42,8 +42,5 @@
 	top:0px;
 	left:0px;
 	height:200px;
-	width:300px;
-}
-.dlgWindow {
-	display:none;
+	width:360px;
 }
