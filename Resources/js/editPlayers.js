@@ -1,16 +1,3 @@
-$(document).ready(function(){
-    $("#buttonAdd").click(function() {
-        addPlayer();
-    });
-	$('#clearTeam').click(function() {
-		clearTeam();
-	});
-	$('#buttonSave').click(function() {
-		saveTeam();
-	});
-	loadTeam();
-	resizeUi();
-});
 
 function addPlayer() {
     var ni = document.getElementById('content');
