@@ -6,7 +6,8 @@ $(document).ready(function(){
 });
 
 function saveGameSetup() {
-    console.log($('#direction').val());
+    var totalPlayersInPlay = parseInt($('#totalPlayers').val());
+    sessionStorage.setItem('max_players_in_play', totalPlayersInPlay);
     //$('#opposingTeamName').val()
     //$('#possession').val()
     //$('#direction').val()
