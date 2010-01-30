@@ -180,12 +180,12 @@ WebUiController.prototype.initSubDialog = function(ultimate_canvas) {
 WebUiController.prototype.initGameInfoDialog = function(ultimate_canvas) {
 	/* TODO: are the div tags needed or can we just use the td?  Would be cleaner... */
 	this.$gameInfoDialog = $('<div></div>')
-		.html('<div class="gameInfoBox">'+
+		.html('<div id="gameInfoBox">'+
 					'<table align="center">'+
 						'<thead>Game Status</thead>'+
 						'<tbody><tr>'+
-							'<td><div id="giUserTeamName"></div><div id="giUserTeamScore"></div></td></tr><tr>'+
-							'<td><div id="giOppTeamName"></div><div id="giOppTeamScore"></div></td></tr>'+
+							'<td><div id="giUserTeamName" class="giName"></div><div id="giUserTeamScore" class="giScore"></div></td></tr><tr>'+
+							'<td><div id="giOppTeamName" class="giName"></div><div id="giOppTeamScore" class="giScore"></div></td></tr>'+
 					'</tbody></table></div>')
 		.dialog({
 			autoOpen: false,
