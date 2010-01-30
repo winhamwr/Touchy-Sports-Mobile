@@ -9,6 +9,7 @@ $(document).ready(function(){
 		saveTeam();
 	});
 	loadTeam();
+	resizeUi();
 });
 
 function addPlayer() {
@@ -17,7 +18,7 @@ function addPlayer() {
     var num = (document.getElementById("theValue").value -1)+ 2;
     numi.value = num;
     var divIdName = "p"+num;
-    $("#content").append("<div id='"+divIdName+"'><input type=\"text\" value=\"Player\"</input> <a href=\"javascript:;\" onclick=\"removePlayer(\'"+divIdName+"\')\">Remove</a></div>");
+    $("#content").append("<div id='"+divIdName+"'><input class='webInput' type=\"text\" value=\"Player\"</input> <a class='webButton removeLink' href=\"javascript:;\" onclick=\"removePlayer(\'"+divIdName+"\')\">Remove</a></br></br></div>");
 };
 
 function removePlayer(player) {
@@ -84,4 +85,28 @@ function clearTeam() {
 		$(this).remove();
 	});
 	addPlayer();
+};
+
+function resizeUi() {
+	useMobileClasses();
+};
+
+function useMobileClasses() {
+	var webClasses = ['webLink', 'webTitle', 'webButton', 'webInput'];
+	var mobileClasses = ['mobileLink', 'mobileTitle', 'mobileButton', 'mobileInput'];
+	
+	$.each(webClasses, function(i, myClass) {
+		$('.' + myClass).addClass(mobileClasses[i]);
+		$('.' + myClass).removeClass(myClass)
+	});
+};
+
+function useWebClasses() {
+	var webClasses = ['webLink', 'webTitle', 'webButton', 'webInput'];
+	var mobileClasses = ['mobileLink', 'mobileTitle', 'mobileButton', 'mobileInput'];
+	
+	$.each(mobileClasses, function(i, myClass) {
+		$('.' + myClass).addClass(webClasses[i]);
+		$('.' + myClass).removeClass(myClass)
+	});
 };
