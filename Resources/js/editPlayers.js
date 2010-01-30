@@ -5,7 +5,7 @@ function addPlayer() {
     var num = (document.getElementById("theValue").value -1)+ 2;
     numi.value = num;
     var divIdName = "p"+num;
-    $("#content").append("<div id='"+divIdName+"'><input class='webInput' type=\"text\" value=\"Player\"</input> <a class='webButton removeLink' href=\"javascript:;\" onclick=\"removePlayer(\'"+divIdName+"\')\">Remove</a></br></br></div>");
+    $("#content").append("<p><div id='"+divIdName+"'><input class='webInput' type=\"text\" value=\"Player\"</input> <a class='webButton removeLink' href=\"javascript:;\" onclick=\"removePlayer(\'"+divIdName+"\')\">Remove</a></div></p>");
 };
 
 function removePlayer(player) {
