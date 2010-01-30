@@ -52,6 +52,7 @@ UltimateCanvas.prototype.initGame = function() {
 	this.choose_away_player = false;
 
 	this.initPoint();
+	this.ui.showGameOpeningDialog(this.home_team.getPlayingPlayerNames());	// show the starting lineup and let the user start point or sub
 };
 
 /**

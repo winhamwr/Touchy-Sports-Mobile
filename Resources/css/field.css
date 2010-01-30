@@ -240,3 +240,13 @@ h1,h2
 #giOppTeamScore {
 	color: #ff6600;	/* orange */
 }
+
+#goPlayersList {
+	color: #333;
+	font-family: sans-serif;
+	font-size: 18px;
+	font-weight: bold;
+	line-height: 1.5;
+	padding: 14px 5px 14px 5px;
+	cursor:default;
+}
