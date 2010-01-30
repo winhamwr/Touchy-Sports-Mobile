@@ -1,0 +1,14 @@
+select {
+    width:200px;
+    height:40px;
+}
+
+input[type=text] {
+    width:200px;
+    height:40px;
+}
+
+input[type=button] {
+    width:auto;
+    height:40px;
+}
