@@ -110,7 +110,7 @@
 				same(tm.teams, tm2.teams);
 			});
 
-			test("Test saving full team", function() {
+			test("Test saving then loading full team", function() {
 				sessionStorage.clear();
 
 				var player_names = new Array('Kail','Wes','Andy','Eric','Jack','Jim','Jose');
@@ -121,18 +121,23 @@
 					players.push(player);
 				});
 
-				var team = new UltimateTeam('test name2', players);
+				var team = new UltimateTeam('test name', players);
 				var team_array = new Array(team);
-				var team_array_j  = JSON.stringify(team_array);
 
-				var tm = new TeamManager(true, sessionStorage);
+				var tm = new TeamManager(false, sessionStorage);
 				tm.teams = team_array;
 				tm.save();
 
-				var saved_team_array_j = sessionStorage.getItem('TEAMMANAGER_TEAMS');
+				var tm2 = new TeamManager(false, sessionStorage);
+				tm2.teams = null;
+				tm2.load();
 
-				same(team_array_j, saved_team_array_j);
+				same(team_array, tm.teams);
+
+				same(tm.teams.length, tm2.teams.length);
+				same(tm.teams, tm2.teams);
 			});
+
 			test("Test saving then loading 2 full teams", function() {
 				sessionStorage.clear();
 
