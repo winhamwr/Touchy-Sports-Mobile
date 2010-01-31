@@ -7,62 +7,53 @@
  * @param options An options object for configuring the editor.
  **/
 TeamEditor = function(editor_div, options) {
-	this.editor_dev = editor_div;
+	this.editor_div = editor_div;
 	this._options = options;
+
+	// Configure control selectors
+	this.add_player_button = this._options.add_player_button;
+	this.save_team_button = this._options.save_team_button;
 }
 
 TeamEditor.prototype.init = function() {
 	this.bindListeners();
+	this.addPlayer();
 }
+
+TeamEditor.PLAYER_CONTROLS = '#player_controls';
 
 /**
  * Bind all of the UI control listeners for handling actions.
  **/
 TeamEditor.prototype.bindListeners = function() {
+	var te = this;
 	
-	this._options.add_player_button.click(function() {
-		this.addPlayer();
+	this.add_player_button.click(function() {
+		te.addPlayer();
 	});
-	this._options.clear_team_button.click(function() {
-		this.clearTeam();
-	});
-	this._options.save_team_button.click(function() {
-		this.saveTeam();
+	this.save_team_button.click(function() {
+		te.saveTeam();
 	});
 
-}
+	this.editor_div.find(TeamEditor.PLAYER_CONTROLS +' .remove').live('click', function(){
+		te.removePlayer($(this));
+	});
+
+};
 
 TeamEditor.prototype.addPlayer = function() {
-    var ni = document.getElementById('content');
-    var numi = document.getElementById('theValue');
-    var num = (document.getElementById("theValue").value -1)+ 2;
-    numi.value = num;
-    var divIdName = "p"+num;
-    $("#content").append("<div id='"+divIdName+"'><input class='webInput' type=\"text\" value=\"Player\"</input> <a class='webButton removeLink' href=\"javascript:;\" onclick=\"removePlayer(\'"+divIdName+"\')\">Remove</a></br></br></div>");
+	var player_input = '<li>' +
+		'<input type="text" value="Player"></input> ' +
+		'<button class="remove">Remove</button>' +
+		'</li>'; 
+
+	var controls_list = this.editor_div.find(TeamEditor.PLAYER_CONTROLS);
+	controls_list.append(player_input);
 };
 
-TeamEditor.prototype.removePlayer = function(player) {
-    $("#"+player).remove();
-};
-
-// Until we have the team creation/loading working, just going to
-// generate a team and load them here for testing.
-TeamEditor.prototype.createTestTeam = function() {
-	var player_names = new Array('Kail','Wes','Andy','Eric','Jack','Jim','Jose',
-		'Alpha','Beta','Chi','Delta','Epsilon','Gamma','Omega','Sigma','Theta','Zeta');
-
-	var players = new Array();
-	$.each(player_names, function(i, name){
-		var player = new UltimatePlayer(name);
-		players.push(player);
-	});
-
-	var home_team = new UltimateTeam('Stepdads', players);
-
-	var starting_players = players.slice(0, 7);
-	home_team.setStartingLineup(starting_players);
-
-	return home_team;
+TeamEditor.prototype.removePlayer = function(remove_button) {
+	var player_li = remove_button.parent();
+	player_li.remove();
 };
 
 //function loadTeam() {
@@ -89,21 +80,13 @@ TeamEditor.prototype.createTestTeam = function() {
 
 TeamEditor.prototype.saveTeam = function() {
 	var players = new Array();
-	var $playerDivs = $('#content > div');
-	$.each($playerDivs, function() {
-		var playerName = ($(this).children().val());
+	var $player_inputs = $(TeamEditor.PLAYER_CONTROLS +' input');
+	$.each($player_controls, function() {
+		var playerName = ($(this).val());
 		players.push(new UltimatePlayer(playerName));
 	});
 	var newTeam = new UltimateTeam('StepDads', players);
 	sessionStorage.setItem("CURRENT_TEAM", JSON.stringify(newTeam));
-};
-
-TeamEditor.prototype.clearTeam = function() {
-	var $divs = $('#content > div');
-	$.each($divs, function() {
-		$(this).remove();
-	});
-	addPlayer();
 };
 
 /*
@@ -113,7 +96,6 @@ $.fn.teamEditor = function(options) {
 
 	defaults = {
 		'add_player_button':		$('#buttonAdd'),
-		'clear_team_button':		$('#clearTeam'),
 		'save_team_button':			$('#buttonSave')
 	};
 
