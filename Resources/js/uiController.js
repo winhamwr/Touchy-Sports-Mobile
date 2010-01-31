@@ -154,11 +154,15 @@ WebUiController.prototype.initSubDialog = function(ultimate_canvas) {
 			},
 			buttons: {
 				"Sub": function() {
-					ultimate_canvas.home_team.sub(subbingOut, subbingIn);
-					ultimate_canvas.hideSub(true);
-					subbingIn = null;
-					subbingOut = null;
-					$(this).dialog("close");
+					if (subbingIn == null) {
+						alert('Please select a player from the bench, or click Cancel.');
+					} else {
+						ultimate_canvas.home_team.sub(subbingOut, subbingIn);
+						ultimate_canvas.hideSub(true);
+						subbingIn = null;
+						subbingOut = null;
+						$(this).dialog("close");
+					}
 				},
 				"Cancel": function() {
 					ultimate_canvas.hideSub(false);
