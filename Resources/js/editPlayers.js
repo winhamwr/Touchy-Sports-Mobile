@@ -85,7 +85,12 @@ TeamEditor.prototype.saveTeam = function() {
 		var playerName = ($(this).val());
 		players.push(new UltimatePlayer(playerName));
 	});
-	var newTeam = new UltimateTeam('StepDads', players);
+	var team_name = $(TeamEditor.PLAYER_CONTROLS + ' #team_name').val();
+	var newTeam = new UltimateTeam(team_name, players);
+
+	var tm = new TeamManager();
+	tm.addTeam(newTeam);
+	tm.save();
 	sessionStorage.setItem("CURRENT_TEAM", JSON.stringify(newTeam));
 };
 
