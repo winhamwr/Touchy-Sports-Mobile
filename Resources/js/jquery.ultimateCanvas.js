@@ -30,19 +30,20 @@ UltimateCanvas.prototype.init = function() {
 UltimateCanvas.prototype.initGame = function() {
 
         // Handle Possession coming from gameSetup
-//        var teamPossession_j = sessionStorage.getItem('team_possession');
-//        if (teamPossession_j == null) {
-//            this.possession = UltimateCanvas.HOME_TEAM;
-//        } else {
-//            this.possession = JSON.parse(teamPossession_j);
-//        }
+        var teamPossession_j = sessionStorage.getItem('team_possession');
+        this.possession = UltimateCanvas.HOME_TEAM;
+        if (teamPossession_j != null) {
+            this.possession = JSON.parse(teamPossession_j);
+        }
 
         // Handle Direction coming from gameSetup
-
-
-	this.possession = UltimateCanvas.HOME_TEAM;
+        var home_endzone_j = sessionStorage.getItem('user_team_direction');
 	this.home_endzone = UltimateCanvas.LEFT_EZ;
 	this.away_endzone = UltimateCanvas.RIGHT_EZ;
+        if (home_endzone_j != null) {
+            this.home_endzone = JSON.parse(home_endzone_j);
+            this.away_endzone = (JSON.parse(home_endzone_j)+1)%2  // this line takes homeendzone_j, parses it, then makes 0 = 1 and 1 = 0
+        }
 
 	this.home_score = 0;
 	this.away_score = 0;
@@ -52,6 +53,7 @@ UltimateCanvas.prototype.initGame = function() {
 	this.choose_away_player = false;
 
 	this.initPoint();
+	this.ui.showGameOpeningDialog(this.home_team.getPlayingPlayerNames());	// show the starting lineup and let the user start point or sub
 };
 
 /**
