@@ -81,7 +81,7 @@ TeamEditor.prototype.removePlayer = function(remove_button) {
 TeamEditor.prototype.saveTeam = function() {
 	var players = new Array();
 	var $player_inputs = $(TeamEditor.PLAYER_CONTROLS +' input');
-	$.each($player_controls, function() {
+	$.each($player_inputs, function() {
 		var playerName = ($(this).val());
 		players.push(new UltimatePlayer(playerName));
 	});
