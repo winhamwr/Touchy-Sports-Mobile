@@ -30,6 +30,28 @@ TeamManager.prototype.STORABLE_FIELDS = {
 // Member data that needs to be deserialized in to objects
 TeamManager.NESTED_OBJECTS = {'teams': UltimateTeam};
 
+
+/**
+ * Add a team to the list of persisted teams, holding the team name unique.
+ * ie. if you add a team with a name that already exists, it will overwrite
+ * that team.
+ *
+ * @param new_team The UltimateTeam object to add.
+ **/
+TeamManager.prototype.addTeam = function(new_team) {
+	var matching_index = null;
+	for(var i in this.teams){
+		if(this.teams[i].name == new_team.name){
+			matching_index = i;
+		}
+	}
+
+	if(matching_index != null){
+		this.teams[matching_index] = new_team;
+	}else{
+		this.teams.push(new_team);
+	}
+}
 /**
  * Save all of the storable fields to the database.
  */
