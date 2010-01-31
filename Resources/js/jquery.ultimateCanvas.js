@@ -87,6 +87,7 @@ UltimateCanvas.prototype.initPoint = function() {
 
 	this.ui.hideTurnoverButton();
 	this.ui.hidePlayerButtons();
+	this.ui.hideSubButton();	/* TODO: Does this work here? */
 
 	this.draw();
 	this.db.saveGame(this);
@@ -246,21 +247,48 @@ UltimateCanvas.prototype.showSub = function(playerLeavingGame) {
 	this.ui.showSubDialog(this.home_team, playerLeavingGame);
 };
 
-UltimateCanvas.prototype.hideSub = function (requiresUpdate) {
-	if (requiresUpdate) {
-		// a player was subbed in
-		this.ui.updatePlayerNames(this.home_team.getPlayingPlayerNames());
-		this.ui.showPlayerButtons();
-		this.subbing = true;
-	} else {
-		// user clicked cancel in the sub dialog
-		this.ui.showTurnoverButton();	// should we show this here, or only after a pass?
-		this.ui.showUndoButton();
-		this.ui.hideSubButton();
-		this.ui.hidePlayerButtons();
-		this.can_click = true;
-		this.subbing = false;
+/**
+ * Called when the Substitution dialog box is closed and no substitution is required.
+ */
+UltimateCanvas.prototype.handleSubDialogCancel = function () {
+	/* TODO: Do we want to continue subbing until the user clicks "No Sub"?
+	this.ui.showTurnoverButton();	// should we show this here, or only after a pass?
+	this.ui.showUndoButton();
+	this.ui.hideSubButton();
+	this.ui.hidePlayerButtons();
+	this.can_click = true;
+	this.subbing = false;
+	*/
+	this.playPoint();
+};
+
+/**
+ * Called when the Game Info dialog box is closed and no substitution is required.
+ */
+UltimateCanvas.prototype.playPoint = function () {
+	// user clicked cancel in the sub dialog
+	this.ui.showTurnoverButton();	// should we show this here, or only after a pass?
+	this.ui.showUndoButton();
+	this.ui.hideSubButton();
+	this.ui.hidePlayerButtons();
+	this.can_click = true;
+	this.subbing = false;
+};
+
+/**
+ * Called when the Substitution dialog box is closed and a substitution is required.
+ */
+UltimateCanvas.prototype.makeSubstitution = function (subbingOut, subbingIn) {
+	if (subbingIn == null) {
+		this.handleDialogClose();
 	}
+	// make the substitution
+	this.home_team.sub(subbingOut, subbingIn);
+	// update the player bar and show the player buttons
+	this.ui.updatePlayerNames(this.home_team.getPlayingPlayerNames());
+	this.ui.showPlayerButtons();
+	// continue subbing until the user clicks the No Sub button or the Cancel button in the sub dialog
+	this.subbing = true;
 };
 
 UltimateCanvas.prototype.handleUndo = function(event) {
