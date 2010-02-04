@@ -2,47 +2,61 @@
   <head>
     <title>Game Setup</title>
     <script type="text/javascript" src="js/jquery-1.3.2.js"></script>
+	<script type="text/javascript" src="js/ts.deserialization.js"></script>
 	<script type="text/javascript" src="js/touchysports.team.js"></script>
+	<script type="text/javascript" src="js/team_manager.js"></script>
 	<script type="text/javascript" src="js/baseDbController.js"></script>
-        <script type="text/javascript" src="js/gameSetup.js"></script>
-        <script type="text/javascript" src="js/jquery.ultimateCanvas.js"></script>
-        <link type="text/css" href="css/layout.css" rel="stylesheet" />
+	<script type="text/javascript" src="js/gameSetup.js"></script>
+	<script type="text/javascript" src="js/jquery.ultimateCanvas.js"></script>
+	<link type="text/css" href="css/layout.css" rel="stylesheet" />
   </head>
   
   <body>
     <div id="doc">
         <h1>Game Setup</h1>
 		<p>Your Team</p>
+        <form action="">
 		<select name="user_team" id="user_team"></select>
 		<p>or <a href="create_team.html">Create A Team</a></p>
-	<p><a>Opposing Team Name</a></p>
+		<p><a>Opposing Team Name</a></p>
         <input type="text" id="opposingTeamName" value="Team Name">
         <p><a>Disc Possession</a></p>
-        <form action="">
-            <select id="possession">
-                <option value=0>My Team</option>
-                <option value=1>Opposing Team</option>
-            </select>
+		<select id="possession">
+			<option value=0>My Team</option>
+			<option value=1>Opposing Team</option>
+		</select>
         <p><a>Which Endzone is Your Team In?</a></p>
-            <select id="direction">
-                <option value=0><--------</option>
-                <option value=1>--------></option>
-            </select>
-	<p><a>Number of Players per Team</a></p>
+		<select id="direction">
+			<option value=0><--------</option>
+			<option value=1>--------></option>
+		</select>
+		<p><a>Number of Players per Team</a></p>
         <p><a>Default at 7 right now, this does nothing</a></p>
-            <select id="totalPlayers">
-                <option value=5>5</option>
-                <option value=6>6</option>
-                <option SELECTED value=7>7</option>
-                <option value=8>8</option>
-                <option value=9>9</option>
-            </select>
-        </form>
+		<select id="totalPlayers">
+			<option value=5>5</option>
+			<option value=6>6</option>
+			<option SELECTED value=7>7</option>
+			<option value=8>8</option>
+			<option value=9>9</option>
+		</select>
         <input type="button" id="buttonSave" value="Save" class="buttonSave"/>
+        </form>
         <a class="webLink" href="field.html">Start Game</a>
     </div>
     <script type="text/javascript">
         $(document).ready(function(){
+
+			// Load the game options
+			var tm = new TeamManager();
+			alert('fo');
+			var teams = tm.getTeamNames();
+			alert('yo');
+			alert("foo"+teams);
+
+			for(var i in teams){
+				$('#user_team').append('<option value="'+teams[i]+'">'+teams[i]+'</option>');
+			}
+
 
             /**
             * Load the home team this game will use. If it's a continuation
@@ -50,16 +64,15 @@
             * expect there to be a CURRENT_TEAM in sessionStorage.
             */
             function loadHomeTeam() {
+				var home_team_j = sessionStorage.getItem('CURRENT_TEAM');
+				if(home_team_j != null){
+					sessionStorage.removeItem('CURRENT_TEAM');
+					var home_team_d = JSON.parse(home_team_j);
+					var home_team = new UltimateTeam(home_team_d['name'], home_team_d['players']);
+					home_team.playersInPlay = home_team_d['playersInPlay'];
 
-		var home_team_j = sessionStorage.getItem('CURRENT_TEAM');
-		if(home_team_j != null){
-                        sessionStorage.removeItem('CURRENT_TEAM');
-			var home_team_d = JSON.parse(home_team_j);
-			var home_team = new UltimateTeam(home_team_d['name'], home_team_d['players']);
-			home_team.playersInPlay = home_team_d['playersInPlay'];
-
-			return home_team;
-		}
+					return home_team;
+				}
             };
 
             var home_team = loadHomeTeam();

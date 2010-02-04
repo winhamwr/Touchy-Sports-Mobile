@@ -1,4 +1,7 @@
 TeamManager = function(load_to_start, storage){
+	if ( !(this instanceof arguments.callee) )
+	   throw Error("Constructor called as a function");
+
 	if(typeof(load_to_start) == 'undefined'){
 		load_to_start = true;
 	}
@@ -51,6 +54,25 @@ TeamManager.prototype.addTeam = function(new_team) {
 	}else{
 		this.teams.push(new_team);
 	}
+}
+
+TeamManager.prototype.getTeamNames = function() {
+	var team_names = Array();
+
+	for(var i in this.teams){
+		team_names.push(this.teams[i].name);
+	}
+
+	return team_names;
+}
+
+TeamManager.prototype.getTeam = function(name) {
+	for(var i in this.teams){
+		if(this.teams[i].name == name){
+			return this.teams[i];
+		}
+	}	
+	return null;
 }
 /**
  * Save all of the storable fields to the database.
