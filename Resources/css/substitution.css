@@ -2,16 +2,16 @@
 	cursor:pointer;
 }
 #benchedPlayers td {
-	font-size:12px;
+	font-size:16px;
 	font-family:sans-serif;
 	cursor:pointer;
 	color:#000;
 	font-weight:bold;
-	height:31px;
+	height:35px;
 }
 #benchedPlayers th {
 	padding:9px 0px 0px 0px;
-	font-size:16px;
+	font-size:20px;
 	font-family:sans-serif;
 	text-align:center;
 	cursor:default;
