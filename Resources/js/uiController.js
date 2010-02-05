@@ -37,7 +37,7 @@ WebUiController.prototype.bindEvents = function(ultimate_canvas) {
 
 	var sub_b = $('#sub_b')
 	sub_b.click(function(event) {
-		ultimate_canvas.handleDialogClose();	// the user is finished marking substitutions
+		ultimate_canvas.handleSubDialogCancel();	// the user is finished marking substitutions
 	});
 	
 	// init the dialogs
