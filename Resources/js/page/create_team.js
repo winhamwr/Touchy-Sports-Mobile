@@ -22,6 +22,7 @@ TeamEditor.prototype.init = function() {
 
 TeamEditor.PLAYER_CONTROLS = '#player_controls';
 TeamEditor.TEAM_NAME_SELECTOR = 'input#team_name';
+TeamEditor.PLAYERS_SELECTOR = TeamEditor.PLAYER_CONTROLS + ' input';
 
 /**
  * Bind all of the UI control listeners for handling actions.
@@ -42,9 +43,10 @@ TeamEditor.prototype.bindListeners = function() {
 
 };
 
-TeamEditor.prototype.addPlayer = function() {
+TeamEditor.prototype.addPlayer = function(player_name) {
+	player_name = player_name || 'Player';
 	var player_input = '<li>' +
-		'<input type="text" value="Player"></input> ' +
+		'<input type="text" value="'+player_name+'" /> ' +
 		'<button class="remove">Remove</button>' +
 		'</li>'; 
 
@@ -56,6 +58,13 @@ TeamEditor.prototype.removePlayer = function(remove_button) {
 	var player_li = remove_button.parent();
 	player_li.remove();
 };
+
+/**
+ * Remove all of the player inputs from the form.
+ **/
+TeamEditor.prototype._clearPlayers = function() {
+	$(TeamEditor.PLAYERS_SELECTOR).remove();
+}
 
 //function loadTeam() {
 //	var currentTeam;
@@ -80,12 +89,8 @@ TeamEditor.prototype.removePlayer = function(remove_button) {
 //};
 
 TeamEditor.prototype.saveTeam = function() {
-	var players = new Array();
-	var $player_inputs = $(TeamEditor.PLAYER_CONTROLS +' input');
-	$.each($player_inputs, function() {
-		var playerName = ($(this).val());
-		players.push(new UltimatePlayer(playerName));
-	});
+	
+	var players = this._getPlayers();
 	var team_name = this._getTeamName();
 	var newTeam = new UltimateTeam(team_name, players);
 
@@ -104,6 +109,22 @@ TeamEditor.prototype.saveTeam = function() {
  */
 TeamEditor.prototype._getTeamName = function() {
 	return $(TeamEditor.TEAM_NAME_SELECTOR).val();
+}
+
+/**
+ * Get all of the player inputs from the form.
+ *
+ * @return Array of UltimatePlayer objects
+ */
+TeamEditor.prototype._getPlayers = function() {
+	var players = new Array();
+	var $player_inputs = $(TeamEditor.PLAYERS_SELECTOR);
+	$.each($player_inputs, function() {
+		var playerName = ($(this).val());
+		players.push(new UltimatePlayer(playerName));
+	});
+
+	return players;
 }
 
 /*
