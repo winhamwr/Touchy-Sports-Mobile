@@ -18,10 +18,6 @@ function saveGameSetup(home_team) {
     setStartingLineupGS(home_team, totalPlayersInPlay);
 }
 
-function loadGameSetup() {
-    alert('it works');
-}
-
 function setStartingLineupGS(home_team, totalPlayersInPlay) {
     home_team.setStartingLineup(home_team.players.slice(0,totalPlayersInPlay));
     sessionStorage.setItem('CURRENT_TEAM', JSON.stringify(home_team));
