@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+	<title>Test Page: game_setup.html</title>
+	<meta charset="utf-8">
+	<link rel="stylesheet" href="../../css/external/qunit.css" type="text/css" media="screen" />
+
+	<script type="text/javascript" src="../../js/external/jquery-1.3.2.js"></script>
+	<script type="text/javascript" src="../../js/external/qunit.js"></script>
+
+	<script type="text/javascript" src="../../js/lib/ts.deserialization.js"></script>
+	<script type="text/javascript" src="../../js/lib/ts.team.js"></script>
+	<script type="text/javascript" src="../../js/lib/ts.team_manager.js"></script>
+
+	<script type="text/javascript" src="../../js/page/game_setup.js"></script>
+	<script>
+		$(document).ready(function(){
+			var test_area = $('#test_area');
+			var base_test_html = test_area.html();
+
+			module("Initialization");
+
+			test("Test basic init", function() {
+				test_area.html(base_test_html);
+
+				var te = test_area.teamEditor();
+
+				ok(te._options);
+			});
+
+			test("Events are bound", function() {
+				test_area.html(base_test_html);
+
+				var te = test_area.teamEditor();
+
+				same(te.add_player_button.length, 1);
+				same(te.save_team_button.length, 1);
+			});
+
+			module("Events");
+
+			test("Add player", function() {
+				test_area.html(base_test_html);
+
+				var te = test_area.teamEditor();
+				te.addPlayer();
+
+				same($('#test_area #player_controls li').length, 2);
+			});
+
+		});
+	</script>
+</head>
+<body>
+	<h1 id="qunit-header">UltimateTeam manager tests</h1>
+	<h2 id="qunit-banner"></h2>
+	<h2 id="qunit-userAgent"></h2>
+	<ol id="qunit-tests"></ol>
+	<div id="test_area">
+		<div id="doc">
+			<h1>Game Setup</h1>
+			<p>Your Team</p>
+			<form action="">
+			<select name="user_team" id="user_team"></select>
+			<p>or <a href="create_team.html">Create A Team</a></p>
+			<p><a>Opposing Team Name</a></p>
+			<input type="text" id="opposingTeamName" value="Team Name">
+			<p><a>Disc Possession</a></p>
+			<select id="possession">
+				<option value=0>My Team</option>
+				<option value=1>Opposing Team</option>
+			</select>
+			<p><a>Which Endzone is Your Team In?</a></p>
+			<select id="direction">
+				<option value=0><--------</option>
+				<option value=1>--------></option>
+			</select>
+			<p><a>Number of Players per Team</a></p>
+			<p><a>Default at 7 right now, this does nothing</a></p>
+			<select id="totalPlayers">
+				<option value=5>5</option>
+				<option value=6>6</option>
+				<option SELECTED value=7>7</option>
+				<option value=8>8</option>
+				<option value=9>9</option>
+			</select>
+			<input type="button" id="buttonSave" value="Save" class="buttonSave"/>
+			</form>
+			<a class="webLink" href="field.html">Start Game</a>
+		</div>
+	</div>
+</body>
+</html>
