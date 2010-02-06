@@ -21,6 +21,7 @@ TeamEditor.prototype.init = function() {
 }
 
 TeamEditor.PLAYER_CONTROLS = '#player_controls';
+TeamEditor.TEAM_NAME_SELECTOR = 'input#team_name';
 
 /**
  * Bind all of the UI control listeners for handling actions.
@@ -85,14 +86,25 @@ TeamEditor.prototype.saveTeam = function() {
 		var playerName = ($(this).val());
 		players.push(new UltimatePlayer(playerName));
 	});
-	var team_name = $(TeamEditor.PLAYER_CONTROLS + ' #team_name').val();
+	var team_name = this._getTeamName();
 	var newTeam = new UltimateTeam(team_name, players);
 
 	var tm = new TeamManager();
 	tm.addTeam(newTeam);
 	tm.save();
 	sessionStorage.setItem("CURRENT_TEAM", JSON.stringify(newTeam));
+
+	return tm;
 };
+
+/**
+ * Get the team name from the form.
+ * 
+ * @return String with the team name
+ */
+TeamEditor.prototype._getTeamName = function() {
+	return $(TeamEditor.TEAM_NAME_SELECTOR).val();
+}
 
 /*
  * Registers the jquery plugin function

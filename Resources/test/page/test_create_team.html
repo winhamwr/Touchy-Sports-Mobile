@@ -47,6 +47,16 @@
 				same($('#test_area #player_controls li').length, 2);
 			});
 
+			module("Creating team");
+
+			test("Get team name", function() {
+				test_area.html(base_test_html);
+
+				var te = test_area.teamEditor();
+
+				same('Team Name', te._getTeamName());
+			});
+
 		});
 	</script>
 </head>
@@ -58,6 +68,7 @@
 	<div id="test_area">
 		<input type="button" id="buttonAdd" value="Add" />
 		<input type="button" id="buttonSave" value="Save" />
+        <input type="text" id="team_name" value="Team Name" />
 		<ul id="player_controls"></ul>
 	</div>
 </body>
