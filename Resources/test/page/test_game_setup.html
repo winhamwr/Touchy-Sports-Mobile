@@ -15,38 +15,9 @@
 	<script type="text/javascript" src="../../js/page/game_setup.js"></script>
 	<script>
 		$(document).ready(function(){
-			var test_area = $('#test_area');
-			var base_test_html = test_area.html();
 
 			module("Initialization");
 
-			test("Test basic init", function() {
-				test_area.html(base_test_html);
-
-				var te = test_area.teamEditor();
-
-				ok(te._options);
-			});
-
-			test("Events are bound", function() {
-				test_area.html(base_test_html);
-
-				var te = test_area.teamEditor();
-
-				same(te.add_player_button.length, 1);
-				same(te.save_team_button.length, 1);
-			});
-
-			module("Events");
-
-			test("Add player", function() {
-				test_area.html(base_test_html);
-
-				var te = test_area.teamEditor();
-				te.addPlayer();
-
-				same($('#test_area #player_controls li').length, 2);
-			});
 
 		});
 	</script>
