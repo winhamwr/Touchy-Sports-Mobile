@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang=en>
 <head>
+	<title>Test Lib: ts.team_manager.js</title>
 	<meta charset="utf-8">
 	<link rel="stylesheet" href="../../css/external/qunit.css" type="text/css" media="screen" />
 
@@ -168,6 +169,27 @@
 				same(tm.teams, tm2.teams);
 			});
 
+			module("getTeamNames");
+
+			test("Save 2 teams and display their names", function() {
+				sessionStorage.clear();
+
+				var team = new UltimateTeam('gtn', []);
+				var team2 = new UltimateTeam('gtn2', []);
+
+				var tm = new TeamManager(true, sessionStorage);
+				tm.addTeam(team);
+				tm.addTeam(team2);
+
+				tm.save();
+
+				var tm2 = new TeamManager(true, sessionStorage);
+
+				var expected_team_names = new Array('gtn', 'gtn2');
+
+				same(tm2.getTeamNames(), expected_team_names);
+			});
+
 			module("addTeam");
 
 			test("Adding non-dupe team", function() {
@@ -177,13 +199,13 @@
 				var team_array = new Array(team);
 				var team_array_j  = JSON.stringify(team_array);
 
-				var tm = new TeamManager(true, sessionStorage);
+				var tm = new TeamManager(false, sessionStorage);
 				tm.addTeam(team);
 				tm.save();
 
 				var saved_team_array_j = sessionStorage.getItem('TEAMMANAGER_TEAMS');
 
-				same(team_array_j, saved_team_array_j);
+				same(saved_team_array_j, team_array_j);
 			});
 
 			test("Adding dupe team", function() {
@@ -193,14 +215,14 @@
 				var team_array = new Array(team);
 				var team_array_j  = JSON.stringify(team_array);
 
-				var tm = new TeamManager(true, sessionStorage);
+				var tm = new TeamManager(false, sessionStorage);
 				tm.addTeam(team);
 				tm.addTeam(team);
 				tm.save();
 
 				var saved_team_array_j = sessionStorage.getItem('TEAMMANAGER_TEAMS');
 
-				same(team_array_j, saved_team_array_j);
+				same(saved_team_array_j, team_array_j);
 			});
 
 		});

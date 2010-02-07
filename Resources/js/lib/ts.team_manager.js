@@ -42,6 +42,9 @@ TeamManager.NESTED_OBJECTS = {'teams': UltimateTeam};
  * @param new_team The UltimateTeam object to add.
  **/
 TeamManager.prototype.addTeam = function(new_team) {
+	if(typeof(this.teams) == 'undefined'){
+		this.teams = new Array();
+	}
 	var matching_index = null;
 	for(var i in this.teams){
 		if(this.teams[i].name == new_team.name){
