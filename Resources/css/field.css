@@ -76,8 +76,8 @@ h1,h2
 	/**height: 44px;**/
 }
 #player-bar > div {
-	width: 12%;
-	height: 74px;
+	width: 13%;
+	height: 180px;
 	display: inline;
 	padding: 0;
 	margin: 0;
@@ -95,9 +95,9 @@ h1,h2
 	line-height: 1;
 	cursor: pointer;
 	white-space: normal;
-	width: 64px;
-	height: 74px;
-	font-size: 16px;
+	/* width: 78px; */
+	height: 180px;
+	font-size: 18px;
 }
 
 /**#player-bar > div.inactive > div > button {
@@ -106,7 +106,7 @@ h1,h2
 
 #player-bar > div > div > button {
 	background: #222 url(/images/alert-overlay.png) repeat-x;
-	width: 12%;
+	width: 13%;
 }
 
 #menu-bar {
