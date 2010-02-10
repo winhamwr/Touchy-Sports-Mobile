@@ -55,28 +55,8 @@
 				$('#user_team').append('<option value="'+teams[i]+'">'+teams[i]+'</option>');
 			}
 
-
-            /**
-            * Load the home team this game will use. If it's a continuation
-            * of an existing game, just load from the save. If it's not, then
-            * expect there to be a CURRENT_TEAM in sessionStorage.
-            */
-            function loadHomeTeam() {
-				var home_team_j = sessionStorage.getItem('CURRENT_TEAM');
-				if(home_team_j != null){
-					sessionStorage.removeItem('CURRENT_TEAM');
-					var home_team_d = JSON.parse(home_team_j);
-					var home_team = new UltimateTeam(home_team_d['name'], home_team_d['players']);
-					home_team.playersInPlay = home_team_d['playersInPlay'];
-
-					return home_team;
-				}
-            };
-
-            var home_team = loadHomeTeam();
-
             $("#buttonSave").click(function() {
-                saveGameSetup(home_team);
+                saveGameSetup(tm, 'FIELD');
             });
         });
     </script>

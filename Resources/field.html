@@ -21,7 +21,10 @@
 <link type="text/css" href="css/jquery-ui/redmond/ui.all.css" rel="stylesheet" />
 <!--<link type="text/css" href="css/substitutionSouth.css" rel="stylesheet" />
 <link type="text/css" href="css/jquery-ui/south-street/ui.all.css" rel="stylesheet" />-->
+
+<script type="text/javascript" src="js/lib/ts.deserialization.js"></script>
 <script type="text/javascript" src="js/lib/ts.team.js"></script>
+<script type="text/javascript" src="js/lib/ts.team_manager.js"></script>
 
 <script type="text/javascript" src="js/jquery.ultimateCanvas.js"></script>
 <script type="text/javascript" src="js/baseDbController.js"></script>
@@ -70,38 +73,25 @@
 	<script type="text/javascript">
 		$(document).ready(function(){
 
-			/**
-			 * Load the home team this game will use. If it's a continuation
-			 * of an existing game, just load from the save. If it's not, then
-			 * expect there to be a CURRENT_TEAM in sessionStorage.
-			 */
-			function loadHomeTeam() {
+			var user_team_name = sessionStorage.getItem('FIELD__user_team_name');
+			var user_team = null;
 
-				var home_team_j = sessionStorage.getItem('CURRENT_TEAM');
-                                console.log(home_team_j);
-				if(home_team_j != null){
-					sessionStorage.removeItem('CURRENT_TEAM');
-					var home_team_d = JSON.parse(home_team_j);
-					var home_team = new UltimateTeam(home_team_d['name'], home_team_d['players']);
-					home_team.playersInPlay = home_team_d['playersInPlay'];
-
-					return home_team;
-				}
-
+			if(user_team_name != null){
+				var tm = new TeamManager();
+				user_team = tm.getTeam(user_team_name);
+			} else {
 				var db = new db_controller();
 				if(!db.gameExists()){
 					alert("Error loading team. Must visit team management before starting a new game");
 					1/0;
 				}
-			};
-
-			var home_team = loadHomeTeam();
+			}
 
 			var canvases = $('#field').ultimateCanvas(
 				{
 					ui_controller	:	ui_controller,
 					db_controller	:	db_controller,
-					home_team		:	home_team
+					home_team		:	user_team,
 				}
 			);
 		});
