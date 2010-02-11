@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+	<meta charset="utf-8">
+	<link rel="stylesheet" href="../../css/external/qunit.css" type="text/css" media="screen" />
+
+	<script type="text/javascript" src="../../js/external/jquery-1.3.2.js"></script>
+	<script type="text/javascript" src="../../js/external/qunit.js"></script>
+
+	<script type="text/javascript" src="../../js/lib/ts.deserialization.js"></script>
+	<script type="text/javascript" src="../../js/lib/ts.team.js"></script>
+	<script type="text/javascript" src="../../js/lib/ts.game.js"></script>
+	<script>
+		$(document).ready(function(){
+
+			module("Initialization");
+			test("Test basic init", function() {
+				var test_name = 'foobar';
+				var team = new UltimateTeam(test_name, new Array());
+				var opposing_team_name = 'the bad guys';
+
+				var game = new UltimateGame({
+					user_team:team,
+					opposing_team_name:opposing_team_name
+				});
+				same(test_name, game.user_team.name);
+				same(opposing_team_name, game.opposing_team_name);
+			});
+
+			module("Accessor methods");
+
+			test("Test toString", function() {
+				var test_name = 'foobar';
+				var team = new UltimateTeam(test_name, new Array());
+				var opposing_team_name = 'the bad guys';
+
+				var game = new UltimateGame({
+					user_team:team,
+					opposing_team_name:opposing_team_name
+				});
+
+				same("Game: <foobar> versus <the bad guys>", ""+game);
+			});
+
+			module("Serialization");
+
+			test("Basic serialization", function() {
+				var test_name = 'foobar';
+				var team = new UltimateTeam(test_name, new Array());
+				var opposing_team_name = 'the bad guys';
+
+				var game = new UltimateGame({
+					user_team:team,
+					opposing_team_name:opposing_team_name
+				});
+				var game_j = JSON.stringify(game);
+
+				var new_game = deserializeObject(UltimateGame, game_j);
+
+				same(game.user_team.name, new_game.user_team.name);
+				same(game.opposing_team_name, new_game.opposing_team_name);
+			});
+
+		});
+  </script>
+</head>
+<body>
+  <h1 id="qunit-header">UltimateTeam and UltimatePlayer tests</h1>
+ <h2 id="qunit-banner"></h2>
+ <h2 id="qunit-userAgent"></h2>
+ <ol id="qunit-tests"></ol>
+ <h2 id="index-link"><a href="../index.html">Test Index</a></h2>
+</body>
+</html>

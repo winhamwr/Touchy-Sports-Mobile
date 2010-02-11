@@ -34,13 +34,6 @@ UltimateTeam.prototype.init = function(name, players) {
 	this.players = players;
 	// an array of type Player; all players in play
 	this.playersInPlay = new Array();
-
-        // Max number of players in the game, set by gameSetup, this is always going to default to 7 for right now
-        var maxPlayersInPlay_j = sessionStorage.getItem('max_players_in_play');
-        this.maxPlayersInPlay = UltimateTeam.DEF_MAX_IN_PLAY;
-        if (maxPlayersInPlay_j != null) {
-           this.maxPlayersInPlay = JSON.parse(maxPlayersInPlay_j);
-        }
 };
 
 UltimateTeam.NESTED_OBJECTS = {'players': UltimatePlayer};
@@ -114,7 +107,7 @@ UltimateTeam.prototype.findPlayerByName = function(playerArray, playerName) {
 };
 
 UltimateTeam.prototype.getBenchedPlayers = function() {
-        var t = this;
+	var t = this;
 	var playersBenched = new Array();
 	var playersInPlay = t.playersInPlay;
 	$.each(this.players, function(i, player) {
