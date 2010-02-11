@@ -261,6 +261,7 @@ var uiControlling = {
 		var context = this.canvas[0].getContext("2d");
 
 		context.strokeStyle = "#000000";
+        context.lineWidth = 6;
 		context.beginPath();
 		// Draw the cross-field line
 		var ez_w = this.field.ez_w;
