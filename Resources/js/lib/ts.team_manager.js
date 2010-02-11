@@ -77,6 +77,7 @@ TeamManager.prototype.getTeam = function(name) {
 	}	
 	return null;
 }
+
 /**
  * Save all of the storable fields to the database.
  */
@@ -93,6 +94,20 @@ TeamManager.prototype.load = function() {
 	for(var field_name in this.STORABLE_FIELDS){
 		this._loadField(field_name);
 	}
+};
+
+/**
+ * Gets the number of teams in storage
+ */
+TeamManager.prototype.getNumTeams = function() {
+    var type = typeof(this.teams);
+    var numTeams = 0;
+    if(type == 'undefined' ) {
+    } else {
+        numTeams = this.teams.length;
+    }
+
+    return numTeams;
 };
 
 /**

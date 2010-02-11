@@ -1,6 +1,6 @@
 <html>
   <head>
-    <title>Game Setup</title>
+    <title>Touchy Sports&trade; | Game Setup</title>
     <script type="text/javascript" src="js/external/jquery-1.3.2.js"></script>
 
 	<script type="text/javascript" src="js/lib/ts.deserialization.js"></script>
@@ -18,7 +18,6 @@
 		<p>Your Team</p>
         <form action="">
 		<select name="user_team" id="user_team"></select>
-		<p>or <a href="create_team.html">Create A Team</a></p>
 		<p><a>Opposing Team Name</a></p>
         <input type="text" id="opposingTeamName" value="Team Name">
         <p><a>Disc Possession</a></p>
@@ -32,7 +31,6 @@
 			<option value=1>--------></option>
 		</select>
 		<p><a>Number of Players per Team</a></p>
-        <p><a>Default at 7 right now, this does nothing</a></p>
 		<select id="totalPlayers">
 			<option value=5>5</option>
 			<option value=6>6</option>
@@ -40,9 +38,8 @@
 			<option value=8>8</option>
 			<option value=9>9</option>
 		</select>
-        <input type="button" id="buttonSave" value="Save" class="buttonSave"/>
         </form>
-        <a class="webLink" href="field.html">Start Game</a>
+        <a class="webLink" id="start_game" href="field.html">Start Game</a>
     </div>
     <script type="text/javascript">
         $(document).ready(function(){
@@ -55,7 +52,7 @@
 				$('#user_team').append('<option value="'+teams[i]+'">'+teams[i]+'</option>');
 			}
 
-            $("#buttonSave").click(function() {
+            $("#start_game").click(function() {
                 saveGameSetup(tm, 'FIELD');
             });
         });
