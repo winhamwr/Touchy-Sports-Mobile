@@ -5,8 +5,8 @@ UltimateCanvas = function(canvas, options) {
 	this._options = options;
 }
 
-UltimateCanvas.HOME_TEAM = 0;
-UltimateCanvas.AWAY_TEAM = 1;
+UltimateCanvas.USER_TEAM = 0;
+UltimateCanvas.OPPOSING_TEAM = 1;
 UltimateCanvas.LEFT_EZ = 0;
 UltimateCanvas.RIGHT_EZ = 1;
 
@@ -14,7 +14,11 @@ UltimateCanvas.prototype.init = function() {
 	this.ui = new this._options.ui_controller(this.canvas);
 	this.ui.init();
 	this.db = new this._options.db_controller();
-	this.home_team = this._options.home_team;
+	this.user_team = this._options.user_team;
+	this.possession = this._options.possession;
+	this.choose_away_player = this._options.choose_away_player;
+
+	this.user_team_direction = this._options.user_team_direction;
 
 	this.ui.bindEvents(this);
 
@@ -28,32 +32,20 @@ UltimateCanvas.prototype.init = function() {
 };
 
 UltimateCanvas.prototype.initGame = function() {
-
-        // Handle Possession coming from gameSetup
-        var teamPossession_j = sessionStorage.getItem('team_possession');
-        this.possession = UltimateCanvas.HOME_TEAM;
-        if (teamPossession_j != null) {
-            this.possession = JSON.parse(teamPossession_j);
-        }
-
-        // Handle Direction coming from gameSetup
-        var home_endzone_j = sessionStorage.getItem('user_team_direction');
-	this.home_endzone = UltimateCanvas.LEFT_EZ;
-	this.away_endzone = UltimateCanvas.RIGHT_EZ;
-        if (home_endzone_j != null) {
-            this.home_endzone = JSON.parse(home_endzone_j);
-            this.away_endzone = (JSON.parse(home_endzone_j)+1)%2  // this line takes homeendzone_j, parses it, then makes 0 = 1 and 1 = 0
-        }
+	if(this.user_team_direction == UltimateCanvas.RIGHT_EZ){
+		this.home_endzone = UltimateCanvas.RIGHT_EZ;
+		this.away_endzone = UltimateCanvas.LEFT_EZ;
+	}else{
+		this.home_endzone = UltimateCanvas.LEFT_EZ;
+		this.away_endzone = UltimateCanvas.RIGHT_EZ;
+	}
 
 	this.home_score = 0;
 	this.away_score = 0;
 	this.points = [];
 
-	// Setting used to determine whether or not to choose players for away team, 0=don't choose player, 1=choose player
-	this.choose_away_player = false;
-
 	this.initPoint();
-	this.ui.showGameOpeningDialog(this.home_team.getPlayingPlayerNames());	// show the starting lineup and let the user start point or sub
+	this.ui.showGameOpeningDialog(this.user_team.getPlayingPlayerNames());	// show the starting lineup and let the user start point or sub
 };
 
 /**
@@ -66,9 +58,9 @@ UltimateCanvas.prototype.initPoint = function() {
 		point.passes = this.passes;
 		point.home_score = this.home_score;
 		point.away_score = this.away_score;
-		point.home_players = this.home_team.getPlayingPlayerNames();
+		point.home_players = this.user_team.getPlayingPlayerNames();
 		// Determine who just scored and subtract that point. Score is the score at the start of the point
-		if(this.possession == UltimateCanvas.HOME_TEAM){
+		if(this.possession == UltimateCanvas.USER_TEAM){
 			//away scored
 			point.away_score -= 1;
 		} else{
@@ -103,7 +95,7 @@ UltimateCanvas.prototype.initPoint = function() {
 UltimateCanvas.prototype.handlePass = function(event) {
 	var c = this;
         if(!c.choose_away_player){
-                if(c.possession==UltimateCanvas.HOME_TEAM){
+                if(c.possession==UltimateCanvas.USER_TEAM){
                         c.handleHomePass(event);
                 } else{
                         c.handleAwayPass(event);
@@ -183,10 +175,10 @@ UltimateCanvas.prototype.handleTurnover = function(event) {
 	var c = this;
 
 	function switchPos(possession){
-		if(possession == UltimateCanvas.AWAY_TEAM){
-			possession = UltimateCanvas.HOME_TEAM;
+		if(possession == UltimateCanvas.OPPOSING_TEAM){
+			possession = UltimateCanvas.USER_TEAM;
 		} else {
-			possession = UltimateCanvas.AWAY_TEAM;
+			possession = UltimateCanvas.OPPOSING_TEAM;
 		}
 		return possession
 	}
@@ -244,7 +236,7 @@ UltimateCanvas.prototype.startSubbing = function() {
 };
 
 UltimateCanvas.prototype.showSub = function(playerLeavingGame) {
-	this.ui.showSubDialog(this.home_team, playerLeavingGame);
+	this.ui.showSubDialog(this.user_team, playerLeavingGame);
 };
 
 /**
@@ -283,9 +275,9 @@ UltimateCanvas.prototype.makeSubstitution = function (subbingOut, subbingIn) {
 		this.handleDialogClose();
 	}
 	// make the substitution
-	this.home_team.sub(subbingOut, subbingIn);
+	this.user_team.sub(subbingOut, subbingIn);
 	// update the player bar and show the player buttons
-	this.ui.updatePlayerNames(this.home_team.getPlayingPlayerNames());
+	this.ui.updatePlayerNames(this.user_team.getPlayingPlayerNames());
 	this.ui.showPlayerButtons();
 	// continue subbing until the user clicks the No Sub button or the Cancel button in the sub dialog
 	this.subbing = true;
@@ -310,10 +302,10 @@ UltimateCanvas.prototype.handleUndo = function(event) {
 			this.home_endzone = a_ez;
 
 			// Switch posession
-			if(this.possession == UltimateCanvas.HOME_TEAM){
-				this.possession = UltimateCanvas.AWAY_TEAM;
+			if(this.possession == UltimateCanvas.USER_TEAM){
+				this.possession = UltimateCanvas.OPPOSING_TEAM;
 			} else{
-				this.possession = UltimateCanvas.HOME_TEAM;
+				this.possession = UltimateCanvas.USER_TEAM;
 			}
 
 			this.passes = point.passes;
@@ -323,7 +315,7 @@ UltimateCanvas.prototype.handleUndo = function(event) {
 
 		}
 
-		if(this.possession == UltimateCanvas.AWAY_TEAM && !this.choose_away_player){
+		if(this.possession == UltimateCanvas.OPPOSING_TEAM && !this.choose_away_player){
 			this.can_click = true;
 			// Now this is just like undoing a normal pass, because we don't care about players
 		} else{
@@ -355,10 +347,10 @@ UltimateCanvas.prototype.draw = function(){
 	this.ui.draw();
 	this.displayPossessionIndicator();
 	this.drawPasses();
-	this.ui.displayScore(UltimateCanvas.HOME_TEAM, this.home_endzone, this.home_score);
-	this.ui.displayScore(UltimateCanvas.AWAY_TEAM, this.away_endzone, this.away_score);
+	this.ui.displayScore(UltimateCanvas.USER_TEAM, this.home_endzone, this.home_score);
+	this.ui.displayScore(UltimateCanvas.OPPOSING_TEAM, this.away_endzone, this.away_score);
 
-	var player_names = this.home_team.getPlayingPlayerNames();
+	var player_names = this.user_team.getPlayingPlayerNames();
 	this.ui.updatePlayerNames(player_names);
 
 };
@@ -387,7 +379,7 @@ UltimateCanvas.prototype.displayPossessionIndicator = function() {
  */
 UltimateCanvas.prototype.getAttackersEndzone = function(){
 	var attackersEndzone = null;
-	if(this.possession == UltimateCanvas.HOME_TEAM){
+	if(this.possession == UltimateCanvas.USER_TEAM){
 		//Home team has possession
 		attackersEndzone = this.home_endzone;
 	} else{
@@ -432,21 +424,22 @@ UltimateCanvas.prototype.handleEzCatch = function(){
  */
 UltimateCanvas.prototype.endPoint = function(possession){
 	var score = null;
-	if(possession == UltimateCanvas.HOME_TEAM){
+	if(possession == UltimateCanvas.USER_TEAM){
 		this.home_score++;
-		this.possession = UltimateCanvas.AWAY_TEAM;
+		this.possession = UltimateCanvas.OPPOSING_TEAM;
 		score = this.home_score;
 	}else{
 		this.away_score++;
-		this.possession = UltimateCanvas.HOME_TEAM;
+		this.possession = UltimateCanvas.USER_TEAM;
 		score = this.away_score;
 	}
 	//Switch endzones
 	var a_ez = this.away_endzone;
 	this.away_endzone = this.home_endzone;
 	this.home_endzone = a_ez;
+	this.user_team_direection = this.away_endzone;
 
-        this.ui.hideTurnoverButton();
+	this.ui.hideTurnoverButton();
 
 	// UiController
 	if(score >= this._options.score_limit){
@@ -456,7 +449,7 @@ UltimateCanvas.prototype.endPoint = function(possession){
 		this.initPoint();
 		//this.startSubbing();	// a point was scored, but the game isn't over; see if there are substitutions
 		/* TODO: need to use the variable for opposing team name here instead of 'Nannies' */
-		this.ui.showGameInfoDialog(this.home_team.name, this.home_score, 'Nannies', this.away_score);	// a point was scored, but the game isn't over--show the status
+		this.ui.showGameInfoDialog(this.user_team.name, this.home_score, 'Nannies', this.away_score);	// a point was scored, but the game isn't over--show the status
 	}
 };
 
@@ -466,7 +459,12 @@ UltimateCanvas.prototype.endPoint = function(possession){
 $.fn.ultimateCanvas = function(options) {
 
 	defaults = {
-		score_limit			: 7
+		score_limit			:	20,
+		possession			:	UltimateCanvas.USER_TEAM,
+		user_team_direction	:	UltimateCanvas.RIGHT_EZ,
+		max_players_in_play	:	6,
+		// whether or not to choose players for away team
+		choose_away_player	:	false
 	};
 
 	options = $.extend(defaults, options);

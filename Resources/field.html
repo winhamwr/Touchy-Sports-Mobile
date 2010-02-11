@@ -24,6 +24,8 @@
 	<script type="text/javascript" src="js/lib/ts.deserialization.js"></script>
 	<script type="text/javascript" src="js/lib/ts.team.js"></script>
 	<script type="text/javascript" src="js/lib/ts.team_manager.js"></script>
+	<script type="text/javascript" src="js/lib/ts.game.js"></script>
+	<script type="text/javascript" src="js/lib/ts.game_manager.js"></script>
 
 	<script type="text/javascript" src="js/jquery.ultimateCanvas.js"></script>
 	<script type="text/javascript" src="js/baseDbController.js"></script>
@@ -74,7 +76,18 @@
 	<script type="text/javascript">
 		$(document).ready(function(){
 
+			// Load any options coming from game_setup.html
 			var user_team_name = sessionStorage.getItem('FIELD__user_team_name');
+			sessionStorage.removeItem('FIELD__user_team_name');
+			var opposing_team_name = sessionStorage.getItem('FIELD__opposing_team_name');
+			sessionStorage.removeItem('FIELD__opposing_team_name');
+			var possession = sessionStorage.getItem('FIELD__team_possession');
+			sessionStorage.removeItem('FIELD__team_possession');
+			var user_team_direction = sessionStorage.getItem('FIELD__user_team_direction');
+			sessionStorage.removeItem('FIELD__user_team_direction');
+			var max_players_in_play = sessionStorage.getItem('FIELD__max_playes_in_play');
+			sessionStorage.removeItem('FIELD__max_playes_in_play');
+
 			var user_team = null;
 
 			if(user_team_name != null){
@@ -90,9 +103,13 @@
 
 			var canvases = $('#field').ultimateCanvas(
 				{
-					ui_controller	:	ui_controller,
-					db_controller	:	db_controller,
-					home_team		:	user_team,
+					ui_controller		:	ui_controller,
+					db_controller		:	db_controller,
+					user_team			:	user_team,
+					opposing_team_name	:	opposing_team_name,
+					possession			:	possession,
+					user_team_direction	:	user_team_direction,
+					max_players_in_play	:	max_players_in_play
 				}
 			);
 		});

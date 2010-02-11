@@ -6,8 +6,8 @@
  * opposing_team_name
  *
  * Optional:
- * user_starts_posession- true or false
- * user_starts_going_left- true or false
+ * user_has_possession- true or false
+ * user_attacking_right- true or false
  * max_players_on_field- The number of players per team on the field at a time
  */
 UltimateGame = function(options) {
@@ -17,18 +17,22 @@ UltimateGame = function(options) {
 
 	this._options = $.extend(UltimateGame.DEFAULTS, options);
 
+	this.user_has_possessoin = this._options.user_has_possession;
+	this.user_attacking_right = this._options.user_attacking_right;
+	this.max_players_on_field = this._options.max_players_on_field;
+
 	this.init(this._options.user_team, this._options.opposing_team_name);
-	delete this._options.user_team;
-	delete this._options.opposing_team_name;
+
+	delete this._options
 };
 
 UltimateGame.REQUIRED = ['user_team', 'opposing_team_name'];
 UltimateGame.DEFAULTS = {
-	user_starts_posession: true,
+	user_has_posession		:	true,
 
-	user_starts_going_left: true,
+	user_attacking_right	:	true,
 
-	max_players_on_field: 7
+	max_players_on_field	:	6
 
 };
 
@@ -39,6 +43,11 @@ UltimateGame.NESTED_OBJECTS = {
 UltimateGame.prototype.init = function(user_team, opposing_team_name) {
 	this.user_team = user_team || null;
 	this.opposing_team_name = opposing_team_name || null;
+
+	this.user_score = 0;
+	this.opposing_score = 0;
+	this.points = new Array();
+	this.passes = new Array();
 };
 
 UltimateGame.prototype.toString = function() {
