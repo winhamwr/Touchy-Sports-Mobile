@@ -62,7 +62,7 @@ GameManager.prototype.addGame = function(new_obj) {
 }
 
 GameManager.prototype.getGameNames = function() {
-	var game_names = Array();
+	var game_names = new Array();
 
 	for(var i in this.games){
 		game_names.push(this.games[i].toString());

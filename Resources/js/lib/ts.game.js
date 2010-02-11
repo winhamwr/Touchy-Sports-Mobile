@@ -18,6 +18,8 @@ UltimateGame = function(options) {
 	this._options = $.extend(UltimateGame.DEFAULTS, options);
 
 	this.init(this._options.user_team, this._options.opposing_team_name);
+	delete this._options.user_team;
+	delete this._options.opposing_team_name;
 };
 
 UltimateGame.REQUIRED = ['user_team', 'opposing_team_name'];
@@ -35,10 +37,21 @@ UltimateGame.NESTED_OBJECTS = {
 };
 
 UltimateGame.prototype.init = function(user_team, opposing_team_name) {
-	this.user_team = user_team;
-	this.opposing_team_name = opposing_team_name;
+	this.user_team = user_team || null;
+	this.opposing_team_name = opposing_team_name || null;
 };
 
 UltimateGame.prototype.toString = function() {
+	if(typeof(this.user_team) == 'undefined' || this.user_team == null){
+		return 'Game';
+	}
 	return "Game: <"+this.user_team.name+"> versus <"+this.opposing_team_name+">";
 };
+
+UltimateGame.prototype.getPk = function() {
+	return this.pk;
+}
+
+UltimateGame.prototype.setPk = function(pk) {
+	this.pk = pk;
+}

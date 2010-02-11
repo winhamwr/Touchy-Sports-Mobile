@@ -20,7 +20,7 @@
 				sessionStorage.clear();
 				var gm = new GameManager(true, sessionStorage);
 
-				same(gm.teams, new Array());
+				same(gm.games, new Array());
 			});
 
 			module("Saving Games");
@@ -30,7 +30,10 @@
 
 				var team = new UltimateTeam('test name', new Array());
 				var opposing_team_name = 'these guys suck';
-				var game = new UltimateGame(team, opposing_team_name);
+				var game = new UltimateGame({
+					user_team:team,
+					opposing_team_name:opposing_team_name
+				});
 
 				var game_array = new Array(game);
 				var game_array_j  = JSON.stringify(game_array);
@@ -41,7 +44,7 @@
 
 				var saved_game_array_j = sessionStorage.getItem('GAMEMANAGER_GAMES');
 
-				same(game_array_j, saved_game_array_j);
+				same(saved_game_array_j, game_array_j);
 			});
 
 			test("Test saving full game", function() {
@@ -58,7 +61,10 @@
 
 				var team = new UltimateTeam('test name2', players);
 				var opposing_team_name = 'these guys really suck';
-				var game = new UltimateGame(team, opposing_team_name);
+				var game = new UltimateGame({
+					user_team:team,
+					opposing_team_name:opposing_team_name
+				});
 
 				var game_array = new Array(game);
 				var game_array_j  = JSON.stringify(game_array);
@@ -87,8 +93,14 @@
 				var team2 = new UltimateTeam('test name2', players);
 				var opposing_team_name1 = 'these guys are not good';
 				var opposing_team_name2 = 'these guys are not that good';
-				var game1 = new UltimateGame(team1, opposing_team_name1);
-				var game2 = new UltimateGame(team2, opposing_team_name2);
+				var game1 = new UltimateGame({
+					user_team:team1,
+					opposing_team_name:opposing_team_name1
+				});
+				var game2 = new UltimateGame({
+					user_team:team2,
+					opposing_team_name:opposing_team_name2
+				});
 
 				var game_array = new Array(game1, game2);
 				var game_array_j  = JSON.stringify(game_array);
@@ -109,7 +121,11 @@
 
 				var team = new UltimateTeam('test name', new Array());
 				var opposing_team_name = 'these guys really suck';
-				var game = new UltimateGame(team, opposing_team_name);
+				var game = new UltimateGame({
+					user_team:team,
+					opposing_team_name:opposing_team_name
+				});
+				game.setPk(0);
 
 				var game_array = new Array(game);
 
@@ -120,11 +136,11 @@
 				var gm2 = new GameManager(false, sessionStorage);
 				gm2.load();
 
-				same(game_array.length, gm.games.length);
-				same(game_array, gm.teams);
+				same(gm.games.length, game_array.length)
+				same(gm.games, game_array);
 
-				same(gm.games.length, gm2.games.length);
-				same(gm.games, gm2.games);
+				same(gm2.games.length, gm.games.length);
+				same(gm2.games, gm.games);
 			});
 
 			test("Test saving then loading full game", function() {
@@ -140,7 +156,11 @@
 
 				var team = new UltimateTeam('test name', players);
 				var opposing_team_name = 'these guys really suck';
-				var game = new UltimateGame(team, opposing_team_name);
+				var game = new UltimateGame({
+					user_team:team,
+					opposing_team_name:opposing_team_name
+				});
+				game.setPk(0);
 
 				var game_array = new Array(game);
 
@@ -151,11 +171,11 @@
 				var gm2 = new GameManager(false, sessionStorage);
 				gm2.load();
 
-				same(game_array.length, gm.games.length);
-				same(game_array, gm.teams);
+				same(gm.games.length, game_array.length);
+				same(gm.games, game_array);
 
-				same(gm.games.length, gm2.games.length);
-				same(gm.games, gm2.games);
+				same(gm2.games.length, gm.games.length);
+				same(gm2.games, gm.games);
 			});
 
 			test("Test saving then loading 2 full games", function() {
@@ -173,23 +193,27 @@
 				var team2 = new UltimateTeam('test name2', players);
 				var opposing_team_name1 = 'these guys are not good';
 				var opposing_team_name2 = 'these guys are not that good';
-				var game1 = new UltimateGame(team1, opposing_team_name1);
-				var game2 = new UltimateGame(team2, opposing_team_name2);
-
-				var game_array = new Array(game1, game2);
+				var game1 = new UltimateGame({
+					user_team:team1,
+					opposing_team_name:opposing_team_name1
+				});
+				var game2 = new UltimateGame({
+					user_team:team2,
+					opposing_team_name:opposing_team_name2
+				});
 
 				var gm = new GameManager(false, sessionStorage);
-				gm.games = game_array;
+				gm.addGame(game1);
+				gm.addGame(game2);
 				gm.save();
 
 				var gm2 = new GameManager(false, sessionStorage);
 				gm2.load();
 
-				same(game_array.length, gm.games.length);
-				same(game_array, gm.teams);
+				same(gm.games.length, 2);
 
-				same(gm.games.length, gm2.games.length);
-				same(gm.games, gm2.games);
+				same(gm2.games.length, gm.games.length);
+				same(gm2.games, gm.games);
 			});
 
 			module("getGameNames");
@@ -201,8 +225,14 @@
 				var team2 = new UltimateTeam('ut2', []);
 				var opposing_team_name1 = 'ot1';
 				var opposing_team_name2 = 'ot2';
-				var game1 = new UltimateGame(team1, opposing_team_name1);
-				var game2 = new UltimateGame(team2, opposing_team_name2);
+				var game1 = new UltimateGame({
+					user_team:team1,
+					opposing_team_name:opposing_team_name1
+				});
+				var game2 = new UltimateGame({
+					user_team:team2,
+					opposing_team_name:opposing_team_name2
+				});
 
 				var expected_game_names = new Array(
 					'Game: <ut1> versus <ot1>',
@@ -215,11 +245,11 @@
 
 				gm.save();
 
-				same(gm.getTeamNames(), expected_game_names);
+				same(gm.getGameNames(), expected_game_names);
 
 				var gm2 = new GameManager(true, sessionStorage);
 
-				same(gm2.getTeamNames(), expected_game_names);
+				same(gm2.getGameNames(), expected_game_names);
 			});
 
 			module("addGame");
@@ -229,7 +259,10 @@
 
 				var team = new UltimateTeam('test name', new Array());
 				var opposing_team_name = 'these guys suck';
-				var game = new UltimateGame(team, opposing_team_name);
+				var game = new UltimateGame({
+					user_team:team,
+					opposing_team_name:opposing_team_name
+				});
 
 				var game_array = new Array(game);
 				var game_array_j  = JSON.stringify(game_array);
@@ -238,9 +271,9 @@
 				gm.addGame(game);
 				gm.save();
 
-				var saved_game_array_j = sessionStorage.getItem('GAMEMANAGER_GAMES');
+				same(game.getPk(), 0);
 
-				same(game_array_j, saved_game_array_j);
+				same(gm.games.length, 1);
 			});
 
 			test("Adding existing games", function() {
@@ -250,11 +283,14 @@
 				var team2 = new UltimateTeam('ut2', []);
 				var opposing_team_name1 = 'ot1';
 				var opposing_team_name2 = 'ot2';
-				var game1 = new UltimateGame(team1, opposing_team_name1);
-				var game2 = new UltimateGame(team2, opposing_team_name2);
-
-				var game_array = new Array(game);
-				var game_array_j  = JSON.stringify(game_array);
+				var game1 = new UltimateGame({
+					user_team:team1,
+					opposing_team_name:opposing_team_name1
+				});
+				var game2 = new UltimateGame({
+					user_team:team2,
+					opposing_team_name:opposing_team_name2
+				});
 
 				var gm = new GameManager(false, sessionStorage);
 				gm.addGame(game1);
@@ -263,9 +299,10 @@
 				gm.addGame(game1);
 				gm.save();
 
-				var saved_game_array_j = sessionStorage.getItem('GAMEMANAGER_GAMES');
+				same(game1.getPk(), 0);
+				same(game2.getPk(), 1);
 
-				same(game_array_j, saved_game_array_j);
+				same(gm.games.length, 2);
 			});
 
 		});
