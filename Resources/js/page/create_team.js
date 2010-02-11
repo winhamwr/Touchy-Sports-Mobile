@@ -98,7 +98,6 @@ TeamEditor.prototype.saveTeam = function() {
 	var tm = new TeamManager();
 	tm.addTeam(newTeam);
 	tm.save();
-	sessionStorage.setItem("CURRENT_TEAM", JSON.stringify(newTeam));
 
 	return tm;
 };
