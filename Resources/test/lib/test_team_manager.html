@@ -221,9 +221,54 @@
 				tm.save();
 
 				var saved_team_array_j = sessionStorage.getItem('TEAMMANAGER_TEAMS');
-
 				same(saved_team_array_j, team_array_j);
 			});
+
+                        test("Getting number of teams - zero", function() {
+                                sessionStorage.clear();
+                                
+                                var tm = new TeamManager(false, sessionStorage);
+                                var numTeam = tm.getNumTeams();
+
+                                var expected_numTeam = 0;
+
+                                same(numTeam, expected_numTeam);
+                        });
+
+                        test("Getting number of teams - one", function() {
+                                sessionStorage.clear();
+
+                                var team = new UltimateTeam('test name', new Array());
+                                var team_array = new Array(team);
+
+                                var tm = new TeamManager(false, sessionStorage);
+                                tm.addTeam(team);
+                                tm.save();
+
+                                var numTeam = tm.getNumTeams();
+
+                                var expected_numTeam = 1;
+
+                                same(numTeam, expected_numTeam);
+                        });
+
+                        test("Getting number of teams - two", function() {
+                                sessionStorage.clear();
+
+                                var team1 = new UltimateTeam('test name1', new Array());
+                                var team2 = new UltimateTeam('test name2', new Array());
+
+                                var tm = new TeamManager(false, sessionStorage);
+                                tm.addTeam(team1);
+                                tm.addTeam(team2);
+                                tm.save();
+
+                                var numTeam = tm.getNumTeams();
+
+                                var expected_numTeam = 2;
+
+                                same(numTeam, expected_numTeam);
+                        });
 
 		});
   </script>
