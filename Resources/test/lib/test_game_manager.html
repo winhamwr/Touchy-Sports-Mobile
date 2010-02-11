@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+	<title>Test Lib: ts.game_manager.js</title>
+	<meta charset="utf-8">
+	<link rel="stylesheet" href="../../css/external/qunit.css" type="text/css" media="screen" />
+
+	<script type="text/javascript" src="../../js/external/jquery-1.3.2.js"></script>
+	<script type="text/javascript" src="../../js/external/qunit.js"></script>
+
+	<script type="text/javascript" src="../../js/lib/ts.deserialization.js"></script>
+	<script type="text/javascript" src="../../js/lib/ts.team.js"></script>
+	<script type="text/javascript" src="../../js/lib/ts.game.js"></script>
+	<script type="text/javascript" src="../../js/lib/ts.game_manager.js"></script>
+	<script>
+		$(document).ready(function(){
+
+			module("Initialization");
+			test("Test basic init", function() {
+				sessionStorage.clear();
+				var gm = new GameManager(true, sessionStorage);
+
+				same(gm.teams, new Array());
+			});
+
+			module("Saving Games");
+
+			test("Test saving empty game", function() {
+				sessionStorage.clear();
+
+				var team = new UltimateTeam('test name', new Array());
+				var opposing_team_name = 'these guys suck';
+				var game = new UltimateGame(team, opposing_team_name);
+
+				var game_array = new Array(game);
+				var game_array_j  = JSON.stringify(game_array);
+
+				var gm = new GameManager(true, sessionStorage);
+				gm.games = game_array;
+				gm.save();
+
+				var saved_game_array_j = sessionStorage.getItem('GAMEMANAGER_GAMES');
+
+				same(game_array_j, saved_game_array_j);
+			});
+
+			test("Test saving full game", function() {
+				sessionStorage.clear();
+
+				var player_names = new Array('Kail','Wes','Andy','Eric','Jack','Jim','Jose',
+					'Alpha','Beta','Chi','Delta','Epsilon','Gamma','Omega','Sigma','Theta','Zeta');
+
+				var players = new Array();
+				$.each(player_names, function(i, name){
+					var player = new UltimatePlayer(name);
+					players.push(player);
+				});
+
+				var team = new UltimateTeam('test name2', players);
+				var opposing_team_name = 'these guys really suck';
+				var game = new UltimateGame(team, opposing_team_name);
+
+				var game_array = new Array(game);
+				var game_array_j  = JSON.stringify(game_array);
+
+				var gm = new GameManager(true, sessionStorage);
+				gm.games = game_array;
+				gm.save();
+
+				var saved_game_array_j = sessionStorage.getItem('GAMEMANAGER_GAMES');
+
+				same(game_array_j, saved_game_array_j);
+			});
+
+			test("Test saving 2 full games", function() {
+				sessionStorage.clear();
+
+				var player_names = new Array('Kail','Wes','Andy','Eric','Jack','Jim','Jose');
+
+				var players = new Array();
+				$.each(player_names, function(i, name){
+					var player = new UltimatePlayer(name);
+					players.push(player);
+				});
+
+				var team1 = new UltimateTeam('test name1', players);
+				var team2 = new UltimateTeam('test name2', players);
+				var opposing_team_name1 = 'these guys are not good';
+				var opposing_team_name2 = 'these guys are not that good';
+				var game1 = new UltimateGame(team1, opposing_team_name1);
+				var game2 = new UltimateGame(team2, opposing_team_name2);
+
+				var game_array = new Array(game1, game2);
+				var game_array_j  = JSON.stringify(game_array);
+
+				var gm = new GameManager(true, sessionStorage);
+				gm.games = game_array;
+				gm.save();
+
+				var saved_game_array_j = sessionStorage.getItem('GAMEMANAGER_GAMES');
+
+				same(game_array_j, saved_game_array_j);
+			});
+
+			module("loading");
+
+			test("Test saving then loading an empty game", function() {
+				sessionStorage.clear();
+
+				var team = new UltimateTeam('test name', new Array());
+				var opposing_team_name = 'these guys really suck';
+				var game = new UltimateGame(team, opposing_team_name);
+
+				var game_array = new Array(game);
+
+				var gm = new GameManager(false, sessionStorage);
+				gm.games = game_array;
+				gm.save();
+
+				var gm2 = new GameManager(false, sessionStorage);
+				gm2.load();
+
+				same(game_array.length, gm.games.length);
+				same(game_array, gm.teams);
+
+				same(gm.games.length, gm2.games.length);
+				same(gm.games, gm2.games);
+			});
+
+			test("Test saving then loading full game", function() {
+				sessionStorage.clear();
+
+				var player_names = new Array('Kail','Wes','Andy','Eric','Jack','Jim','Jose');
+
+				var players = new Array();
+				$.each(player_names, function(i, name){
+					var player = new UltimatePlayer(name);
+					players.push(player);
+				});
+
+				var team = new UltimateTeam('test name', players);
+				var opposing_team_name = 'these guys really suck';
+				var game = new UltimateGame(team, opposing_team_name);
+
+				var game_array = new Array(game);
+
+				var gm = new GameManager(false, sessionStorage);
+				gm.games = game_array;
+				gm.save();
+
+				var gm2 = new GameManager(false, sessionStorage);
+				gm2.load();
+
+				same(game_array.length, gm.games.length);
+				same(game_array, gm.teams);
+
+				same(gm.games.length, gm2.games.length);
+				same(gm.games, gm2.games);
+			});
+
+			test("Test saving then loading 2 full games", function() {
+				sessionStorage.clear();
+
+				var player_names = new Array('Kail','Wes','Andy','Eric','Jack','Jim','Jose');
+
+				var players = new Array();
+				$.each(player_names, function(i, name){
+					var player = new UltimatePlayer(name);
+					players.push(player);
+				});
+
+				var team1 = new UltimateTeam('test name1', players);
+				var team2 = new UltimateTeam('test name2', players);
+				var opposing_team_name1 = 'these guys are not good';
+				var opposing_team_name2 = 'these guys are not that good';
+				var game1 = new UltimateGame(team1, opposing_team_name1);
+				var game2 = new UltimateGame(team2, opposing_team_name2);
+
+				var game_array = new Array(game1, game2);
+
+				var gm = new GameManager(false, sessionStorage);
+				gm.games = game_array;
+				gm.save();
+
+				var gm2 = new GameManager(false, sessionStorage);
+				gm2.load();
+
+				same(game_array.length, gm.games.length);
+				same(game_array, gm.teams);
+
+				same(gm.games.length, gm2.games.length);
+				same(gm.games, gm2.games);
+			});
+
+			module("getGameNames");
+
+			test("Save 2 games and display their names", function() {
+				sessionStorage.clear();
+
+				var team1 = new UltimateTeam('ut1', []);
+				var team2 = new UltimateTeam('ut2', []);
+				var opposing_team_name1 = 'ot1';
+				var opposing_team_name2 = 'ot2';
+				var game1 = new UltimateGame(team1, opposing_team_name1);
+				var game2 = new UltimateGame(team2, opposing_team_name2);
+
+				var expected_game_names = new Array(
+					'Game: <ut1> versus <ot1>',
+					'Game: <ut2> versus <ot2>'
+				);
+
+				var gm = new GameManager(true, sessionStorage);
+				gm.addGame(game1);
+				gm.addGame(game2);
+
+				gm.save();
+
+				same(gm.getTeamNames(), expected_game_names);
+
+				var gm2 = new GameManager(true, sessionStorage);
+
+				same(gm2.getTeamNames(), expected_game_names);
+			});
+
+			module("addGame");
+
+			test("Adding new game", function() {
+				sessionStorage.clear();
+
+				var team = new UltimateTeam('test name', new Array());
+				var opposing_team_name = 'these guys suck';
+				var game = new UltimateGame(team, opposing_team_name);
+
+				var game_array = new Array(game);
+				var game_array_j  = JSON.stringify(game_array);
+
+				var gm = new GameManager(false, sessionStorage);
+				gm.addGame(game);
+				gm.save();
+
+				var saved_game_array_j = sessionStorage.getItem('GAMEMANAGER_GAMES');
+
+				same(game_array_j, saved_game_array_j);
+			});
+
+			test("Adding existing games", function() {
+				sessionStorage.clear();
+
+				var team1 = new UltimateTeam('ut1', []);
+				var team2 = new UltimateTeam('ut2', []);
+				var opposing_team_name1 = 'ot1';
+				var opposing_team_name2 = 'ot2';
+				var game1 = new UltimateGame(team1, opposing_team_name1);
+				var game2 = new UltimateGame(team2, opposing_team_name2);
+
+				var game_array = new Array(game);
+				var game_array_j  = JSON.stringify(game_array);
+
+				var gm = new GameManager(false, sessionStorage);
+				gm.addGame(game1);
+				gm.addGame(game2);
+				gm.addGame(game2);
+				gm.addGame(game1);
+				gm.save();
+
+				var saved_game_array_j = sessionStorage.getItem('GAMEMANAGER_GAMES');
+
+				same(game_array_j, saved_game_array_j);
+			});
+
+		});
+  </script>
+</head>
+<body>
+  <h1 id="qunit-header">UltimateGame manager tests</h1>
+ <h2 id="qunit-banner"></h2>
+ <h2 id="qunit-userAgent"></h2>
+ <ol id="qunit-tests"></ol>
+ <h2 id="index-link"><a href="../index.html">Test Index</a></h2>
+</body>
+</html>
