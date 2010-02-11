@@ -64,6 +64,7 @@ TeamEditor.prototype.removePlayer = function(remove_button) {
  **/
 TeamEditor.prototype._clearPlayers = function() {
 	$(TeamEditor.PLAYERS_SELECTOR).remove();
+	$('ul > li').remove();	// catch the stragglers
 }
 
 //function loadTeam() {
