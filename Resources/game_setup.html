@@ -38,9 +38,8 @@
 			<option value=8>8</option>
 			<option value=9>9</option>
 		</select>
-        <input type="button" id="buttonSave" value="Save" class="buttonSave"/>
         </form>
-        <a class="webLink" href="field.html">Start Game</a>
+        <a class="webLink" id="start_game" href="field.html">Start Game</a>
     </div>
     <script type="text/javascript">
         $(document).ready(function(){
@@ -53,7 +52,7 @@
 				$('#user_team').append('<option value="'+teams[i]+'">'+teams[i]+'</option>');
 			}
 
-            $("#buttonSave").click(function() {
+            $("#start_game").click(function() {
                 saveGameSetup(tm, 'FIELD');
             });
         });

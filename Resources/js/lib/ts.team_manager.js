@@ -97,7 +97,7 @@ TeamManager.prototype.load = function() {
 };
 
 /**
- * Save all of the storable fields to the database.
+ * Gets the number of teams in storage
  */
 TeamManager.prototype.getNumTeams = function() {
     var type = typeof(this.teams);

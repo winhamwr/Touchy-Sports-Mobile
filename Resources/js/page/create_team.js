@@ -33,7 +33,8 @@ TeamEditor.prototype.bindListeners = function() {
 	this.add_player_button.click(function() {
 		te.addPlayer();
 	});
-	this.save_team_button.click(function() {
+
+    $('#start_game').click(function() {
 		te.saveTeam();
 	});
 
@@ -126,6 +127,10 @@ TeamEditor.prototype._getPlayers = function() {
 	});
 
 	return players;
+}
+
+TeamEditor.prototype.click = function() {
+
 }
 
 /*
