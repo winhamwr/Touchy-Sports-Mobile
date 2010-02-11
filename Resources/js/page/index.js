@@ -2,7 +2,6 @@ $(document).ready(function() {
 
     var tm = new TeamManager();
     var teams = tm.getNumTeams();
-    console.log(teams);
 
     var appendStartGame = '<p><a href="game_setup.html">Start Game</a></p>'
     if(teams == 0) {
