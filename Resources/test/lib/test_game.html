@@ -27,6 +27,21 @@
 				same(opposing_team_name, game.opposing_team_name);
 			});
 
+			module("Accessor methods");
+
+			test("Test toString", function() {
+				var test_name = 'foobar';
+				var team = new UltimateTeam(test_name, new Array());
+				var opposing_team_name = 'the bad guys';
+
+				var game = new UltimateGame({
+					user_team:team,
+					opposing_team_name:opposing_team_name
+				});
+
+				same("Game: <foobar> versus <the bad guys>", ""+game);
+			});
+
 			module("Serialization");
 
 			test("Basic serialization", function() {
