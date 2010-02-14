@@ -3,6 +3,7 @@ $(document).ready(function(){
 	initManageData();
 	initManageTeams();
 	initGameSetup();
+	initEditTeam();
 });
 
 ///
@@ -14,7 +15,7 @@ $(document).ready(function(){
  */
 function updateTeamCount() {
 	var tm = new TeamManager();
-	$($'team_count').html(tm.getNumTeams);
+	$('#team_count').html(tm.getNumTeams());
 };
 
 ///
@@ -62,37 +63,45 @@ function initManageData() {
  */
 function initManageTeams() {
 	loadTeamNames();
+	
+	// bind events
+	$('#add_team').click(function() {
+		addTeam();
+	});
 };
 
 function loadTeamNames() {
 	var tm = new TeamManager();
 	var teams = tm.getTeamNames();
-	//var teamsHtml = '';
+	
 	$('#manage_teams_list').html();	// clear the current list
-	console.log(teams);
 	for (var i in teams) {
-		//teamsHtml+='<li class="arrow"><a href="#edit_team" id="'+teams[i]+'">'+teams[i]+'</a></li>';
 		var teamName = teams[i];
 		var teamTag = 'edit_team_' + teamName;
 		var numPlayers = tm.getNumPlayers(teamName);
 		
 		var teamHtml = '<li class="arrow">';	// create the row
-		teamHtml+='<a href="#edit_team" id="'+teamTag+'">'+teamName+'</a>'	// add the link
-		teamHtml+='<small class="counter" id="team_player_count_"'+teamName'">'+numPlayers+'</small></li>'		// add the player counter
-		
-		$('#manage_teams_list').append(teamHtml)
+		teamHtml+='<a href="#edit_team" id="'+teamTag+'">'+teamName+'</a>';	// add the link
+		teamHtml+='<small class="counter" id="team_player_count_"'+teamName+'">'+numPlayers+'</small></li>';		// add the player counter
+		console.log(teamHtml);
+		$('#manage_teams_list').append(teamHtml);
 		$('#'+teamTag).click(function() {
 			console.log(this.html());
 			initEditTeam(this.html());
 		});
 	}
-	//$('#manage_teams_list').html(teamsHtml);
 };
 
 function updatePlayerCount(teamName) {
 	var tm = new TeamManager();
 	var numPlayers = tm.getNumPlayers(teamName);
 	$('#'+'team_player_count_'+teamName).html(numPlayers);
+};
+
+function addTeam() {
+	$('#edit_team_title').html('New Team');
+	$('#edit_team_name').val('');
+	$('#edit_team_list').html('<li><input type="text" name="name" placeholder="Player name" /></li>');
 };
 
 ///
@@ -112,9 +121,20 @@ function initGameSetup() {
 /**
  *	Builds the edit_team page (div id: edit_team).
  */
-function initEditTeam(teamName) {
+function initEditTeam() {
 	$('#add_player').click(function() {
-	};
+		addPlayer();
+	});
+	
+	$('#edit_team_back').click(function() {
+		saveTeam();
+	});
+};
+
+/**
+ *	Updates the edit_team div (page) to show the team to be edited.
+ */
+function updateEditTeam(teamName) {
 };
 
 function addPlayer() {
