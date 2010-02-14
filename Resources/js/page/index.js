@@ -138,6 +138,7 @@ function updateEditTeam(teamName) {
 };
 
 function addPlayer() {
+	$('#edit_team_list').append('<li><input type="text" name="name" placeholder="Player name" /></li>');
 };
 
 function removePlayer() {
