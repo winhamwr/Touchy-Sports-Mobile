@@ -144,6 +144,7 @@ function removePlayer() {
 };
 
 function clearTeam() {
+	$('#edit_team_list').html('<li><input type="text" name="name" placeholder="Player name" /></li>');
 };
 
 function saveTeam() {
