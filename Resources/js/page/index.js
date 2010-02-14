@@ -1,5 +1,7 @@
 $(document).ready(function(){
 	initManageData();
+	initManageTeams();
+	initGameSetup();
 });
 
 ///
@@ -36,4 +38,67 @@ function initManageData() {
 	$('#reset_all').click(function(event){
 		localStorage.clear();
 	});
+};
+
+///
+///	manage_teams
+///
+
+/**
+ *	Builds the manage_teams page (div id: manage_teams).
+ */
+function initManageTeams() {
+	loadTeamNames();
+};
+
+function loadTeamNames() {
+	var tm = new TeamManager();
+	var teams = tm.getTeamNames();
+	//var teamsHtml = '';
+	$('#manage_teams_list').html();	// clear the current list
+	console.log(teams);
+	for (var i in teams) {
+		//teamsHtml+='<li class="arrow"><a href="#edit_team" id="'+teams[i]+'">'+teams[i]+'</a></li>';
+		var teamName = teams[i];
+		var teamTag = 'edit_team_' + teamName;
+		$('#manage_teams_list').append('<li class="arrow"><a href="#edit_team" id="'+teamTag+'">'+teamName+'</a></li>')
+		$('#'+teamTag).click(function() {
+			console.log(this.html());
+			initEditTeam(this.html());
+		});
+	}
+	//$('#manage_teams_list').html(teamsHtml);
+};
+
+///
+///	game_setup
+///
+
+/**
+ *	Builds the game_setup page (div id: game_setup).
+ */
+function initGameSetup() {
+};
+
+///
+///	edit_team
+///
+
+/**
+ *	Builds the edit_team page (div id: edit_team).
+ */
+function initEditTeam(teamName) {
+	
+};
+
+function addPlayer() {
+};
+
+function removePlayer() {
+};
+
+function clearTeam() {
+};
+
+function saveTeam() {
 };

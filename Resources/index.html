@@ -83,9 +83,9 @@
                 <a class="button slideup" id="infoButton" href="#about">About</a>
             </div>
             <ul class="rounded">
-                <li class="forward"><a target="_webapp" href="field.html">Start Game</a></li>
+                <li class="forward" id='start_game'><a target="_webapp" href="field.html">Start Game</a></li>
                 <li class="arrow"><a href="#manage_teams">Manage Teams</a></li>
-                <li class="arrow"><a href="#manage_data">Manage Data</a> <small class="counter">3</small></li>
+                <li class="arrow"><a href="#manage_data">Manage Data</a></li>
                 <li class="arrow"><a href="#tutorial">Tutorial</a></li>
                 <li class="arrow"><a href="#settings">Settings</a></li>
                 <li class="arrow"><a href="#feedback">Send Feedback</a></li>
@@ -122,7 +122,22 @@
                 <li><a href="#manage_data" id="reset_all">Reset All</a></li>
             </ul>
                 <ul class="edit rounded" id="manage_data_games">
-                    <li><textarea placeholder="Textarea" ></textarea></li>
+                </ul>
+            </form>
+        </div>
+		
+		<div id="manage_teams">
+            <div class="toolbar">
+                <h1>Manage Teams</h1>
+                <a href="#" class="back">Back</a>
+                <a href="#manage_teams_add" class="button add slideup" id='add_team'>+</a>
+            </div>
+            <form>
+				<ul class="individual">
+					<li><a target="_webapp" href="field.html" id='manage_teams_start_game'>Start Game</a></li>
+					<li><a href="#manage_data" id="reset_all">Manage Data</a></li>
+				</ul>
+                <ul class="edit rounded" id='manage_teams_list'>
                 </ul>
             </form>
         </div>
