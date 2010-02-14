@@ -1,8 +1,21 @@
 $(document).ready(function(){
+	updateTeamCount();
 	initManageData();
 	initManageTeams();
 	initGameSetup();
 });
+
+///
+///	home (main page)
+///
+
+/**
+ *	Sets the counter next to "Manage Teams" to the number of teams currently saved.
+ */
+function updateTeamCount() {
+	var tm = new TeamManager();
+	$($'team_count').html(tm.getNumTeams);
+};
 
 ///
 ///	manage_data
