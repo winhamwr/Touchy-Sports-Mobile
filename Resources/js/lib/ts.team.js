@@ -119,13 +119,9 @@ UltimateTeam.prototype.getBenchedPlayers = function() {
 	return playersBenched;
 };
 
-UltimateTeam.prototype.getAllPlayerNames = function() {
-	/* TODO: This should return the inPlay players first, then the benched players at the end */
-	var playerNames = new Array();
-	
-	$.each(this.players, function() {
-		playerNames.push(this.name);
-	});
-	
-	return playerNames;
+/**
+ * Gets the number of players on this team's roster.
+ */
+UltimateTeam.prototype.getNumPlayers = function() {
+	return this.players.length;
 };

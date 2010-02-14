@@ -74,7 +74,13 @@ function loadTeamNames() {
 		//teamsHtml+='<li class="arrow"><a href="#edit_team" id="'+teams[i]+'">'+teams[i]+'</a></li>';
 		var teamName = teams[i];
 		var teamTag = 'edit_team_' + teamName;
-		$('#manage_teams_list').append('<li class="arrow"><a href="#edit_team" id="'+teamTag+'">'+teamName+'</a></li>')
+		var numPlayers = tm.getNumPlayers(teamName);
+		
+		var teamHtml = '<li class="arrow">';	// create the row
+		teamHtml+='<a href="#edit_team" id="'+teamTag+'">'+teamName+'</a>'	// add the link
+		teamHtml+='<small class="counter" id="team_count_"'+teamName'">'+numPlayers+'</small></li>'		// add the player counter
+		
+		$('#manage_teams_list').append(teamHtml)
 		$('#'+teamTag).click(function() {
 			console.log(this.html());
 			initEditTeam(this.html());

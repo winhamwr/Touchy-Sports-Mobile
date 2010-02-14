@@ -79,6 +79,14 @@ TeamManager.prototype.getTeam = function(name) {
 }
 
 /**
+ * Gets the number of players currently on a team's roster.
+ */
+TeamManager.prototype.getNumPlayers = function(teamName) {
+	var team = this.getTeam(teamName);
+	return team.getNumPlayers();
+};
+
+/**
  * Save all of the storable fields to the database.
  */
 TeamManager.prototype.save = function() {
