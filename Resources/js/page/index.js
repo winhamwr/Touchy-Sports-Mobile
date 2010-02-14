@@ -147,4 +147,23 @@ function clearTeam() {
 };
 
 function saveTeam() {
+	// get the players
+	var players = new Array();
+	var $player_inputs = $('#edit_team_list > input');
+	$.each($player_inputs, function() {
+		var playerName = ($(this).val());
+		/* TODO: don't allow a blank player name? */
+		players.push(new UltimatePlayer(playerName));
+	});
+	
+	// get the team name
+	var team_name = $('#edit_team_name').val();
+	/* TODO: don't allow a blank team name? */
+
+	var newTeam = new UltimateTeam(team_name, players);
+
+	var tm = new TeamManager();
+	tm.addTeam(newTeam);
+	tm.save();
+	sessionStorage.setItem("CURRENT_TEAM", JSON.stringify(newTeam));
 };
