@@ -89,6 +89,12 @@ function loadTeamNames() {
 	//$('#manage_teams_list').html(teamsHtml);
 };
 
+function updatePlayerCount(teamName) {
+	var tm = new TeamManager();
+	var numPlayers = tm.getNumPlayers(teamName);
+	$('#'+'team_player_count_'+teamName).html(numPlayers);
+};
+
 ///
 ///	game_setup
 ///
@@ -107,7 +113,8 @@ function initGameSetup() {
  *	Builds the edit_team page (div id: edit_team).
  */
 function initEditTeam(teamName) {
-	
+	$('#add_player').click(function() {
+	};
 };
 
 function addPlayer() {
