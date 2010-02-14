@@ -101,7 +101,7 @@ function updatePlayerCount(teamName) {
 function addTeam() {
 	$('#edit_team_title').html('New Team');
 	$('#edit_team_name').val('');
-	$('#edit_team_list').html('<li><input type="text" name="name" placeholder="Player name" /></li>');
+	addPlayer();
 };
 
 ///
@@ -137,8 +137,12 @@ function initEditTeam() {
 function updateEditTeam(teamName) {
 };
 
-function addPlayer() {
+function addPlayer(playerName) {
 	$('#edit_team_list').append('<li><input type="text" name="name" placeholder="Player name" /></li>');
+
+	// if we were passed a player name, set it
+	if (!(playerName == '' || typeof(playerName) == 'undefined'))
+		$('#edit_team_list li:last input').val(playerName);
 };
 
 function removePlayer() {
