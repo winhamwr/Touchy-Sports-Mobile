@@ -135,6 +135,16 @@ function initEditTeam() {
  *	Updates the edit_team div (page) to show the team to be edited.
  */
 function updateEditTeam(teamName) {
+	$('#edit_team_title').html(teamName);
+	$('#edit_team_name').val(teamName);
+	
+	clearTeam();	// make sure we start fresh
+	// add the players
+	var playerNames = team.getAllPlayerNames();
+	$.each(playerNames, function() {
+		var name = this;
+		addPlayer(name);
+	});
 };
 
 function addPlayer(playerName) {
