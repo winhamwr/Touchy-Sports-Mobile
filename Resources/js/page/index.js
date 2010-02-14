@@ -78,7 +78,7 @@ function loadTeamNames() {
 		
 		var teamHtml = '<li class="arrow">';	// create the row
 		teamHtml+='<a href="#edit_team" id="'+teamTag+'">'+teamName+'</a>'	// add the link
-		teamHtml+='<small class="counter" id="team_count_"'+teamName'">'+numPlayers+'</small></li>'		// add the player counter
+		teamHtml+='<small class="counter" id="team_player_count_"'+teamName'">'+numPlayers+'</small></li>'		// add the player counter
 		
 		$('#manage_teams_list').append(teamHtml)
 		$('#'+teamTag).click(function() {
