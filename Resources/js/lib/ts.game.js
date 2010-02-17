@@ -32,7 +32,7 @@ UltimateGame = function(options) {
 
 UltimateGame.REQUIRED = ['user_team', 'opposing_team_name'];
 UltimateGame.DEFAULTS = {
-	user_has_posession		:	true,
+	user_has_possession		:	true,
 
 	user_attacking_right	:	true,
 
@@ -61,7 +61,7 @@ UltimateGame.prototype.toString = function() {
 	if(typeof(this.user_team) == 'undefined' || this.user_team == null){
 		return 'Game';
 	}
-	return "Game: <"+this.user_team.name+"> versus <"+this.opposing_team_name+">";
+	return "Game: `"+this.user_team.name+"` versus `"+this.opposing_team_name+"`";
 };
 
 UltimateGame.prototype.getPk = function() {
@@ -70,4 +70,14 @@ UltimateGame.prototype.getPk = function() {
 
 UltimateGame.prototype.setPk = function(pk) {
 	this.pk = pk;
+}
+
+/**
+ * Is the team with the disk trying to score in the right endzone.
+ **/
+UltimateGame.prototype.possessorAttackingRight = function(){
+	if((this.user_has_possession && this.user_attacking_right) || (!this.user_has_possession && !this.user_attacking_right)){
+		return true;
+	}
+	return false;
 }
