@@ -33,7 +33,6 @@ GameManager.prototype.STORABLE_FIELDS = {
 // Member data that needs to be deserialized in to objects
 GameManager.NESTED_OBJECTS = {'games': UltimateGame};
 
-
 /**
  * Add a game to the list of persisted games, using the game's pk too hold them unique.
  * ie. if you add a game with a pk that already exists, it will overwrite that

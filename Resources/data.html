@@ -6,8 +6,11 @@
 
 	<script type="text/javascript" src="js/external/jquery-1.3.2.js"></script>
 
-	<script type="text/javascript" src="js/jquery.ultimateCanvas.js"></script>
-	<script type="text/javascript" src="js/baseDbController.js"></script>
+	<script type="text/javascript" src="js/lib/ts.deserialization.js"></script>
+	<script type="text/javascript" src="js/lib/ts.team.js"></script>
+	<script type="text/javascript" src="js/lib/ts.team_manager.js"></script>
+	<script type="text/javascript" src="js/lib/ts.game.js"></script>
+	<script type="text/javascript" src="js/lib/ts.game_manager.js"></script>
 	<style type="text/css">
 		#games > .game{
 			padding-top: 2em;
@@ -33,21 +36,30 @@
     
 	<script type="text/javascript">
 		$(document).ready(function(){
-			var $games = $('#games');
-			var $db = new db_controller();
-			var game_ids = $db.getStoredGames();
-			var used_ids = [];
-			$.each(game_ids, function(i, val){
-				if($.inArray(val, used_ids) != -1){
-					return;
-				}
-				used_ids.push(val);
+			var gm = new GameManager();
+			var $games_div = $('#games');
 
-				$db.continueGame(val);
-				var game = $db._getGameData();
-				var game_str = JSON.stringify(game);
-				$games.append('<h2 class="game_id">'+val+'</h2>');
-				$games.append('<textarea class="game" id="game_'+val+'">'+game_str+'</textarea>');
+			$.each(gm.games, function(i, game){
+				$games_div.append('<h2 class="game_pk">'+game.toString()+' pk:'+game.getPk()+'</h2>');
+				var game_sum = '';
+				game_sum += game.user_team.name + ' score:' + game.user_score + '\n';
+				game_sum += game.opposing_team_name + ' score:' + game.opposing_score + '\n';
+				game_sum += 'Possession:';
+				if(game.user_has_possession){
+					game_sum += game.user_team.name;
+				}else{
+					game_sum += game.opposing_team_name;
+				}
+				game_sum += '\n';
+				game_sum += 'Attacking Direction:';
+				if(game.possessorAttackingRight()){
+					game_sum += '------>';
+				}else{
+					game_sum += '<------';
+				}
+				game_sum += '\n';
+
+				$games_div.append('<textarea class="game" id="game_'+game.getPk()+'">'+game_sum+'</textarea>');
 			});
 
 			$('#reset_game').click(function(event){
