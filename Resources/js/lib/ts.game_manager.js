@@ -27,7 +27,7 @@ GameManager.prototype.init = function(should_load) {
 GameManager.prototype.STORABLE_FIELDS = {
 	// Array of all saved games
 	//'name': [storage key, object type, default value, is array]
-	'games': ['GAMEMANAGER_GAMES', UltimateGame, new Array(), true]
+	'games': ['Game:ALL', UltimateGame, new Array(), true]
 };
 
 // Member data that needs to be deserialized in to objects

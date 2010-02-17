@@ -45,7 +45,7 @@
 				gm.games = game_array;
 				gm.save();
 
-				var saved_game_array_j = sessionStorage.getItem('GAMEMANAGER_GAMES');
+				var saved_game_array_j = sessionStorage.getItem('Game:ALL');
 
 				same(saved_game_array_j, game_array_j);
 			});
@@ -76,7 +76,7 @@
 				gm.games = game_array;
 				gm.save();
 
-				var saved_game_array_j = sessionStorage.getItem('GAMEMANAGER_GAMES');
+				var saved_game_array_j = sessionStorage.getItem('Game:ALL');
 
 				same(game_array_j, saved_game_array_j);
 			});
@@ -112,7 +112,7 @@
 				gm.games = game_array;
 				gm.save();
 
-				var saved_game_array_j = sessionStorage.getItem('GAMEMANAGER_GAMES');
+				var saved_game_array_j = sessionStorage.getItem('Game:ALL');
 
 				same(game_array_j, saved_game_array_j);
 			});
