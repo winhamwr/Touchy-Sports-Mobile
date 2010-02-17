@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Edit Team</title>
+    <script type="text/javascript" src="js/external/jquery-1.3.2.js"></script>
+	<script type="text/javascript" src="js/lib/ts.deserialization.js"></script>
+	<script type="text/javascript" src="js/lib/ts.team.js"></script>
+	<script type="text/javascript" src="js/lib/ts.team_manager.js"></script>
+	<!--<script type="text/javascript" src="js/baseDbController.js"></script>-->
+
+	<script type="text/javascript" src="js/page/edit_team.js"></script>
+	<link type="text/css" href="css/create_team.css" rel="stylesheet" />
+	<!--<link type="text/css" href="css/layout.css" rel="stylesheet" />-->
+  </head>
+  
+  <body>
+    <div id="doc">
+      <div id="pageTitle" class="webTitle">Edit Team</div>
+	  <div id="teamMenu">
+		  <p><a class="webLink" href="game_setup.html">Start Game</a></p>
+		  <p><a class="webLink" href="data.html">Manage Data</a></p>
+	  </div>
+	  <select id="team_name"></select>
+		<p>
+			<input type="button" id="buttonAdd" value="Add Player" class="webButton"/>
+			<input type="button" id="buttonSave" value="Save Team" class="webButton"/>
+		</p>
+      <p></p>
+      <ul id="player_controls"></ul>
+    </div>
+	  <script type="text/javascript">
+		 $(document).ready(function(){
+			$('#doc').teamEditor({});
+		}); 
+	  </script>
+  </body>
+</html>

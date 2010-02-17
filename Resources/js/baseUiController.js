@@ -82,7 +82,8 @@ var uiControlling = {
 		var inner_w = this.field.inner_w;
 
 		// endzone rectangles
-		context.fillStyle = "#003300";	// Dark Green
+		context.fillStyle = "#003300"; // Dark Green
+               context.lineWidth = 2;
 		context.strokeStyle = "#000000"; // Black Goal Lines
 		context.fillRect(0, 0, ez_w, h);
 		context.strokeRect(0, 0, ez_w, h);
@@ -109,6 +110,7 @@ var uiControlling = {
 		var hash_h = this.field.hash_h;
 		var w = this.field.w;
 
+               context.lineWidth = 2;
 		context.strokeStyle = "#FFFFFF";
 		context.beginPath();
 		context.moveTo(0, hash_h);
@@ -125,6 +127,7 @@ var uiControlling = {
 		var h = this.field.h;
 		var hash_w = this.field.hash_w;
 
+               context.lineWidth = 2;
 		context.strokeStyle = "#FFFFFF";
 		context.beginPath();
 
@@ -145,6 +148,7 @@ var uiControlling = {
 			// We have a source point, draw a line between the points
 			var context = this.canvas[0].getContext("2d");
 
+                       context.lineWidth = 2;
 			context.strokeStyle = "#003300";	// DARK GREEN
 			context.fillStyle = "#ffffff";	// White
 			context.beginPath();
@@ -253,6 +257,29 @@ var uiControlling = {
 		}
 	},
 
+    /*
+     * Displays/updates the team that has possession of the frisbee.
+     * Takes the user team name, opponent team name, and possession.
+     */
+    displayTeamPossession: function(user_team_name, opponent_name, possession ) {
+        var context = this.canvas[0].getContext("2d");
+        var ez_w = this.field.ez_w;
+
+        context.strokeStyle = "#000000";
+		context.fillStyle = "#000000";
+        if (possession == 0) {
+            context.fillText(
+                user_team_name,
+				2*ez_w,
+				5*this.field.h/12);
+        } else {
+            context.fillText(
+                opponent_name,
+				2*ez_w,
+				5*this.field.h/12);
+        }
+    },
+
 	/**
 	 * Display the possession indicator on the field, which lets the user know which
 	 * team has the ball and in what direction they're going.
@@ -260,8 +287,8 @@ var uiControlling = {
 	displayPossessionIndicator: function(direction) {
 		var context = this.canvas[0].getContext("2d");
 
+               context.lineWidth = 4;
 		context.strokeStyle = "#000000";
-        context.lineWidth = 6;
 		context.beginPath();
 		// Draw the cross-field line
 		var ez_w = this.field.ez_w;
@@ -282,7 +309,6 @@ var uiControlling = {
 			context.moveTo(2*ez_w, field_h/2);
 			context.lineTo(2*ez_w + 30, field_h/2 + 30);
 		}
-
 		context.stroke();
 	},
 

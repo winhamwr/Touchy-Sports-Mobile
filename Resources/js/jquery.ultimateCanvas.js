@@ -350,6 +350,9 @@ UltimateCanvas.prototype.draw = function(){
 	this.ui.displayScore(UltimateCanvas.USER_TEAM, this.home_endzone, this.home_score);
 	this.ui.displayScore(UltimateCanvas.OPPOSING_TEAM, this.away_endzone, this.away_score);
 
+    /* TODO: need to use the variable for opposing team name here instead of 'Nannies' */
+    this.ui.displayTeamPossession(this.user_team.name, 'Nannies', this.possession);
+
 	var player_names = this.user_team.getPlayingPlayerNames();
 	this.ui.updatePlayerNames(player_names);
 

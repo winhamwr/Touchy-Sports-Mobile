@@ -53,7 +53,7 @@ body {
 	font-size:18px;
 	font-family:sans-serif;
 	text-decoration:underline;
-	padding:3px 0px 6px 55px;
+	padding:3px 0px 6px 85px;
 	text-align:center;
 }
 
@@ -80,4 +80,37 @@ body {
 
 a:hover {
 	color:#00FF00;
+}
+
+select {
+    width:280px;
+    height:28px;
+	font-size:24px;
+}
+
+input[type=text] {
+	width:190px;
+    height:28px;
+	font-size:24px;
+}
+
+input[type=button] {
+    /*width:auto;*/
+	width:125px;
+    height:40px;
+}
+
+/*
+ul {
+	margin-left:-38px;
+}
+*/
+
+li {
+	margin-left:-38px;
+}
+
+li > button {
+	height:36px;
+	font-size:20px;
 }
