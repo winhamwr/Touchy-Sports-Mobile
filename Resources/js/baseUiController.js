@@ -148,7 +148,7 @@ var uiControlling = {
 			// We have a source point, draw a line between the points
 			var context = this.canvas[0].getContext("2d");
 
-                       context.lineWidth = 2;
+		    context.lineWidth = 2;
 			context.strokeStyle = "#003300";	// DARK GREEN
 			context.fillStyle = "#ffffff";	// White
 			context.beginPath();
@@ -219,41 +219,39 @@ var uiControlling = {
 	},
 
 	/*
-	 * Displays/updates the score for the given team, 0 for home, 1 for away.
-	 * Takes the team, endzone and current score of that team
+	 * Displays both teams' scores in their endzones.
+	 * @param user_attacking_right 
+	 * @param user_score
+	 * @param opposing_score
 	 */
-	displayScore: function(team, ez, score) {
+	displayScore: function(user_attacking_right, user_score, opposing_score) {
 		var context = this.canvas[0].getContext("2d");
 		context.font = "bold 12px sans-serif";
 
-		if(team == 0){
-			// home score
-			context.strokeStyle = "#9F4848";	// WHITE
-			context.fillStyle = "#9F4848";	// WHITE
-		} else {
-			// away score
-			context.strokeStyle = "#269926";	// WHITE
-			context.fillStyle = "#269926";	// WHITE
+		function _drawLeft(context, score){
+			context.fillText(score, 40, 135);
+		}
+		function _drawRight(context, score){
+			context.fillText(score, 440, 135);
 		}
 
-		if(context.fillText != null){
-			if(ez == 0){
-				// Left side score
-				context.fillText(
-					score,
-					40,
-					135);
-			} else {
-				// Right side score
-				context.fillText(
-					score,
-					440,
-					135);
-			}
-		} else {
-			if(DEBUG == true){
-				this.alert("Your device does not support text on canvas");
-			}
+		// user score
+		context.strokeStyle = "#9F4848";	// WHITE
+		context.fillStyle = "#9F4848";	// WHITE
+		if(user_attacking_right){
+			_drawLeft(context, user_score);
+		}else{
+			_drawRight(context, user_score);
+		}
+
+		// opposing score
+		context.strokeStyle = "#269926";	// WHITE
+		context.fillStyle = "#269926";	// WHITE
+
+		if(user_attacking_right){
+			_drawRight(context, opposing_score);
+		}else{
+			_drawLeft(context, opposing_score);
 		}
 	},
 
@@ -261,13 +259,13 @@ var uiControlling = {
      * Displays/updates the team that has possession of the frisbee.
      * Takes the user team name, opponent team name, and possession.
      */
-    displayTeamPossession: function(user_team_name, opponent_name, possession ) {
+    displayTeamPossession: function(user_team_name, opponent_name, user_has_possession ) {
         var context = this.canvas[0].getContext("2d");
         var ez_w = this.field.ez_w;
 
         context.strokeStyle = "#000000";
 		context.fillStyle = "#000000";
-        if (possession == 0) {
+        if (user_has_possession) {
             context.fillText(
                 user_team_name,
 				2*ez_w,

@@ -12,11 +12,11 @@ function saveGameSetup(team_manager, dest_page) {
 
     // save disc possession
     var possession = $('#possession').val();
-    sessionStorage.setItem(dest_page+'__team_possession', possession);
+    sessionStorage.setItem(dest_page+'__user_has_possession', possession);
 
     // save field direction
     var direction = $('#direction').val();
-    sessionStorage.setItem(dest_page+'__user_team_direction', direction);
+    sessionStorage.setItem(dest_page+'__user_attacking_right', direction);
 
     // save total players in play
     var totalPlayersInPlay = $('#totalPlayers').val();
