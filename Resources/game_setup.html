@@ -19,30 +19,30 @@
     <div id="doc">
         <h1>Game Setup</h1>
 		<p>Your Team</p>
-        <form action="">
+        <form action="field.html">
 		<select name="user_team" id="user_team"></select>
 		<p><a>Opposing Team Name</a></p>
-        <input type="text" id="opposingTeamName" value="Team Name">
+        <input type="text" name="opposing_team_name" id="opposing_team_name" value="Team Name">
         <p><a>Disc Possession</a></p>
-		<select id="possession">
-			<option value=0>My Team</option>
-			<option value=1>Opposing Team</option>
+		<select name="user_has_possession" id="user_has_possession">
+			<option value="1">My Team</option>
+			<option value="0">Opposing Team</option>
 		</select>
-        <p><a>Which Dirrection is Your Team Going?</a></p>
-		<select id="direction">
-			<option value=1>--------></option>
-			<option value=0><--------</option>
+        <p><a>Which Direction is Your Team Going?</a></p>
+		<select name="user_attacking_right" id="user_attacking_right">
+			<option selected value="1">--------></option>
+			<option value="0"><--------</option>
 		</select>
 		<p><a>Number of Players per Team</a></p>
-		<select id="totalPlayers">
-			<option value=5>5</option>
-			<option value=6>6</option>
-			<option SELECTED value=7>7</option>
-			<option value=8>8</option>
-			<option value=9>9</option>
+		<select name="max_players_in_play" id="max_players_in_play">
+			<option value="5">5</option>
+			<option value="6">6</option>
+			<option selected value="7">7</option>
+			<option value="8">8</option>
+			<option value="9">9</option>
 		</select>
+        <input type="submit" name="start_game" id="start_game" value="Start Game">
         </form>
-        <a class="webLink" id="start_game" href="field.html">Start Game</a>
     </div>
     <script type="text/javascript">
         $(document).ready(function(){
@@ -56,7 +56,8 @@
 			}
 
             $("#start_game").click(function() {
-                saveGameSetup(tm, 'FIELD');
+                saveGameSetup('FIELD');
+				return false;
             });
         });
     </script>

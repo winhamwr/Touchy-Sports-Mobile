@@ -5,30 +5,37 @@
  * @param dest_page A string representing the page that should load the
  * game setup values.
  */
-function saveGameSetup(team_manager, dest_page) {
+function saveGameSetup(dest_page) {
     // save opposing team name
-    var opposingTeamName = $('#opposingTeamName').val();
-    sessionStorage.setItem(dest_page+'__opposing_team_name', opposingTeamName);
+    var opposing_team_name = $('#opposing_team_name').val();
+    sessionStorage.setItem(dest_page+'__opposing_team_name', opposing_team_name);
 
     // save disc possession
-    var possession = $('#possession').val();
-    sessionStorage.setItem(dest_page+'__user_has_possession', possession);
+    var possession_val = $('#user_has_possession').val();
+	var user_has_possession = false;
+	if(possession_val == '1'){
+		user_has_possession = true;
+	}
+	var user_has_possession_s = JSON.stringify(user_has_possession);
+    sessionStorage.setItem(dest_page+'__user_has_possession', user_has_possession_s);
 
     // save field direction
-    var direction = $('#direction').val();
-    sessionStorage.setItem(dest_page+'__user_attacking_right', direction);
+    var direction_val = $('#user_attacking_right').val();
+	var user_attacking_right = false;
+	if(user_attacking_right ==  '1'){
+		user_attacking_right = true;
+	}
+	var user_attacking_right_s = JSON.stringify(user_attacking_right);
+    sessionStorage.setItem(dest_page+'__user_attacking_right', user_attacking_right_s);
 
     // save total players in play
-    var totalPlayersInPlay = $('#totalPlayers').val();
-    sessionStorage.setItem(dest_page+'__max_players_in_play', totalPlayersInPlay);
+    var total_players = $('#max_players_in_play').val();
+	var max_players_in_play_s = JSON.stringify(total_players);
+    sessionStorage.setItem(dest_page+'__max_players_in_play', max_players_in_play_s);
 
+	//User Team name
 	var user_team_name = $('#user_team').val();
-
-	var user_team = team_manager.getTeam(user_team_name);
-	user_team.setStartingLineup(user_team.players.slice(0, totalPlayersInPlay));
-
-	team_manager.addTeam(user_team);
-	team_manager.save();
-
-	sessionStorage.setItem(dest_page+'__user_team_name', user_team.name);
+	sessionStorage.setItem(dest_page+'__user_team_name', user_team_name);
+	console.log(sessionStorage);
+	alert('stop');
 }

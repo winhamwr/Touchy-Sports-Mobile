@@ -28,7 +28,6 @@
 	<script type="text/javascript" src="js/lib/ts.game_manager.js"></script>
 
 	<script type="text/javascript" src="js/jquery.ultimateCanvas.js"></script>
-	<script type="text/javascript" src="js/baseDbController.js"></script>
 	<script type="text/javascript" src="js/ts.dialogs.js"></script>
 	<script type="text/javascript" src="js/baseUiController.js"></script>
 	<script type="text/javascript" src="js/uiController.js"></script>
@@ -78,18 +77,18 @@
 
 			// Load any options coming from game_setup.html
 			var user_team_name = sessionStorage.getItem('FIELD__user_team_name');
+			console.log(user_team_name);
 			sessionStorage.removeItem('FIELD__user_team_name');
 			var opposing_team_name = sessionStorage.getItem('FIELD__opposing_team_name');
 			sessionStorage.removeItem('FIELD__opposing_team_name');
-			var user_has_possession = sessionStorage.getItem('FIELD__user_has_possession');
+			var user_has_possession = JSON.parse(sessionStorage.getItem('FIELD__user_has_possession'));
 			sessionStorage.removeItem('FIELD__user_has_posssession');
-			var user_attacking_right = sessionStorage.getItem('FIELD__user_attacking_right');
+			var user_attacking_right = JSON.parse(sessionStorage.getItem('FIELD__user_attacking_right'));
 			sessionStorage.removeItem('FIELD__user_attacking_right');
-			var max_players_in_play = sessionStorage.getItem('FIELD__max_players_in_play');
+			var max_players_in_play = JSON.parse(sessionStorage.getItem('FIELD__max_players_in_play'));
 			sessionStorage.removeItem('FIELD__max_players_in_play');
 
 			var user_team = null;
-
 			var gm = new GameManager();
 
 			if(user_team_name != null){
@@ -102,10 +101,13 @@
 					'user_attacking_right'	: user_attacking_right,
 					'max_players_in_play'	: max_players_in_play
 				});
+				user_team.setStartingLineup(user_team.players.slice(0, max_players_in_play));
+				console.log(user_team);
 				gm.addGame(game);
 				gm.save();
 				sessionStorage.setItem('FIELD__game_pk', game.getPk());
 			} else {
+				console.log(user_team);
 				var game_pk = sessionStorage.getItem('FIELD__game_pk');
 				var game = gm.getGame(game_pk);
 				if(game == null){
