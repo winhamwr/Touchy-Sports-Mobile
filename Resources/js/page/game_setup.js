@@ -36,6 +36,4 @@ function saveGameSetup(dest_page) {
 	//User Team name
 	var user_team_name = $('#user_team').val();
 	sessionStorage.setItem(dest_page+'__user_team_name', user_team_name);
-	console.log(sessionStorage);
-	alert('stop');
 }

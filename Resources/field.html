@@ -82,7 +82,7 @@
 			var opposing_team_name = sessionStorage.getItem('FIELD__opposing_team_name');
 			sessionStorage.removeItem('FIELD__opposing_team_name');
 			var user_has_possession = JSON.parse(sessionStorage.getItem('FIELD__user_has_possession'));
-			sessionStorage.removeItem('FIELD__user_has_posssession');
+			sessionStorage.removeItem('FIELD__user_has_possession');
 			var user_attacking_right = JSON.parse(sessionStorage.getItem('FIELD__user_attacking_right'));
 			sessionStorage.removeItem('FIELD__user_attacking_right');
 			var max_players_in_play = JSON.parse(sessionStorage.getItem('FIELD__max_players_in_play'));
@@ -102,12 +102,10 @@
 					'max_players_in_play'	: max_players_in_play
 				});
 				user_team.setStartingLineup(user_team.players.slice(0, max_players_in_play));
-				console.log(user_team);
 				gm.addGame(game);
 				gm.save();
 				sessionStorage.setItem('FIELD__game_pk', game.getPk());
 			} else {
-				console.log(user_team);
 				var game_pk = sessionStorage.getItem('FIELD__game_pk');
 				var game = gm.getGame(game_pk);
 				if(game == null){
