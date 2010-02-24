@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+	<title>Game Management</title>
+	<meta charset="utf-8">
+
+	<script type="text/javascript" src="js/external/jquery-1.3.2.js"></script>
+
+	<script type="text/javascript" src="js/lib/ts.deserialization.js"></script>
+	<script type="text/javascript" src="js/lib/ts.team.js"></script>
+	<script type="text/javascript" src="js/lib/ts.team_manager.js"></script>
+	<script type="text/javascript" src="js/lib/ts.game.js"></script>
+	<script type="text/javascript" src="js/lib/ts.game_manager.js"></script>
+
+	<link type="text/css" href="css/field.css" rel="stylesheet">
+</head>
+<body>
+	<div id="game_panel">
+		<form action="field.html">
+		<ul class="games"></ul>
+		</form>
+	</div>
+	<script type="text/javascript">
+		$(document).ready(function(){
+
+			var gm = new GameManager();
+			var $games_list = $('#game_panel ul.games');
+
+			$.each(gm.games, function(i, game){
+				var html = '<li id="game_' + game.getPk() + '">';
+				html += "<strong>"  + game.user_team.name + "</strong><em>" + game.user_score + "</em>";
+				html += " -- ";
+				html += "<strong>"  + game.opposing_team_name + "</strong><em>" + game.opposing_score + "</em>";
+				html += '<a href="game_summary.html">View Summary</a>';
+				html += '<input type="submit" name="load_game'+game.getPk()+'" class="load_game" value="Continue Game" >';
+				html += '</li>';
+
+				$games_list.append(html);
+			});
+
+			var load_game_submits = $('ul.games > li .load_game');
+			load_game_submits.click(function () {
+				var $button = $(this);
+				var $li = $button.parent();
+
+				// Id is in the form game_ID
+				var game_pk = $li.attr('id').substr(5);
+				sessionStorage.setItem('FIELD__game_pk', game_pk);
+			});
+		});
+	</script>
+</body>
+</html>
