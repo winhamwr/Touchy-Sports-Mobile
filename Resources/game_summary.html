@@ -1,25 +1,11 @@
 <!DOCTYPE html>
 <html lang=en>
 <head>
-	<title>Touchy Sports&trade; | Ultimate Frisbee</title>
+	<title>Game Summary</title>
 	<meta charset="utf-8">
 
-	<script type="text/javascript">
-		// Check if we have debug=1 in the querystring
-		var qs = document.location.search
-		var debug_i = qs.indexOf('debug=1')
-		if(debug_i != -1){
-			DEBUG = true;
-		} else{
-			DEBUG = false;
-		}
-	</script>
 	<script type="text/javascript" src="js/external/jquery-1.3.2.js"></script>
-
-	<script type="text/javascript" src="js/jquery-ui/ui.core.js"></script>
-	<script type="text/javascript" src="js/jquery-ui/ui.dialog.js"></script>
-	<script type="text/javascript" src="js/jquery-ui/effects.core.js"></script>
-	<script type="text/javascript" src="js/jquery-ui/effects.drop.js"></script>
+	<script type="text/javascript" src="js/external/querystring.js"></script>
 
 	<script type="text/javascript" src="js/lib/ts.deserialization.js"></script>
 	<script type="text/javascript" src="js/lib/ts.team.js"></script>
@@ -27,98 +13,79 @@
 	<script type="text/javascript" src="js/lib/ts.game.js"></script>
 	<script type="text/javascript" src="js/lib/ts.game_manager.js"></script>
 
-	<script type="text/javascript" src="js/jquery.ultimateCanvas.js"></script>
-	<script type="text/javascript" src="js/ts.dialogs.js"></script>
-	<script type="text/javascript" src="js/baseUiController.js"></script>
-	<script type="text/javascript" src="js/uiController.js"></script>
+	<style type="text/css">
+		table , td, th{
+			border: 1px solid black;
+		}
+	</style>
 
-	<link type="text/css" href="css/jquery-ui/redmond/ui.all.css" rel="stylesheet" />
-
-	<link type="text/css" href="css/substitution.css" rel="stylesheet" />
-	<link href="css/field.css" rel="stylesheet" type="text/css">
 </head>
 <body>
-	<div id="field_wrap">
-		<div id="player-bar">
-			<div>
-				<div id="player-button-1"></div>
-			</div>
-			<div>
-				<div id="player-button-2"></div>
-			</div>
-			<div>
-				<div id="player-button-3"></div>
-			</div>
-			<div>
-				<div id="player-button-4"></div>
-			</div>
-			<div>
-				<div id="player-button-5"></div>
-			</div>
-			<div>
-				<div id="player-button-6"></div>
-			</div>
-			<div>
-				<div id="player-button-7"></div>
-			</div>
-		</div>
-		<canvas id="field" width="480" height="320"></canvas>
-		<div id="menu-bar">
-			<div id="undo_b">
-			</div>
-			<div id="turnover_b">
-			</div>
-			<div id="sub_b">
-			</div>
-		</div>
+	<div id="content">
+		<h1>Game Summary</h1>
+		<table id="summary">
+			<thead></thead>
+			<tbody></tbody>
+		</table>
+		<table id="score_breakdown">
+			<thead>
+				<tr>
+					<th>Team</th>
+					<th>Scorer</th>
+					<th>Assist</th>
+					<th>Score</th>
+				</tr>
+			</thead>
+			<tbody></tbody>
+		</table>
 	</div>
 	<script type="text/javascript">
 		$(document).ready(function(){
+			var qs = new Querystring()
 
-			// Load any options coming from game_setup.html
-			var user_team_name = sessionStorage.getItem('FIELD__user_team_name');
-			console.log(user_team_name);
-			sessionStorage.removeItem('FIELD__user_team_name');
-			var opposing_team_name = sessionStorage.getItem('FIELD__opposing_team_name');
-			sessionStorage.removeItem('FIELD__opposing_team_name');
-			var user_has_possession = JSON.parse(sessionStorage.getItem('FIELD__user_has_possession'));
-			sessionStorage.removeItem('FIELD__user_has_possession');
-			var user_attacking_right = JSON.parse(sessionStorage.getItem('FIELD__user_attacking_right'));
-			sessionStorage.removeItem('FIELD__user_attacking_right');
-			var max_players_in_play = JSON.parse(sessionStorage.getItem('FIELD__max_players_in_play'));
-			sessionStorage.removeItem('FIELD__max_players_in_play');
+			var game_pk = qs.get('game');
 
-			var user_team = null;
 			var gm = new GameManager();
+			var game = gm.getGame(game_pk);
 
-			if(user_team_name != null){
-				var tm = new TeamManager();
-				user_team = tm.getTeam(user_team_name);
-				var game = new UltimateGame({
-					'user_team'				: user_team,
-					'opposing_team_name'	: opposing_team_name,
-					'user_has_possession'	: user_has_possession,
-					'user_attacking_right'	: user_attacking_right,
-					'max_players_in_play'	: max_players_in_play
-				});
-				user_team.setStartingLineup(user_team.players.slice(0, max_players_in_play));
-				gm.addGame(game);
-				gm.save();
-				sessionStorage.setItem('FIELD__game_pk', game.getPk());
-			} else {
-				var game_pk = sessionStorage.getItem('FIELD__game_pk');
-				var game = gm.getGame(game_pk);
-				if(game == null){
-					alert("Error loading team. Must visit game_setup before starting a new game");
-				}
-			}
+			var $sum_head = $('#summary thead');
+			var sum_html = '<tr>';
+			sum_html += '<th>'+game.user_team.name+'</th>';
+			sum_html += '<th>'+game.opposing_team_name+'</th>';
+			sum_html += '</tr>';
 
-			var canvases = $('#field').ultimateCanvas(
-				{
-					ui_controller		:	ui_controller,
-					game				:	game
+			$sum_head.append(sum_html);
+
+			var $sum_body = $('#summary tbody');
+			var sum_b_html = '<tr>';
+			sum_b_html += '<th>' + game.user_score + '</th>';
+			sum_b_html += '<th>' + game.opposing_score + '</th>';
+			sum_b_html += '</tr>';
+
+			$sum_body.append(sum_b_html);
+
+			// Output information about each score
+			var $score_bd = $('#score_breakdown tbody');
+
+			$.each(game.points, function(i, point){
+				var scoring_pass = point.passes.pop();
+				var assist_pass = point.passes.pop();
+				var user_score = point.user_score;
+				var opposing_score = point.opposing_score;
+
+				if( typeof(scoring_pass) != 'undefined'){
+					var html = '<tr>';
+					html += '<td>' + scoring_pass.team + '</td>'
+					html += '<td>' + scoring_pass.receiver + '</td>'
+					html += '<td>' + assist_pass.receiver + '</td>'
+					html += '<td>' + user_score + ' - ' + opposing_score + '</td>'
+					html += '</tr>';
+
+					$score_bd.append(html);
 				}
-			);
+			});
+
+
 		});
 	</script>
 </body>

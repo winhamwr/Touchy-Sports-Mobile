@@ -11,8 +11,6 @@
 	<script type="text/javascript" src="js/lib/ts.team_manager.js"></script>
 	<script type="text/javascript" src="js/lib/ts.game.js"></script>
 	<script type="text/javascript" src="js/lib/ts.game_manager.js"></script>
-
-	<link type="text/css" href="css/field.css" rel="stylesheet">
 </head>
 <body>
 	<div id="game_panel">
@@ -31,7 +29,7 @@
 				html += "<strong>"  + game.user_team.name + "</strong><em>" + game.user_score + "</em>";
 				html += " -- ";
 				html += "<strong>"  + game.opposing_team_name + "</strong><em>" + game.opposing_score + "</em>";
-				html += '<a href="game_summary.html">View Summary</a>';
+				html += '<a href="game_summary.html?game='+game.getPk()+'">View Summary</a>';
 				html += '<input type="submit" name="load_game'+game.getPk()+'" class="load_game" value="Continue Game" >';
 				html += '</li>';
 
